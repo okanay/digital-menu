@@ -4,7 +4,7 @@
 # Binaries for programs and plugins
 
 
-*cmd
+*build
 *.exe
 *.exe~
 *.dll
