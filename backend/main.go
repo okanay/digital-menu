@@ -36,7 +36,10 @@ func main() {
 	// ->> Routes
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"message": "Welcome to Digital Menu API",
+			"Language":  "GO",
+			"Framework": "Gin",
+			"Database":  "PostgreSQL",
+			"Status":    "Running",
 		})
 	})
 
