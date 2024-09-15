@@ -1,6 +1,7 @@
 package userHandler
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -21,7 +22,7 @@ func (h *Handler) Login(c *gin.Context) {
 		return
 	}
 
-	user, err := h.userRepository.SelectUserByEmail(req.Email)
+	user, err := h.userRepository.SelectUser(req.Email)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Email not found"})
 		return
@@ -57,6 +58,13 @@ func (h *Handler) Login(c *gin.Context) {
 		EmailVerified: user.EmailVerified,
 		Membership:    user.Membership,
 	}
+
+	go func() {
+		err := h.userRepository.UpdateLastLogin(user.Email)
+		if err != nil {
+			fmt.Println("[ERROR LOGIN] : User last login could not be updated.", err.Error())
+		}
+	}()
 
 	c.SetSameSite(http.SameSiteLaxMode)
 	c.SetCookie("digital_menu_session", token, cookieDuration, "/", "", false, true)

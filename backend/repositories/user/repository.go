@@ -6,17 +6,18 @@ import (
 	"github.com/okanay/digital-menu/types"
 )
 
-type UserRepository struct {
+type Repository struct {
 	db *sql.DB
 }
 
-func NewUserRepository(db *sql.DB) *UserRepository {
-	return &UserRepository{db: db}
+func NewRepository(db *sql.DB) *Repository {
+	return &Repository{db: db}
 }
 
-type IUserRepository interface {
-	CreateUser(types.CreateUserReq) (types.User, error)
+type UserRepository interface {
+	CreateUser(req types.CreateUserReq) (types.User, error)
 	SelectUserByEmail(email string) (types.User, error)
-	UpdatePasswordByEmail(types.UpdatePasswordReq) error
+	UpdatePasswordByEmail(req types.UpdatePasswordReq) error
 	UpdateResetTokenByEmail(email string) error
+	UpdateLastLoginByEmail(email string) error
 }

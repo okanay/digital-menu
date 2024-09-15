@@ -1,6 +1,7 @@
 package configs
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -8,7 +9,7 @@ import (
 	sr "github.com/okanay/digital-menu/repositories/session"
 )
 
-func AuthMiddleware(sr *sr.SessionRepository) gin.HandlerFunc {
+func AuthMiddleware(sr *sr.Repository) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Check if session cookie exists
 		token, err := c.Cookie("digital_menu_session")
@@ -17,7 +18,7 @@ func AuthMiddleware(sr *sr.SessionRepository) gin.HandlerFunc {
 			return
 		}
 
-		session, user, err := sr.SelectSessionAndUserByToken(token)
+		session, user, err := sr.SelectSessionAndUser(token)
 		if err != nil {
 			handleUnauthorized(c, "Session not valid.")
 			return
@@ -28,6 +29,13 @@ func AuthMiddleware(sr *sr.SessionRepository) gin.HandlerFunc {
 			handleUnauthorized(c, "Session expired")
 			return
 		}
+
+		go func() {
+			err = sr.UpdateLastAccessed(int(session.ID))
+			if err != nil {
+				fmt.Println("[ERROR SESSION] Session last accessed update failed.")
+			}
+		}()
 
 		c.Set("session", session)
 		c.Set("user", user)

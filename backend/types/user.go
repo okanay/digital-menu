@@ -5,21 +5,23 @@ import "time"
 type MembershipType string
 
 const (
-	Regular MembershipType = "Regular"
+	Basic   MembershipType = "Basic"
+	Pro     MembershipType = "Pro"
 	Premium MembershipType = "Premium"
+	Admin   MembershipType = "Admin"
 )
 
 type User struct {
 	ID                     int64          `json:"id"`
 	Email                  string         `json:"email"`
 	HashedPassword         string         `json:"hashedPassword"`
-	CreatedAt              time.Time      `json:"createdAt"`
-	UpdatedAt              time.Time      `json:"updatedAt"`
-	LastLogin              time.Time      `json:"lastLogin"`
 	Membership             MembershipType `json:"membership"`
 	EmailVerified          bool           `json:"emailVerified"`
 	EmailVerificationToken string         `json:"emailVerificationToken"`
 	PasswordResetToken     string         `json:"passwordResetToken"`
+	CreatedAt              time.Time      `json:"createdAt"`
+	UpdatedAt              time.Time      `json:"updatedAt"`
+	LastLogin              time.Time      `json:"lastLogin"`
 }
 
 type UserResponse struct {

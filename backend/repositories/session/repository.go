@@ -6,18 +6,18 @@ import (
 	"github.com/okanay/digital-menu/types"
 )
 
-type SessionRepository struct {
+type Repository struct {
 	db *sql.DB
 }
 
-func NewSessionRepository(db *sql.DB) *SessionRepository {
-	return &SessionRepository{db: db}
+func NewRepository(db *sql.DB) *Repository {
+	return &Repository{db: db}
 }
 
-type ISessionRepository interface {
-	SelectSessionAndUserByToken(token string) (types.Session, types.User, error)
-	SelectSessionByToken(token string) (types.Session, error)
+type SessionRepository interface {
 	CreateSession(req types.CreateSessionReq) error
 	DeleteSessionByTokenID(id int) error
 	DeleteSessionByUserID(userID int) error
+	SelectSessionAndUserByToken(token string) (types.Session, types.User, error)
+	SelectSessionByToken(token string) (types.Session, error)
 }

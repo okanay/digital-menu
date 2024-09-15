@@ -23,7 +23,7 @@ func (h *Handler) UpdatePassword(c *gin.Context) {
 		return
 	}
 
-	err := h.userRepository.UpdatePasswordByEmail(req)
+	err := h.userRepository.UpdatePassword(req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

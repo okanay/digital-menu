@@ -15,7 +15,7 @@ func (h *Handler) Register(c *gin.Context) {
 		return
 	}
 
-	user, err := h.userRepository.SelectUserByEmail(req.Email)
+	user, err := h.userRepository.SelectUser(req.Email)
 	if err == nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Email already exists"})
 		return

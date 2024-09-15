@@ -1,6 +1,6 @@
 package sessionRepository
 
-func (r *SessionRepository) DeleteSessionByTokenID(id int) error {
+func (r *Repository) DeleteSessionByTokenID(id int) error {
 	query := `DELETE FROM sessions WHERE id = $1`
 	_, err := r.db.Exec(query, id)
 

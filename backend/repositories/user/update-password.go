@@ -5,7 +5,7 @@ import (
 	"github.com/okanay/digital-menu/utils"
 )
 
-func (r *UserRepository) UpdatePasswordByEmail(req types.UpdatePasswordReq) error {
+func (r *Repository) UpdatePassword(req types.UpdatePasswordReq) error {
 	hashPassword, err := utils.EncryptPassword(req.NewPassword)
 	if err != nil {
 		return err

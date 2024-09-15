@@ -5,7 +5,7 @@ import (
 	"github.com/okanay/digital-menu/utils"
 )
 
-func (r *UserRepository) CreateUser(req types.CreateUserReq) (types.User, error) {
+func (r *Repository) CreateUser(req types.CreateUserReq) (types.User, error) {
 	var user types.User
 
 	hashPassword, err := utils.EncryptPassword(req.Password)

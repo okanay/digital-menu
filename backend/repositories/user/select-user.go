@@ -2,7 +2,7 @@ package userRepository
 
 import "github.com/okanay/digital-menu/types"
 
-func (r *UserRepository) SelectUserByEmail(email string) (types.User, error) {
+func (r *Repository) SelectUser(email string) (types.User, error) {
 	var user types.User
 
 	query := `SELECT id, email, hashed_password, created_at, updated_at, last_login, membership, email_verified, email_verification_token, password_reset_token FROM users WHERE email = $1`

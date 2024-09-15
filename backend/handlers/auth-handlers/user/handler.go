@@ -6,10 +6,10 @@ import (
 )
 
 type Handler struct {
-	userRepository    *ur.UserRepository
-	sessionRepository *sr.SessionRepository
+	userRepository    *ur.Repository
+	sessionRepository *sr.Repository
 }
 
-func NewAuthUserHandler(ur *ur.UserRepository, sr *sr.SessionRepository) *Handler {
+func NewHandler(ur *ur.Repository, sr *sr.Repository) *Handler {
 	return &Handler{userRepository: ur, sessionRepository: sr}
 }

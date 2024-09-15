@@ -2,7 +2,7 @@ package sessionRepository
 
 import "github.com/okanay/digital-menu/types"
 
-func (r *SessionRepository) SelectSessionAndUserByToken(token string) (types.Session, types.User, error) {
+func (r *Repository) SelectSessionAndUser(token string) (types.Session, types.User, error) {
 	var session types.Session
 	var user types.User
 

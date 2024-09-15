@@ -2,7 +2,7 @@ package sessionRepository
 
 import "github.com/okanay/digital-menu/types"
 
-func (r *SessionRepository) SelectSessionByToken(token string) (types.Session, error) {
+func (r *Repository) SelectSession(token string) (types.Session, error) {
 	var session types.Session
 
 	query := `SELECT id, user_id, token, expires_at, created_at, ip_address, user_agent, last_accessed FROM sessions WHERE token = $1`

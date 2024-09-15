@@ -15,7 +15,7 @@ func (h *Handler) ForgotPassword(c *gin.Context) {
 		return
 	}
 
-	user, err := h.userRepository.SelectUserByEmail(req.Email)
+	user, err := h.userRepository.SelectUser(req.Email)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Email not found"})
 		return
@@ -31,7 +31,7 @@ func (h *Handler) ForgotPassword(c *gin.Context) {
 		return
 	}
 
-	err = h.userRepository.UpdatePasswordByEmail(types.UpdatePasswordReq{
+	err = h.userRepository.UpdatePassword(types.UpdatePasswordReq{
 		Email:           req.Email,
 		NewPassword:     req.NewPassword,
 		CurrentPassword: "",
@@ -44,7 +44,7 @@ func (h *Handler) ForgotPassword(c *gin.Context) {
 
 	c.SetCookie("digital_menu_session", "", -1, "/", "", false, true)
 	_ = h.sessionRepository.DeleteSessionByUserID(int(user.ID))
-	_ = h.userRepository.UpdateResetTokenByEmail(req.Email)
+	_ = h.userRepository.UpdatePasswordResetToken(req.Email)
 
 	c.JSON(http.StatusOK, gin.H{"message": "Password reset successfully"})
 }
