@@ -12,3 +12,11 @@ type Session struct {
 	UserAgent    string    `json:"user_agent"`
 	LastAccessed time.Time `json:"last_accessed"`
 }
+
+type CreateSessionReq struct {
+	UserID    int64     `json:"user_id"`
+	Token     string    `json:"token"`
+	ExpiresAt time.Time `json:"expires_at"`
+	IPAddress string    `json:"ip_address"`
+	UserAgent string    `json:"user_agent"`
+}
