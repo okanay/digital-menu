@@ -10,6 +10,7 @@ import (
 
 func (h *Handler) DeleteRestaurant(c *gin.Context) {
 	userContext := c.MustGet("user").(types.User)
+
 	idStr := c.Param("id")
 	if idStr == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "id is required"})
@@ -19,12 +20,6 @@ func (h *Handler) DeleteRestaurant(c *gin.Context) {
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "id must be a number"})
-		return
-	}
-
-	restaurant, err := h.restaurantRepository.SelectRestaurantByID(id)
-	if err != nil || restaurant.UserID != userContext.ID {
-		c.JSON(http.StatusForbidden, gin.H{"error": "You are not authorized to delete this restaurant"})
 		return
 	}
 

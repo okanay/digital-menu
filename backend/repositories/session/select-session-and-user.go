@@ -1,8 +1,15 @@
 package sessionRepository
 
-import "github.com/okanay/digital-menu/types"
+import (
+	"time"
+
+	"github.com/okanay/digital-menu/types"
+	"github.com/okanay/digital-menu/utils"
+)
 
 func (r *Repository) SelectSessionAndUser(token string) (types.Session, types.User, error) {
+	defer utils.TimeTrack(time.Now(), "Session -> Select Session And User")
+
 	var session types.Session
 	var user types.User
 

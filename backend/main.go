@@ -24,18 +24,18 @@ import (
 
 func main() {
 	// ->> Load Environments
-	err := godotenv.Load(".env.local")
-	if err != nil {
+	if err := godotenv.Load(".env.local"); err != nil {
 		log.Fatalf("Error loading .env file")
 		return
 	}
+
 	// ->> Set Database Connection
 	sqlDB, err := db.Init(os.Getenv("DATABASE_URL"))
 	if err != nil {
-		log.Println(err)
+		log.Fatalf("Error connecting to database")
 		return
 	}
-	defer db.Close(sqlDB)
+	defer sqlDB.Close()
 
 	// ->> Repositories
 	userRepository := ur.NewRepository(sqlDB)
@@ -49,35 +49,37 @@ func main() {
 	authMenuHandler := amh.NewHandler(menuRepository, restaurantRepository)
 	authRestaurantHandler := arh.NewHandler(menuRepository, restaurantRepository)
 
-	// ->> Middlewares
+	// ->> Main Group
 	router := gin.Default()
 	router.Use(c.CorsConfig())
 	router.Use(mw.SecureMiddleware)
 	router.Use(mw.TimeoutMiddleware(150 * time.Second))
 
-	// ->> Auth Group
-	auth := router.Group("/auth")
-	auth.Use(mw.AuthMiddleware(sessionRepository))
-
-	// 404 Handler
-	router.NoRoute(mh.NoRoute)
-	// ->> Main Routes
+	// :: Index
 	router.GET("/", mh.Index)
+	router.NoRoute(mh.NoRoute)
 
+	// :: User Routes
 	router.POST("/login", userHandler.Login)
 	router.POST("/register", userHandler.Register)
 	router.POST("/forgot-password", userHandler.ForgotPassword)
 
-	// ->> Auth Routes
+	// ->> Auth Group
+	auth := router.Group("/auth")
+	auth.Use(mw.AuthMiddleware(sessionRepository))
+	// :: User Routes
 	auth.POST("/logout", authUserHandler.Logout)
 	auth.POST("/update-password", authUserHandler.UpdatePassword)
 
-	auth.GET("/menu", authMenuHandler.Index)
-
+	// :: Restaurant Routes
 	auth.GET("/restaurant", authRestaurantHandler.SelectRestaurants)
 	auth.GET("/restaurant/:id", authRestaurantHandler.SelectRestaurant)
 	auth.POST("/restaurant", authRestaurantHandler.CreateRestaurant)
+	auth.PATCH("/restaurant/:id", authRestaurantHandler.UpdateRestaurant)
 	auth.DELETE("/restaurant/:id", authRestaurantHandler.DeleteRestaurant)
+
+	// :: Menu Routes
+	auth.GET("/menu", authMenuHandler.Index)
 
 	err = router.Run(":" + os.Getenv("PORT"))
 	if err != nil {

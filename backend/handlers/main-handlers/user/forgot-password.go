@@ -11,23 +11,23 @@ func (h *Handler) ForgotPassword(c *gin.Context) {
 	var req types.PasswordResetWithTokenReq
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request."})
 		return
 	}
 
 	user, err := h.userRepository.SelectUser(req.Email)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Email not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Email not found."})
 		return
 	}
 
 	if !user.EmailVerified {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Email not verified"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Email not verified."})
 		return
 	}
 
 	if user.PasswordResetToken != req.PasswordResetToken {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid token"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid token."})
 		return
 	}
 
@@ -38,13 +38,15 @@ func (h *Handler) ForgotPassword(c *gin.Context) {
 	})
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Password reset failed."})
 		return
 	}
 
-	c.SetCookie("digital_menu_session", "", -1, "/", "", false, true)
-	_ = h.sessionRepository.DeleteSessionByUserID(int(user.ID))
-	_ = h.userRepository.UpdatePasswordResetToken(req.Email)
+	go func() {
+		_ = h.sessionRepository.DeleteSessionByUserID(int(user.ID))
+		_ = h.userRepository.UpdatePasswordResetToken(req.Email)
+	}()
 
+	c.SetCookie("digital_menu_session", "", -1, "/", "", false, true)
 	c.JSON(http.StatusOK, gin.H{"message": "Password reset successfully"})
 }

@@ -32,23 +32,23 @@ type UserResponse struct {
 }
 
 type CreateUserReq struct {
-	Email    string `json:"email" binding:"required"`
-	Password string `json:"password" binding:"required" validate:"min=8,max=32"`
+	Email    string `json:"email" validate:"required,email"`
+	Password string `json:"password" validate:"required,min=8,max=32"`
 }
 
 type LoginReq struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email    string `json:"email" validate:"required,email"`
+	Password string `json:"password" validate:"required,min=8,max=32"`
 }
 
 type UpdatePasswordReq struct {
-	Email           string `json:"email"`
-	CurrentPassword string `json:"currentPassword"`
-	NewPassword     string `json:"newPassword"`
+	Email           string `json:"email" validate:"required,email"`
+	CurrentPassword string `json:"currentPassword" validate:"required,min=8,max=32"`
+	NewPassword     string `json:"newPassword" validate:"required,min=8,max=32"`
 }
 
 type PasswordResetWithTokenReq struct {
-	Email              string `json:"email"`
-	PasswordResetToken string `json:"passwordResetToken"`
-	NewPassword        string `json:"newPassword"`
+	Email              string `json:"email" validate:"required,email"`
+	PasswordResetToken string `json:"passwordResetToken" validate:"required"`
+	NewPassword        string `json:"newPassword" validate:"required,min=8,max=32"`
 }

@@ -9,9 +9,10 @@ import (
 
 func (h *Handler) SelectRestaurants(c *gin.Context) {
 	userContext := c.MustGet("user").(types.User)
-	restaurants, err := h.restaurantRepository.SelectAllRestaurantsByUserID(int(userContext.ID))
+
+	restaurants, err := h.restaurantRepository.SelectRestaurants(int(userContext.ID))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Restaurant selection failed."})
 		return
 	}
 

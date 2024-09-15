@@ -11,7 +11,7 @@ import (
 )
 
 func (h *Handler) checkRestaurantLimit(c *gin.Context, user types.User) error {
-	restaurants, err := h.restaurantRepository.SelectAllRestaurantsByUserID(int(user.ID))
+	restaurants, err := h.restaurantRepository.SelectRestaurants(int(user.ID))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Something went wrong, while checking restaurant limit."})
 		return err

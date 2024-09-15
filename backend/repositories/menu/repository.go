@@ -2,6 +2,8 @@ package menuRepository
 
 import (
 	"database/sql"
+
+	"github.com/okanay/digital-menu/types"
 )
 
 type Repository struct {
@@ -13,4 +15,5 @@ func NewRepository(db *sql.DB) *Repository {
 }
 
 type MenuRepository interface {
+	UpdateMenu(req types.UpdateMenuReq) (types.Menu, error)
 }

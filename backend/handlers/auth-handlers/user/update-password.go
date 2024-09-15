@@ -9,17 +9,17 @@ import (
 )
 
 func (h *Handler) UpdatePassword(c *gin.Context) {
+	user := c.MustGet("user").(types.User)
+
 	var req types.UpdatePasswordReq
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body."})
 		return
 	}
 
-	user := c.MustGet("user").(types.User)
 	passwordMatch := utils.CheckPassword(req.CurrentPassword, user.HashedPassword)
-
 	if !passwordMatch {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Current password does not match"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Current password does not match."})
 		return
 	}
 
@@ -29,8 +29,10 @@ func (h *Handler) UpdatePassword(c *gin.Context) {
 		return
 	}
 
-	c.SetCookie("digital_menu_session", "", -1, "/", "", false, true)
-	_ = h.sessionRepository.DeleteSessionByUserID(int(user.ID))
+	go func() {
+		_ = h.sessionRepository.DeleteSessionByUserID(int(user.ID))
+	}()
 
-	c.JSON(http.StatusOK, gin.H{"message": "Password updated successfully"})
+	c.SetCookie("digital_menu_session", "", -1, "/", "", false, true)
+	c.JSON(http.StatusOK, gin.H{"message": "Password updated successfully."})
 }

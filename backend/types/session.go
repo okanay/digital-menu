@@ -4,19 +4,23 @@ import "time"
 
 type Session struct {
 	ID           int64     `json:"id"`
-	UserID       int64     `json:"user_id"`
+	UserID       int64     `json:"userId"`
 	Token        string    `json:"token"`
-	IPAddress    string    `json:"ip_address"`
-	UserAgent    string    `json:"user_agent"`
-	ExpiresAt    time.Time `json:"expires_at"`
-	CreatedAt    time.Time `json:"created_at"`
-	LastAccessed time.Time `json:"last_accessed"`
+	IPAddress    string    `json:"ipAddress"`
+	UserAgent    string    `json:"userAgent"`
+	ExpiresAt    time.Time `json:"expiresAt"`
+	CreatedAt    time.Time `json:"createdAt"`
+	LastAccessed time.Time `json:"lastAccessed"`
 }
 
 type CreateSessionReq struct {
-	UserID    int64     `json:"user_id"`
+	UserID    int64     `json:"userId"`
 	Token     string    `json:"token"`
-	ExpiresAt time.Time `json:"expires_at"`
-	IPAddress string    `json:"ip_address"`
-	UserAgent string    `json:"user_agent"`
+	ExpiresAt time.Time `json:"expiresAt"`
+	IPAddress string    `json:"ipAddress"`
+	UserAgent string    `json:"userAgent"`
+}
+
+type LogoutSessionReq struct {
+	LogoutAllDevices bool `json:"logoutAllDevices" validate:"required"`
 }

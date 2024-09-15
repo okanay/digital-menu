@@ -4,49 +4,51 @@ import "time"
 
 type Menu struct {
 	ID           int64     `json:"id"`
-	UserID       int64     `json:"user_id"`
-	RestaurantID int64     `json:"restaurant_id"`
+	UserID       int64     `json:"userId"`
+	RestaurantID int64     `json:"restaurantId"`
 	Name         string    `json:"name"`
 	Type         string    `json:"type"`
 	Json         string    `json:"json"`
 	Description  string    `json:"description"`
 	Language     string    `json:"language"`
-	IsActive     bool      `json:"is_active"`
-	ExpiresAt    time.Time `json:"expires_at"`
-	CreatedAt    time.Time `json:"created_at"`
-	UpdatedAt    time.Time `json:"updated_at"`
+	IsActive     bool      `json:"isActive"`
+	ExpiresAt    time.Time `json:"expiresAt"`
+	CreatedAt    time.Time `json:"createdAt"`
+	UpdatedAt    time.Time `json:"updatedAt"`
 }
 
 type GetMenuReq struct {
-	UserID       int64  `json:"user_id"`
-	RestaurantID int64  `json:"restaurant_id"`
+	UserID       int64  `json:"userId"`
+	RestaurantID int64  `json:"restaurantId"`
 	Name         string `json:"name"`
 }
 
 type CreateMenuReq struct {
-	UserID       int64     `json:"user_id"`
-	RestaurantID int64     `json:"restaurant_id"`
+	UserID       int64     `json:"userId"`
+	RestaurantID int64     `json:"restaurantId"`
 	Name         string    `json:"name"`
 	Type         string    `json:"type"`
 	Json         string    `json:"json"`
 	Description  string    `json:"description"`
 	Language     string    `json:"language"`
-	IsActive     bool      `json:"is_active"`
-	ExpiresAt    time.Time `json:"expires_at"`
+	IsActive     bool      `json:"isActive"`
+	ExpiresAt    time.Time `json:"expiresAt"`
 }
 
 type UpdateMenuReq struct {
-	Name        string    `json:"name"`
-	Type        string    `json:"type"`
-	Json        string    `json:"json"`
-	Description string    `json:"description"`
-	Language    string    `json:"language"`
-	IsActive    bool      `json:"is_active"`
-	ExpiresAt   time.Time `json:"expires_at"`
+	ID           int64      `json:"id"`
+	RestaurantID int64      `json:"restaurantId"`
+	Name         *string    `json:"name,omitempty"`
+	Type         *string    `json:"type,omitempty"`
+	Json         *string    `json:"json,omitempty"`
+	Description  *string    `json:"description,omitempty"`
+	Language     *string    `json:"language,omitempty"`
+	IsActive     *bool      `json:"isActive,omitempty"`
+	ExpiresAt    *time.Time `json:"expiresAt,omitempty"`
 }
 
 type DeleteMenuReq struct {
-	UserID       int64  `json:"user_id"`
-	RestaurantID int64  `json:"restaurant_id"`
+	UserID       int64  `json:"userId"`
+	RestaurantID int64  `json:"restaurantId"`
 	Name         string `json:"name"`
 }

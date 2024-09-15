@@ -13,7 +13,7 @@ func (h *Handler) SelectRestaurant(c *gin.Context) {
 
 	idStr := c.Param("id")
 	if idStr == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "id is required"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "id is required."})
 		return
 	}
 
@@ -22,14 +22,14 @@ func (h *Handler) SelectRestaurant(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
 
-	restaurant, err := h.restaurantRepository.SelectRestaurantByID(id)
+	restaurant, err := h.restaurantRepository.SelectRestaurant(id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
 	if restaurant.UserID != userContext.ID {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "You are not authorized to see this restaurant"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "You are not authorized to see this restaurant."})
 		return
 	}
 

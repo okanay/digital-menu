@@ -11,20 +11,19 @@ func (h *Handler) Register(c *gin.Context) {
 	var req types.CreateUserReq
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body."})
 		return
 	}
 
 	user, err := h.userRepository.SelectUser(req.Email)
 	if err == nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Email already exists"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Email already exists."})
 		return
 	}
 
 	user, err = h.userRepository.CreateUser(req)
-
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not create user."})
 		return
 	}
 
