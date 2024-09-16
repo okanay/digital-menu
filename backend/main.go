@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"github.com/okanay/digital-menu/configs"
 	"github.com/okanay/digital-menu/db"
 
 	c "github.com/okanay/digital-menu/configs"
@@ -52,11 +53,15 @@ func main() {
 	authMenuHandler := amh.NewHandler(menuRepository, restaurantRepository)
 	authRestaurantHandler := arh.NewHandler(menuRepository, restaurantRepository)
 
+	// ->> Configs
+	rm := mw.NewRateLimiter(configs.RATE_LIMIT, configs.RATE_LIMIT_DURATION, configs.RATE_LIMIT_CLEANUP)
+
 	// ->> Main Group
 	router := gin.Default()
 	router.Use(c.CorsConfig())
 	router.Use(mw.SecureMiddleware)
 	router.Use(mw.TimeoutMiddleware(150 * time.Second))
+	router.Use(rm.RateLimitMiddleware())
 
 	// ->> Auth Group
 	auth := router.Group("/auth")

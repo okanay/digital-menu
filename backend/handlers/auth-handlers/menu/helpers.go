@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	co "github.com/okanay/digital-menu/configs"
@@ -13,7 +14,7 @@ import (
 func (h *Handler) checkMenuLimit(c *gin.Context, restaurantId int, user types.User) error {
 	menus, err := h.menuRepository.SelectMenus(restaurantId, user.ID)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Something went wrong, while checking menu limit.", "message": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Something went wrong, while checking menu limit."})
 		return err
 	}
 
@@ -39,7 +40,7 @@ func (h *Handler) checkMenuTypeLimit(c *gin.Context, types int, user types.User)
 func (h *Handler) checkRestaurantOwner(c *gin.Context, restaurantId int, user types.User) error {
 	restaurant, err := h.restaurantRepository.SelectRestaurant(restaurantId)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Something went wrong, while checking restaurant owner.", "message": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Something went wrong, while checking restaurant owner."})
 		return err
 	}
 
@@ -72,6 +73,19 @@ func (h *Handler) getMenuTypeLimit(membership types.MembershipType) int {
 		return co.PRO_ALLOWED_MENU_TYPES
 	case types.Premium:
 		return co.PREMIUM_ALLOWED_MENU_TYPES
+	default:
+		return 0
+	}
+}
+
+func (h *Handler) getExpiryDuration(membership types.MembershipType) time.Duration {
+	switch membership {
+	case types.Basic:
+		return co.BASIC_EXPIRATION_DURATION
+	case types.Pro:
+		return co.PRO_EXPIRATION_DURATION
+	case types.Premium:
+		return co.PREMIUM_EXPIRATION_DURATION
 	default:
 		return 0
 	}
