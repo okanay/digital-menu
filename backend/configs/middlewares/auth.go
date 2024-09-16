@@ -11,7 +11,6 @@ import (
 
 func AuthMiddleware(sr *sr.Repository) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// Check if session cookie exists
 		token, err := c.Cookie("digital_menu_session")
 		if err != nil {
 			handleUnauthorized(c, "Session not found.")
@@ -25,13 +24,13 @@ func AuthMiddleware(sr *sr.Repository) gin.HandlerFunc {
 		}
 
 		if time.Now().After(session.ExpiresAt) {
-			_ = sr.DeleteSessionByTokenID(int(session.ID))
+			_ = sr.DeleteSessionByTokenID(session.ID)
 			handleUnauthorized(c, "Session expired")
 			return
 		}
 
 		go func() {
-			err = sr.UpdateLastAccessed(int(session.ID))
+			err = sr.UpdateLastAccessed(session.ID)
 			if err != nil {
 				fmt.Println("[ERROR SESSION] Session last accessed update failed.")
 			}

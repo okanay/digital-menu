@@ -15,5 +15,9 @@ func NewRepository(db *sql.DB) *Repository {
 }
 
 type MenuRepository interface {
+	CreateMenu(req types.CreateMenuReq) (types.Menu, error)
+	SelectMenu(id int) (types.Menu, error)
+	SelectMenus(restaurantId int, userId int) ([]types.Menu, error)
 	UpdateMenu(req types.UpdateMenuReq) (types.Menu, error)
+	DeleteMenu(userId int, id int) error
 }

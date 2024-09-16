@@ -11,19 +11,19 @@ import (
 func (h *Handler) DeleteRestaurant(c *gin.Context) {
 	userContext := c.MustGet("user").(types.User)
 
-	idStr := c.Param("id")
+	idStr := c.Param("restaurantId")
 	if idStr == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "id is required"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "restaurant id is required"})
 		return
 	}
 
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "id must be a number"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "restaurant id must be a number"})
 		return
 	}
 
-	err = h.restaurantRepository.DeleteRestaurant(id, int(userContext.ID))
+	err = h.restaurantRepository.DeleteRestaurant(id, userContext.ID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

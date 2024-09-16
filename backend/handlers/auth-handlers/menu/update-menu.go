@@ -9,28 +9,25 @@ import (
 )
 
 func (h *Handler) UpdateMenu(c *gin.Context) {
-	// user := c.MustGet("user").(types.User)
-	idStr := c.Param("id")
+	user := c.MustGet("user").(types.User)
+
+	idStr := c.Param("menuId")
 	if idStr == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "id is required"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "menu id is required"})
 		return
 	}
-	id, err := strconv.ParseInt(idStr, 10, 64)
+
+	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	// TODO :: Burada önce id ile menüyü çekip user'ın restaurant'ına ait olup olmadığını kontrol et.
-
-	var req types.UpdateMenuReq
+	req := types.UpdateMenuReq{UserID: user.ID, ID: id}
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
 		return
 	}
-
-	req.ID = id
-	req.RestaurantID = 1 // TODO: restaurant id'yi user'dan al
 
 	updatedMenu, err := h.menuRepository.UpdateMenu(req)
 	if err != nil {

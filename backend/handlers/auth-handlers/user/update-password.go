@@ -30,7 +30,7 @@ func (h *Handler) UpdatePassword(c *gin.Context) {
 	}
 
 	go func() {
-		_ = h.sessionRepository.DeleteSessionByUserID(int(user.ID))
+		_ = h.sessionRepository.DeleteSessionByUserID(user.ID)
 	}()
 
 	c.SetCookie("digital_menu_session", "", -1, "/", "", false, true)

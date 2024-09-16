@@ -18,9 +18,9 @@ func (h *Handler) Logout(c *gin.Context) {
 
 	go func() {
 		if req.LogoutAllDevices {
-			_ = h.sessionRepository.DeleteSessionByUserID(int(sessionContext.UserID))
+			_ = h.sessionRepository.DeleteSessionByUserID(sessionContext.UserID)
 		} else {
-			_ = h.sessionRepository.DeleteSessionByTokenID(int(sessionContext.ID))
+			_ = h.sessionRepository.DeleteSessionByTokenID(sessionContext.ID)
 		}
 	}()
 

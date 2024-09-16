@@ -11,21 +11,19 @@ import (
 func (h *Handler) UpdateRestaurant(c *gin.Context) {
 	user := c.MustGet("user").(types.User)
 
-	idStr := c.Param("id")
+	idStr := c.Param("restaurantId")
 	if idStr == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "id is required."})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "restaurant id is required."})
 		return
 	}
 
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "id must be a number"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "restaurant id must be a number"})
 		return
 	}
 
-	var req types.UpdateRestaurantReq
-	req.UserID = user.ID
-	req.ID = int64(id)
+	req := types.UpdateRestaurantReq{UserID: user.ID, ID: id}
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body."})
 		return

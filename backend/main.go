@@ -14,7 +14,8 @@ import (
 	amh "github.com/okanay/digital-menu/handlers/auth-handlers/menu"
 	arh "github.com/okanay/digital-menu/handlers/auth-handlers/restaurant"
 	ah "github.com/okanay/digital-menu/handlers/auth-handlers/user"
-	mh "github.com/okanay/digital-menu/handlers/main-handlers"
+	g "github.com/okanay/digital-menu/handlers/main-handlers"
+	menuHandler "github.com/okanay/digital-menu/handlers/main-handlers/menu"
 	uh "github.com/okanay/digital-menu/handlers/main-handlers/user"
 	mr "github.com/okanay/digital-menu/repositories/menu"
 	rr "github.com/okanay/digital-menu/repositories/restaurant"
@@ -44,9 +45,9 @@ func main() {
 	restaurantRepository := rr.NewRepository(sqlDB)
 
 	// ->> Handlers
-	// :: Main Handlers
 	userHandler := uh.NewHandler(userRepository, sessionRepository)
-	// :: Auth Handlers
+	menuHandler := menuHandler.NewHandler(menuRepository, restaurantRepository)
+
 	authUserHandler := ah.NewHandler(userRepository, sessionRepository)
 	authMenuHandler := amh.NewHandler(menuRepository, restaurantRepository)
 	authRestaurantHandler := arh.NewHandler(menuRepository, restaurantRepository)
@@ -57,31 +58,34 @@ func main() {
 	router.Use(mw.SecureMiddleware)
 	router.Use(mw.TimeoutMiddleware(150 * time.Second))
 
-	// :: Index
-	router.GET("/", mh.Index)
-	router.NoRoute(mh.NoRoute)
+	// ->> Auth Group
+	auth := router.Group("/auth")
+	auth.Use(mw.AuthMiddleware(sessionRepository))
+
+	// :: Global Routes
+	router.GET("/", g.Index)
+	router.NoRoute(g.NoRoute)
 
 	// :: User Routes
 	router.POST("/login", userHandler.Login)
 	router.POST("/register", userHandler.Register)
 	router.POST("/forgot-password", userHandler.ForgotPassword)
-
-	// ->> Auth Group
-	auth := router.Group("/auth")
-	auth.Use(mw.AuthMiddleware(sessionRepository))
-	// :: User Routes
 	auth.POST("/logout", authUserHandler.Logout)
 	auth.POST("/update-password", authUserHandler.UpdatePassword)
 
 	// :: Restaurant Routes
 	auth.GET("/restaurant", authRestaurantHandler.SelectRestaurants)
-	auth.GET("/restaurant/:id", authRestaurantHandler.SelectRestaurant)
 	auth.POST("/restaurant", authRestaurantHandler.CreateRestaurant)
-	auth.PATCH("/restaurant/:id", authRestaurantHandler.UpdateRestaurant)
-	auth.DELETE("/restaurant/:id", authRestaurantHandler.DeleteRestaurant)
+	auth.GET("/restaurant/:restaurantId", authRestaurantHandler.SelectRestaurant)
+	auth.PATCH("/restaurant/:restaurantId", authRestaurantHandler.UpdateRestaurant)
+	auth.DELETE("/restaurant/:restaurantId", authRestaurantHandler.DeleteRestaurant)
 
 	// :: Menu Routes
-	auth.GET("/menu", authMenuHandler.Index)
+	auth.POST("/menu", authMenuHandler.CreateMenu)
+	auth.PATCH("/menu/:menuId", authMenuHandler.UpdateMenu)
+	auth.DELETE("/menu/:menuId", authMenuHandler.DeleteMenu)
+	auth.GET("/menu/:menuId", authMenuHandler.SelectMenus)
+	router.GET("/menu/:menuId", menuHandler.SelectMenu)
 
 	err = router.Run(":" + os.Getenv("PORT"))
 	if err != nil {
