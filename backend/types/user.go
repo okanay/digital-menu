@@ -32,23 +32,23 @@ type UserResponse struct {
 }
 
 type CreateUserReq struct {
-	Email    string `json:"email" validate:"required,email"`
-	Password string `json:"password" validate:"required,min=8,max=32"`
+	Email    string `json:"email" validate:"required,email" binding:"required"`
+	Password string `json:"password" validate:"required,min=8,max=32" binding:"required"`
 }
 
 type LoginReq struct {
-	Email    string `json:"email" validate:"required,email"`
-	Password string `json:"password" validate:"required,min=8,max=32"`
+	Email    string `json:"email" validate:"required,email" binding:"required"`
+	Password string `json:"password" validate:"required,min=8,max=32" binding:"required"`
 }
 
 type UpdatePasswordReq struct {
-	Email           string `json:"email" validate:"required,email"`
-	CurrentPassword string `json:"currentPassword" validate:"required,min=8,max=32"`
-	NewPassword     string `json:"newPassword" validate:"required,min=8,max=32"`
+	Email           string `json:"email" validate:"required,email" binding:"required"`
+	CurrentPassword string `json:"currentPassword" validate:"required,min=8,max=32" binding:"required"`
+	NewPassword     string `json:"newPassword" validate:"required,min=8,max=32" binding:"required"`
 }
 
 type PasswordResetWithTokenReq struct {
-	Email              string `json:"email" validate:"required,email"`
-	PasswordResetToken string `json:"passwordResetToken" validate:"required"`
-	NewPassword        string `json:"newPassword" validate:"required,min=8,max=32"`
+	Email              string `json:"email" validate:"required,email" binding:"required"`
+	PasswordResetToken string `json:"passwordResetToken" validate:"required" binding:"required"`
+	NewPassword        string `json:"newPassword" validate:"required,min=8,max=32" binding:"required"`
 }

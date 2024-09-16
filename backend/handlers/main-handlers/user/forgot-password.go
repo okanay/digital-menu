@@ -9,7 +9,6 @@ import (
 
 func (h *Handler) ForgotPassword(c *gin.Context) {
 	var req types.PasswordResetWithTokenReq
-
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request."})
 		return

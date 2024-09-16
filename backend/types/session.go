@@ -22,5 +22,5 @@ type CreateSessionReq struct {
 }
 
 type LogoutSessionReq struct {
-	LogoutAllDevices bool `json:"logoutAllDevices" validate:"required"`
+	LogoutAllDevices bool `json:"logoutAllDevices" validate:"required" binding:"required"`
 }

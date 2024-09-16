@@ -9,7 +9,6 @@ import (
 
 func (h *Handler) Register(c *gin.Context) {
 	var req types.CreateUserReq
-
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body."})
 		return

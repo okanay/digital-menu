@@ -1,11 +1,15 @@
 package userRepository
 
 import (
+	"time"
+
 	"github.com/okanay/digital-menu/types"
 	"github.com/okanay/digital-menu/utils"
 )
 
 func (r *Repository) UpdatePassword(req types.UpdatePasswordReq) error {
+	defer utils.TimeTrack(time.Now(), "User -> Update Password User")
+
 	hashPassword, err := utils.EncryptPassword(req.NewPassword)
 	if err != nil {
 		return err

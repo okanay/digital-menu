@@ -44,7 +44,9 @@ func main() {
 	restaurantRepository := rr.NewRepository(sqlDB)
 
 	// ->> Handlers
+	// :: Main Handlers
 	userHandler := uh.NewHandler(userRepository, sessionRepository)
+	// :: Auth Handlers
 	authUserHandler := ah.NewHandler(userRepository, sessionRepository)
 	authMenuHandler := amh.NewHandler(menuRepository, restaurantRepository)
 	authRestaurantHandler := arh.NewHandler(menuRepository, restaurantRepository)

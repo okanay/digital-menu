@@ -13,15 +13,15 @@ type Restaurant struct {
 }
 
 type GetRestaurantReq struct {
-	UserID int64 `json:"userId" validate:"required"`
-	ID     int64 `json:"id" validate:"required"`
+	UserID int64 `json:"userId" validate:"required" binding:"required"`
+	ID     int64 `json:"id" validate:"required" binding:"required"`
 }
 
 type CreateRestaurantReq struct {
-	UserID      int64  `json:"userId" validate:"required"`
-	Name        string `json:"name" validate:"required"`
-	Location    string `json:"location" validate:"required"`
-	Description string `json:"description" validate:"required"`
+	UserID      int64  `json:"userId" validate:"required" binding:"required"`
+	Name        string `json:"name" validate:"required" binding:"required"`
+	Location    string `json:"location" validate:"required" binding:"required"`
+	Description string `json:"description" validate:"required" binding:"required"`
 }
 
 type UpdateRestaurantReq struct {
@@ -35,6 +35,6 @@ type UpdateRestaurantReq struct {
 }
 
 type DeleteRestaurantReq struct {
-	UserID int64 `json:"userId" validate:"required"`
-	ID     int64 `json:"id" validate:"required"`
+	UserID int64 `json:"userId" validate:"required" binding:"required"`
+	ID     int64 `json:"id" validate:"required" binding:"required"`
 }

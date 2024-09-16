@@ -17,7 +17,7 @@ func (h *Handler) SelectRestaurants(c *gin.Context) {
 	}
 
 	if len(restaurants) == 0 {
-		emptyRestaurant := types.Restaurant{}
+		emptyRestaurant := []types.Restaurant{}
 		c.JSON(http.StatusOK, gin.H{"restaurant": emptyRestaurant})
 		return
 	}

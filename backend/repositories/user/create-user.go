@@ -1,11 +1,15 @@
 package userRepository
 
 import (
+	"time"
+
 	"github.com/okanay/digital-menu/types"
 	"github.com/okanay/digital-menu/utils"
 )
 
 func (r *Repository) CreateUser(req types.CreateUserReq) (types.User, error) {
+	defer utils.TimeTrack(time.Now(), "User -> Create User")
+
 	var user types.User
 
 	hashPassword, err := utils.EncryptPassword(req.Password)

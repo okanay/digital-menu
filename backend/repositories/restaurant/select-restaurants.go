@@ -1,8 +1,15 @@
 package restaurantRepository
 
-import "github.com/okanay/digital-menu/types"
+import (
+	"time"
+
+	"github.com/okanay/digital-menu/types"
+	"github.com/okanay/digital-menu/utils"
+)
 
 func (r *Repository) SelectRestaurants(userID int) ([]types.Restaurant, error) {
+	defer utils.TimeTrack(time.Now(), "Restaurant -> Select Restaurants")
+
 	var restaurants []types.Restaurant
 	query := `SELECT id, user_id, name, location, description, is_active, menu_count, created_at, updated_at FROM restaurants WHERE user_id = $1`
 

@@ -18,9 +18,9 @@ type Menu struct {
 }
 
 type GetMenuReq struct {
-	UserID       int64  `json:"userId"`
-	RestaurantID int64  `json:"restaurantId"`
-	Name         string `json:"name"`
+	UserID       int64 `json:"userId" validate:"required" binding:"required"`
+	RestaurantID int64 `json:"restaurantId" validate:"required" binding:"required"`
+	ID           int64 `json:"id" validate:"required" binding:"required"`
 }
 
 type CreateMenuReq struct {
@@ -36,8 +36,9 @@ type CreateMenuReq struct {
 }
 
 type UpdateMenuReq struct {
-	ID           int64      `json:"id"`
+	UserID       int64      `json:"userId"`
 	RestaurantID int64      `json:"restaurantId"`
+	ID           int64      `json:"id"`
 	Name         *string    `json:"name,omitempty"`
 	Type         *string    `json:"type,omitempty"`
 	Json         *string    `json:"json,omitempty"`
@@ -48,7 +49,7 @@ type UpdateMenuReq struct {
 }
 
 type DeleteMenuReq struct {
-	UserID       int64  `json:"userId"`
-	RestaurantID int64  `json:"restaurantId"`
-	Name         string `json:"name"`
+	UserID       int64 `json:"userId"`
+	RestaurantID int64 `json:"restaurantId"`
+	ID           int64 `json:"id"`
 }

@@ -19,7 +19,7 @@ func (h *Handler) SelectRestaurant(c *gin.Context) {
 
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "id must be a number."})
 	}
 
 	restaurant, err := h.restaurantRepository.SelectRestaurant(id)

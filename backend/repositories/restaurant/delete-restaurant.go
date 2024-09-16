@@ -1,22 +1,33 @@
 package restaurantRepository
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+
+	"github.com/okanay/digital-menu/utils"
+)
 
 func (r *Repository) DeleteRestaurant(id int, userID int) error {
-	query := `DELETE FROM restaurants WHERE id = $1 AND user_id = $2`
+	defer utils.TimeTrack(time.Now(), "Restaurant -> Delete Restaurant")
 
-	restaurant, err := r.SelectRestaurant(id)
-	if restaurant.Name == "" {
-		return fmt.Errorf("Restaurant not found.")
-	}
+	query := `
+	WITH deleted AS (
+		DELETE FROM restaurants
+		WHERE id = $1 AND user_id = $2
+		RETURNING id
+	)
+	SELECT CASE WHEN COUNT(*) = 0 THEN 'Restaurant does not exist' ELSE NULL END
+	FROM deleted;
+	`
 
-	if restaurant.UserID != int64(userID) {
-		return fmt.Errorf("You are not authorized to delete this restaurant.")
-	}
-
-	_, err = r.db.Exec(query, id, userID)
+	var result string
+	err := r.db.QueryRow(query, id, userID).Scan(&result)
 	if err != nil {
 		return err
+	}
+
+	if result == "Restaurant does not exist" {
+		return fmt.Errorf(result)
 	}
 
 	return nil

@@ -1,8 +1,15 @@
 package restaurantRepository
 
-import "github.com/okanay/digital-menu/types"
+import (
+	"time"
+
+	"github.com/okanay/digital-menu/types"
+	"github.com/okanay/digital-menu/utils"
+)
 
 func (r *Repository) CreateRestaurant(req types.CreateRestaurantReq) (types.Restaurant, error) {
+	defer utils.TimeTrack(time.Now(), "Restaurant -> Create Restaurant")
+
 	restaurant := types.Restaurant{}
 	query := `INSERT INTO restaurants (user_id, name, location, description) VALUES ($1, $2, $3, $4) RETURNING id, user_id, name, location, description, is_active, menu_count, created_at, updated_at`
 
