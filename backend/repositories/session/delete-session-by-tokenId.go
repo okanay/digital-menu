@@ -6,7 +6,7 @@ import (
 	"github.com/okanay/digital-menu/utils"
 )
 
-func (r *Repository) DeleteSessionByTokenID(id int) error {
+func (r *Repository) DeleteSessionByTokenID(id string) error {
 	defer utils.TimeTrack(time.Now(), "Session -> Delete Session By Token ID")
 
 	query := `DELETE FROM sessions WHERE id = $1`

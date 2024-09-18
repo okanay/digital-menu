@@ -51,11 +51,11 @@ func (r *Repository) UpdateMenu(req types.UpdateMenuReq) (types.Menu, error) {
 		argCount++
 	}
 
-	queryBuilder.WriteString(fmt.Sprintf(" WHERE id = $%d AND user_id = $%d RETURNING id, restaurant_id, name, type, json, description, language, is_active, expires_at, created_at, updated_at", argCount, argCount+1))
+	queryBuilder.WriteString(fmt.Sprintf(" WHERE id = $%d AND user_id = $%d RETURNING id, user_id, restaurant_id, name, type, json, description, language, is_active, expires_at, created_at, updated_at", argCount, argCount+1))
 	args = append(args, req.ID, req.UserID)
 
 	err := r.db.QueryRow(queryBuilder.String(), args...).Scan(
-		&menu.ID, &menu.RestaurantID, &menu.Name, &menu.Type, &menu.Json,
+		&menu.ID, &menu.UserID, &menu.RestaurantID, &menu.Name, &menu.Type, &menu.Json,
 		&menu.Description, &menu.Language, &menu.IsActive, &menu.ExpiresAt,
 		&menu.CreatedAt, &menu.UpdatedAt,
 	)

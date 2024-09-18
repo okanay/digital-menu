@@ -7,7 +7,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
-	"github.com/okanay/digital-menu/configs"
 	"github.com/okanay/digital-menu/db"
 
 	c "github.com/okanay/digital-menu/configs"
@@ -16,7 +15,7 @@ import (
 	arh "github.com/okanay/digital-menu/handlers/auth-handlers/restaurant"
 	ah "github.com/okanay/digital-menu/handlers/auth-handlers/user"
 	g "github.com/okanay/digital-menu/handlers/main-handlers"
-	menuHandler "github.com/okanay/digital-menu/handlers/main-handlers/menu"
+	mh "github.com/okanay/digital-menu/handlers/main-handlers/menu"
 	uh "github.com/okanay/digital-menu/handlers/main-handlers/user"
 	mr "github.com/okanay/digital-menu/repositories/menu"
 	rr "github.com/okanay/digital-menu/repositories/restaurant"
@@ -44,53 +43,51 @@ func main() {
 	sessionRepository := sr.NewRepository(sqlDB)
 	menuRepository := mr.NewRepository(sqlDB)
 	restaurantRepository := rr.NewRepository(sqlDB)
+	rateLimitRepository := mw.NewRateLimiter(c.RATE_LIMIT, c.RATE_LIMIT_DURATION, c.RATE_LIMIT_CLEANUP)
 
 	// ->> Handlers
 	userHandler := uh.NewHandler(userRepository, sessionRepository)
-	menuHandler := menuHandler.NewHandler(menuRepository, restaurantRepository)
-
+	menuHandler := mh.NewHandler(menuRepository, restaurantRepository)
 	authUserHandler := ah.NewHandler(userRepository, sessionRepository)
 	authMenuHandler := amh.NewHandler(menuRepository, restaurantRepository)
 	authRestaurantHandler := arh.NewHandler(menuRepository, restaurantRepository)
 
-	// ->> Configs
-	rm := mw.NewRateLimiter(configs.RATE_LIMIT, configs.RATE_LIMIT_DURATION, configs.RATE_LIMIT_CLEANUP)
-
-	// ->> Main Group
+	// ->> Groups
+	// :: Main
 	router := gin.Default()
 	router.Use(c.CorsConfig())
 	router.Use(mw.SecureMiddleware)
 	router.Use(mw.TimeoutMiddleware(150 * time.Second))
-	router.Use(rm.RateLimitMiddleware())
-
-	// ->> Auth Group
+	router.Use(rateLimitRepository.Middleware())
+	// :: Auth
 	auth := router.Group("/auth")
 	auth.Use(mw.AuthMiddleware(sessionRepository))
 
+	// ->> Routes
 	// :: Global Routes
 	router.GET("/", g.Index)
 	router.NoRoute(g.NoRoute)
 
-	// :: User Routes
+	// :: User
 	router.POST("/login", userHandler.Login)
 	router.POST("/register", userHandler.Register)
 	router.POST("/forgot-password", userHandler.ForgotPassword)
 	auth.POST("/logout", authUserHandler.Logout)
 	auth.POST("/update-password", authUserHandler.UpdatePassword)
 
-	// :: Restaurant Routes
-	auth.GET("/restaurant", authRestaurantHandler.SelectRestaurants)
+	// :: Restaurant
+	auth.GET("/restaurants", authRestaurantHandler.SelectRestaurants)
 	auth.POST("/restaurant", authRestaurantHandler.CreateRestaurant)
 	auth.GET("/restaurant/:restaurantId", authRestaurantHandler.SelectRestaurant)
 	auth.PATCH("/restaurant/:restaurantId", authRestaurantHandler.UpdateRestaurant)
 	auth.DELETE("/restaurant/:restaurantId", authRestaurantHandler.DeleteRestaurant)
 
-	// :: Menu Routes
+	// :: Menu
 	auth.POST("/menu", authMenuHandler.CreateMenu)
 	auth.PATCH("/menu/:menuId", authMenuHandler.UpdateMenu)
 	auth.DELETE("/menu/:menuId", authMenuHandler.DeleteMenu)
-	auth.GET("/menu/:menuId", authMenuHandler.SelectMenus)
-	router.GET("/menu/:menuId", menuHandler.SelectMenu)
+	auth.GET("/menu/:restaurantId", authMenuHandler.SelectMenus)
+	router.GET(":restaurantSlug/:menuId", menuHandler.SelectMenu)
 
 	err = router.Run(":" + os.Getenv("PORT"))
 	if err != nil {

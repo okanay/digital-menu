@@ -1,9 +1,10 @@
 package types
 
 type Restaurant struct {
-	ID          int    `json:"id"`
-	UserID      int    `json:"userId"`
+	ID          string `json:"id"`
+	UserID      string `json:"userId"`
 	Name        string `json:"name"`
+	Slug        string `json:"slug"`
 	Location    string `json:"location"`
 	Description string `json:"description"`
 	IsActive    bool   `json:"isActive"`
@@ -12,29 +13,19 @@ type Restaurant struct {
 	UpdatedAt   string `json:"updatedAt"`
 }
 
-type GetRestaurantReq struct {
-	UserID int `json:"userId" validate:"required" binding:"required"`
-	ID     int `json:"id" validate:"required" binding:"required"`
-}
-
 type CreateRestaurantReq struct {
-	UserID      int    `json:"userId" validate:"required" binding:"required"`
-	Name        string `json:"name" validate:"required" binding:"required"`
-	Location    string `json:"location" validate:"required" binding:"required"`
-	Description string `json:"description" validate:"required" binding:"required"`
+	UserID      string `json:"userId" validate:"required"`
+	Name        string `json:"name" validate:"required,min=3,max=64"`
+	Location    string `json:"location" validate:"required,min=3,max=64"`
+	Description string `json:"description" validate:"required,max=128"`
 }
 
 type UpdateRestaurantReq struct {
-	UserID      int     `json:"userId"`
-	ID          int     `json:"id"`
-	Name        *string `json:"name,omitempty"`
-	Location    *string `json:"location,omitempty"`
-	Description *string `json:"description,omitempty"`
-	IsActive    *bool   `json:"isActive,omitempty"`
-	MenuCount   *int    `json:"menuCount,omitempty"`
-}
-
-type DeleteRestaurantReq struct {
-	UserID int `json:"userId" validate:"required" binding:"required"`
-	ID     int `json:"id" validate:"required" binding:"required"`
+	UserID      string  `json:"userId" validate:"required"`
+	ID          string  `json:"id" validate:"required"`
+	Name        *string `json:"name" validate:"omitempty,min=3,max=64"`
+	Location    *string `json:"location" validate:"omitempty,min=3,max=64"`
+	Description *string `json:"description" validate:"omitempty,max=128"`
+	IsActive    *bool   `json:"isActive" validate:"omitempty"`
+	MenuCount   *int    `json:"menuCount" validate:"omitempty,max=50"`
 }

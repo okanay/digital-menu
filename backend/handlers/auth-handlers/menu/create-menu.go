@@ -6,29 +6,33 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/okanay/digital-menu/types"
+	"github.com/okanay/digital-menu/utils"
 )
 
 func (h *Handler) CreateMenu(c *gin.Context) {
-	user := c.MustGet("user").(types.User)
+	userContext := c.MustGet("user").(types.User)
 
+	req := types.CreateMenuReq{
+		UserID:    userContext.ID,
+		IsActive:  true,
+		ExpiresAt: time.Now().Add(h.getExpiryDuration(userContext.Membership)),
+	}
 
-	req := types.CreateMenuReq{UserID: user.ID, ExpiresAt: time.Now().Add(h.getExpiryDuration(user.Membership))}
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body.", "message": err.Error()})
+	if err := utils.ValidateRequest(c, &req); err != nil {
 		return
 	}
 
-	err := h.checkMenuLimit(c, req.RestaurantID, user)
+	err := h.checkMenuLimit(c, req.RestaurantID, userContext)
 	if err != nil {
 		return
 	}
 
-	err = h.checkMenuTypeLimit(c, req.Type, user)
+	err = h.checkMenuTypeLimit(c, req.Type, userContext)
 	if err != nil {
 		return
 	}
 
-	err = h.checkRestaurantOwner(c, int(req.RestaurantID), user)
+	err = h.checkRestaurantOwner(c, req.RestaurantID, userContext)
 	if err != nil {
 		return
 	}

@@ -6,7 +6,7 @@ import (
 	"github.com/okanay/digital-menu/utils"
 )
 
-func (r *Repository) UpdateLastAccessed(id int) error {
+func (r *Repository) UpdateLastAccessed(id string) error {
 	defer utils.TimeTrack(time.Now(), "Session -> Update Last Accessed")
 
 	query := `UPDATE sessions SET last_accessed = NOW() WHERE id = $1`

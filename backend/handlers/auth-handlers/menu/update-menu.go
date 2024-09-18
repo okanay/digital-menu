@@ -2,30 +2,21 @@ package authMenuHandler
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/okanay/digital-menu/types"
+	"github.com/okanay/digital-menu/utils"
 )
 
 func (h *Handler) UpdateMenu(c *gin.Context) {
 	user := c.MustGet("user").(types.User)
 
-	idStr := c.Param("menuId")
-	if idStr == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "menu id is required"})
-		return
+	req := types.UpdateMenuReq{
+		UserID: user.ID,
+		ID:     c.Param("menuId"),
 	}
 
-	id, err := strconv.Atoi(idStr)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	req := types.UpdateMenuReq{UserID: user.ID, ID: id}
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+	if err := utils.ValidateRequest(c, &req); err != nil {
 		return
 	}
 

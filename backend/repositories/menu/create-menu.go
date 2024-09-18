@@ -12,7 +12,6 @@ func (r *Repository) CreateMenu(req types.CreateMenuReq) (types.Menu, error) {
 	defer utils.TimeTrack(time.Now(), "Menu -> Create Menu")
 
 	var menu types.Menu
-
 	query := `
 		INSERT INTO menus (
 			user_id, restaurant_id, name, type, json, description, language, is_active, expires_at

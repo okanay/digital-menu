@@ -7,9 +7,8 @@ import (
 	"github.com/okanay/digital-menu/utils"
 )
 
-func (r *Repository) SelectMenu(id int) (types.Menu, error) {
+func (r *Repository) SelectMenu(id string) (types.Menu, error) {
 	defer utils.TimeTrack(time.Now(), "Menu -> Select Menu")
-
 	var menu types.Menu
 
 	query := `SELECT * FROM menus WHERE id = $1`

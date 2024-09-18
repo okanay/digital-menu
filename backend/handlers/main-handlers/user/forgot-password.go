@@ -42,7 +42,7 @@ func (h *Handler) ForgotPassword(c *gin.Context) {
 	}
 
 	go func() {
-		_ = h.sessionRepository.DeleteSessionByUserID(int(user.ID))
+		_ = h.sessionRepository.DeleteSessionByUserID(user.ID)
 		_ = h.userRepository.UpdatePasswordResetToken(req.Email)
 	}()
 

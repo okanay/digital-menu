@@ -14,13 +14,13 @@ func (h *Handler) Register(c *gin.Context) {
 		return
 	}
 
-	user, err := h.userRepository.SelectUser(req.Email)
+	_, err := h.userRepository.SelectUser(req.Email)
 	if err == nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Email already exists."})
 		return
 	}
 
-	user, err = h.userRepository.CreateUser(req)
+	user, err := h.userRepository.CreateUser(req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not create user."})
 		return

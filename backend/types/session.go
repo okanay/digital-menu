@@ -3,8 +3,8 @@ package types
 import "time"
 
 type Session struct {
-	ID           int       `json:"id"`
-	UserID       int       `json:"userId"`
+	ID           string    `json:"id"`
+	UserID       string    `json:"userId"`
 	Token        string    `json:"token"`
 	IPAddress    string    `json:"ipAddress"`
 	UserAgent    string    `json:"userAgent"`
@@ -14,7 +14,7 @@ type Session struct {
 }
 
 type CreateSessionReq struct {
-	UserID    int       `json:"userId"`
+	UserID    string    `json:"userId"`
 	Token     string    `json:"token"`
 	ExpiresAt time.Time `json:"expiresAt"`
 	IPAddress string    `json:"ipAddress"`

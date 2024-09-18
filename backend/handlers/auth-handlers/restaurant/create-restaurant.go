@@ -5,14 +5,16 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/okanay/digital-menu/types"
+	"github.com/okanay/digital-menu/utils"
 )
 
 func (h *Handler) CreateRestaurant(c *gin.Context) {
 	user := c.MustGet("user").(types.User)
 
-	req := types.CreateRestaurantReq{UserID: user.ID}
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body."})
+	var req types.CreateRestaurantReq
+	req.UserID = user.ID
+
+	if err := utils.ValidateRequest(c, &req); err != nil {
 		return
 	}
 

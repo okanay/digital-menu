@@ -2,28 +2,36 @@ package menuHandler
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/okanay/digital-menu/types"
 )
 
 func (h *Handler) SelectMenu(c *gin.Context) {
-	idStr := c.Param("menuId")
-	if idStr == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "menu id is required."})
+	slug := c.Param("restaurantSlug")
+	menuId := c.Param("menuId")
+
+	if slug == "" || menuId == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad request."})
 		return
 	}
 
-	id, err := strconv.Atoi(idStr)
+	menu, err := h.menuRepository.SelectMenu(menuId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "menu id must be a number."})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Menu not found."})
+		return
 	}
 
-	menu, err := h.menuRepository.SelectMenu(id)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	restaurants, err := h.restaurantRepository.SelectRestauranstBySlug(slug)
+	if err != nil || len(restaurants) == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Restaurant not found."})
 		return
+	}
+
+	for _, restaurant := range restaurants {
+		if menu.RestaurantID == restaurant.ID {
+			break
+		}
 	}
 
 	menuResponse := types.MenuResponse{

@@ -12,7 +12,7 @@ const (
 )
 
 type User struct {
-	ID                     int            `json:"id"`
+	ID                     string         `json:"id"`
 	Email                  string         `json:"email"`
 	HashedPassword         string         `json:"hashedPassword"`
 	Membership             MembershipType `json:"membership"`
@@ -25,7 +25,7 @@ type User struct {
 }
 
 type UserResponse struct {
-	ID            int            `json:"id"`
+	ID            string         `json:"id"`
 	Email         string         `json:"email"`
 	Membership    MembershipType `json:"membership"`
 	EmailVerified bool           `json:"emailVerified"`

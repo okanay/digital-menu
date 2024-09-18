@@ -1,13 +1,14 @@
 package menuRepository
 
 import (
+	"database/sql"
 	"fmt"
 	"time"
 
 	"github.com/okanay/digital-menu/utils"
 )
 
-func (r *Repository) DeleteMenu(userId int, id int) error {
+func (r *Repository) DeleteMenu(userId string, id string) error {
 	defer utils.TimeTrack(time.Now(), "Menu -> Delete Menu")
 
 	query := `
@@ -16,18 +17,18 @@ func (r *Repository) DeleteMenu(userId int, id int) error {
 		WHERE id = $1 AND user_id = $2
 		RETURNING id
 		)
-		SELECT CASE WHEN COUNT(*) = 0 THEN 'Menu does not exist' ELSE NULL END
+		SELECT CASE WHEN COUNT(*) = 0 THEN true ELSE NULL END
 		FROM deleted;
 		`
 
-	var result string
+	var result sql.NullBool
 	err := r.db.QueryRow(query, id, userId).Scan(&result)
 	if err != nil {
 		return err
 	}
 
-	if result == "Menu does not exist" {
-		return fmt.Errorf(result)
+	if result.Valid {
+		return fmt.Errorf("Restaurant not found.")
 	}
 
 	return nil

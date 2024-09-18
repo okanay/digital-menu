@@ -11,7 +11,7 @@ import (
 	"github.com/okanay/digital-menu/types"
 )
 
-func (h *Handler) checkMenuLimit(c *gin.Context, restaurantId int, user types.User) error {
+func (h *Handler) checkMenuLimit(c *gin.Context, restaurantId string, user types.User) error {
 	menus, err := h.menuRepository.SelectMenus(restaurantId, user.ID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Something went wrong, while checking menu limit."})
@@ -37,8 +37,8 @@ func (h *Handler) checkMenuTypeLimit(c *gin.Context, types int, user types.User)
 	return nil
 }
 
-func (h *Handler) checkRestaurantOwner(c *gin.Context, restaurantId int, user types.User) error {
-	restaurant, err := h.restaurantRepository.SelectRestaurant(restaurantId)
+func (h *Handler) checkRestaurantOwner(c *gin.Context, restaurantId string, user types.User) error {
+	restaurant, err := h.restaurantRepository.SelectRestaurantByID(restaurantId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Something went wrong, while checking restaurant owner."})
 		return err

@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS menus;
+DROP TYPE IF EXISTS language;

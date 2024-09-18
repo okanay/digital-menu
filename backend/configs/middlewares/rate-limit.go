@@ -64,7 +64,7 @@ func (rl *RateLimiter) cleanupExpiredEntries() {
 	})
 }
 
-func (rl *RateLimiter) RateLimitMiddleware() gin.HandlerFunc {
+func (rl *RateLimiter) Middleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// IP adresi alınır
 		clientIP := c.ClientIP()
