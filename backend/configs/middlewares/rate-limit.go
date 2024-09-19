@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/okanay/digital-menu/configs"
-	mr "github.com/okanay/digital-menu/memory"
+	mr "github.com/okanay/digital-menu/configs/memory"
 )
 
 type RateLimit struct {

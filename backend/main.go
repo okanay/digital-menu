@@ -10,6 +10,7 @@ import (
 	"github.com/okanay/digital-menu/db"
 
 	c "github.com/okanay/digital-menu/configs"
+	memory "github.com/okanay/digital-menu/configs/memory"
 	mw "github.com/okanay/digital-menu/configs/middlewares"
 	amh "github.com/okanay/digital-menu/handlers/auth-handlers/menu"
 	arh "github.com/okanay/digital-menu/handlers/auth-handlers/restaurant"
@@ -17,7 +18,6 @@ import (
 	g "github.com/okanay/digital-menu/handlers/main-handlers"
 	mh "github.com/okanay/digital-menu/handlers/main-handlers/menu"
 	uh "github.com/okanay/digital-menu/handlers/main-handlers/user"
-	memory "github.com/okanay/digital-menu/memory"
 	mr "github.com/okanay/digital-menu/repositories/menu"
 	rr "github.com/okanay/digital-menu/repositories/restaurant"
 	sr "github.com/okanay/digital-menu/repositories/session"
@@ -40,10 +40,10 @@ func main() {
 	defer sqlDB.Close()
 
 	// ->> Memory
-	memoryRepository := memory.Init()
+	memory := memory.Init()
 
 	// :: Rate Limit
-	rateLimit := mw.NewRateLimit(memoryRepository)
+	rateLimit := mw.NewRateLimit(memory)
 
 	// ->> Repositories
 	userRepository := ur.NewRepository(sqlDB)
