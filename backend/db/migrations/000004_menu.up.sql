@@ -13,7 +13,7 @@ CREATE TYPE language AS ENUM (
 );
 
 CREATE TABLE IF NOT EXISTS menus (
-    id TEXT PRIMARY KEY default ('1' || substring(md5(random()::text) from 1 for 5)) ,
+    id TEXT PRIMARY KEY DEFAULT ('1' || substring(md5(random()::text) from 1 for 5)) ,
     user_id TEXT NOT NULL,
     restaurant_id TEXT NOT NULL,
     name TEXT NOT NULL,

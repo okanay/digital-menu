@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS sessions (
-  id TEXT PRIMARY KEY default ('1' || substring(md5(random()::text) from 1 for 5)) UNIQUE,
+  id TEXT PRIMARY KEY DEFAULT ('1' || substring(md5(random()::text) from 1 for 5)) UNIQUE,
   user_id TEXT NOT NULL,
   token TEXT UNIQUE NOT NULL,
   ip_address TEXT,

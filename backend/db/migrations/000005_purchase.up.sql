@@ -1,7 +1,7 @@
 CREATE TYPE purchase_status AS ENUM ('Pending', 'Cancelled', 'Active', 'Expired', 'Deleted', 'Suspended');
 
 CREATE TABLE IF NOT EXISTS purchases (
-    id TEXT PRIMARY KEY default ('1' || substring(md5(random()::text) from 1 for 5)) UNIQUE,
+    id TEXT PRIMARY KEY DEFAULT ('1' || substring(md5(random()::text) from 1 for 5)) UNIQUE,
     user_id TEXT NOT NULL,
     price DECIMAL(10, 2) DEFAULT 0.00,
     status purchase_status DEFAULT 'Pending',

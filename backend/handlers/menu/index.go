@@ -1,4 +1,4 @@
-package authMenuHandler
+package menuHandler
 
 import (
 	"github.com/gin-gonic/gin"

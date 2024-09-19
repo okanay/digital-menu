@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS restaurants (
-    id TEXT PRIMARY KEY default ('1' || substring(md5(random()::text) from 1 for 5)) UNIQUE,
+    id TEXT PRIMARY KEY DEFAULT ('1' || substring(md5(random()::text) from 1 for 5)) UNIQUE,
     user_id TEXT NOT NULL,
     name TEXT NOT NULL,
     slug TEXT NOT NULL,

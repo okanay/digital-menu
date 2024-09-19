@@ -1,4 +1,4 @@
-package authRestaurantHandler
+package restaurantHandler
 
 import (
 	"net/http"
