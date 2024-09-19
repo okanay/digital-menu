@@ -36,6 +36,11 @@ func (h *Handler) Login(c *gin.Context) {
 		return
 	}
 
+	// if user.EmailVerified == false {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "Email not verified."})
+	// 	return
+	// }
+
 	token := utils.GenerateRandomString(64)
 	expireAt := time.Now().Add(configs.SESSION_DURATION)
 	cookieDuration := int(configs.SESSION_DURATION.Seconds())

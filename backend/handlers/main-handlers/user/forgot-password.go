@@ -9,21 +9,11 @@ import (
 )
 
 func (h *Handler) ForgotPassword(c *gin.Context) {
+	user := c.MustGet("user").(types.User)
 	var req types.PasswordResetWithTokenReq
 
 	err := utils.ValidateRequest(c, &req)
 	if err != nil {
-		return
-	}
-
-	user, err := h.userRepository.SelectUser(req.Email)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Email not found."})
-		return
-	}
-
-	if !user.EmailVerified {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Email not verified."})
 		return
 	}
 
@@ -32,12 +22,7 @@ func (h *Handler) ForgotPassword(c *gin.Context) {
 		return
 	}
 
-	err = h.userRepository.UpdatePassword(types.UpdatePasswordReq{
-		Email:           req.Email,
-		NewPassword:     req.NewPassword,
-		CurrentPassword: "",
-	})
-
+	err = h.userRepository.UpdatePassword(req.Email, req.NewPassword)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Password reset failed."})
 		return

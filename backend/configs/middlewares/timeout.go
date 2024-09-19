@@ -4,14 +4,14 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/okanay/digital-menu/configs"
 )
 
-func TimeoutMiddleware(timeout time.Duration) gin.HandlerFunc {
+func TimeoutMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		ctx, cancel := context.WithTimeout(c.Request.Context(), timeout)
+		ctx, cancel := context.WithTimeout(c.Request.Context(), configs.TIMEOUT_DURATION)
 		defer cancel()
 
 		done := make(chan bool, 1)

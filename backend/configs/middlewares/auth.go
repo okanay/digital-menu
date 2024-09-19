@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	sr "github.com/okanay/digital-menu/repositories/session"
 	ur "github.com/okanay/digital-menu/repositories/user"
+	"github.com/okanay/digital-menu/types"
 )
 
 func AuthMiddleware(sr *sr.Repository, ur *ur.Repository) gin.HandlerFunc {
@@ -39,6 +40,20 @@ func AuthMiddleware(sr *sr.Repository, ur *ur.Repository) gin.HandlerFunc {
 
 		c.Set("session", session)
 		c.Set("user", user)
+		c.Next()
+	}
+}
+
+func VerifiedAuthMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		userContext := c.MustGet("user").(types.User)
+
+		if userContext.EmailVerified == false {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Email not verified."})
+			c.Abort()
+			return
+		}
+
 		c.Next()
 	}
 }
