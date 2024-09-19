@@ -1,2 +1,3 @@
->>[!NOTE]
-Kullanici email adresi verifeid değilse, belirli routelari kullanamasin. Image Upload - Purchase Membership gibi.
+```
+Kullanici email adresi verifeid değilse, belirli routelari kullanamasin. Image Upload - Purchase Membership gibi. Ya da direkt olarak login olamasin.
+```
