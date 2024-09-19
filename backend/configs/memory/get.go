@@ -17,10 +17,10 @@ func (c *Cache) Get(key string, result interface{}) error {
 	}
 
 	item, ok := value.(*cacheItem)
-	if !ok || time.Now().After(item.expiration) {
+	if !ok || time.Now().After(item.Expiration) {
 		c.cache.Delete(key)
 		return fmt.Errorf("key %s expired or invalid type", key)
 	}
 
-	return json.Unmarshal(item.data, result)
+	return json.Unmarshal(item.Data, result)
 }

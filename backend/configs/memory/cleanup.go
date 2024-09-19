@@ -15,7 +15,7 @@ func (c *Cache) CleanupExpiredItems() {
 			return true
 		}
 
-		if time.Now().After(item.expiration) {
+		if time.Now().After(item.Expiration) {
 			c.cache.Delete(key)
 		}
 
@@ -24,8 +24,6 @@ func (c *Cache) CleanupExpiredItems() {
 }
 
 func (c *Cache) StartCleanupRoutine() {
-	fmt.Println("[Memory-Cache] Cache cleanup routine started")
-
 	ticker := time.NewTicker(configs.MEMORY_CLEANUP_TICKER_DURATION)
 	defer ticker.Stop()
 

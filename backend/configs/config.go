@@ -8,8 +8,8 @@ const (
 	MEMORY_CLEANUP_TICKER_DURATION = 5 * time.Minute
 
 	// Rate Limit Rules
-	RATE_LIMIT          = 20              // amaount of requests
-	RATE_LIMIT_DURATION = 1 * time.Minute // amount of time
+	RATE_LIMIT          = 10
+	RATE_LIMIT_DURATION = 45 * time.Second
 
 	// Session Rules
 	SESSION_DURATION = 30 * 24 * time.Hour

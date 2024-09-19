@@ -7,9 +7,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 	sr "github.com/okanay/digital-menu/repositories/session"
+	ur "github.com/okanay/digital-menu/repositories/user"
 )
 
-func AuthMiddleware(sr *sr.Repository) gin.HandlerFunc {
+func AuthMiddleware(sr *sr.Repository, ur *ur.Repository) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token, err := c.Cookie("digital_menu_session")
 		if err != nil {

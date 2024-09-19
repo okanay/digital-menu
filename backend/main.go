@@ -39,7 +39,7 @@ func main() {
 	}
 	defer sqlDB.Close()
 
-	// ->> Memory
+	// ->> Memory (Cache)
 	memory := memory.Init()
 
 	// :: Rate Limit
@@ -67,7 +67,7 @@ func main() {
 	router.Use(rateLimit.Middleware())
 	// :: Auth
 	auth := router.Group("/auth")
-	auth.Use(mw.AuthMiddleware(sessionRepository))
+	auth.Use(mw.AuthMiddleware(sessionRepository, userRepository))
 
 	// ->> Routes
 	// :: Global Routes
@@ -78,6 +78,8 @@ func main() {
 	router.POST("/login", userHandler.Login)
 	router.POST("/register", userHandler.Register)
 	router.POST("/forgot-password", userHandler.ForgotPassword)
+	router.POST("/forgot-password-request", userHandler.ForgotPasswordRequest)
+	auth.GET("/check", authUserHandler.Check)
 	auth.POST("/logout", authUserHandler.Logout)
 	auth.POST("/update-password", authUserHandler.UpdatePassword)
 

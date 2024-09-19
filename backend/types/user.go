@@ -52,3 +52,7 @@ type PasswordResetWithTokenReq struct {
 	PasswordResetToken string `json:"passwordResetToken" validate:"required" binding:"required"`
 	NewPassword        string `json:"newPassword" validate:"required,min=8,max=32" binding:"required"`
 }
+
+type RequestForgotPasswordReq struct {
+	Email string `db:"email" json:"email" validate:"required,email"`
+}

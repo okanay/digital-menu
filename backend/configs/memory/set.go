@@ -3,11 +3,9 @@ package memory
 import (
 	"encoding/json"
 	"time"
-
-	"github.com/okanay/digital-menu/configs"
 )
 
-func (c *Cache) Set(key string, value interface{}) {
+func (c *Cache) Set(key string, value interface{}, expiration time.Duration) {
 	if !c.cacheIsActive {
 		return
 	}
@@ -18,8 +16,9 @@ func (c *Cache) Set(key string, value interface{}) {
 	}
 
 	item := &cacheItem{
-		data:       data,
-		expiration: time.Now().Add(configs.RATE_LIMIT_DURATION),
+		Data:       data,
+		Expiration: time.Now().Add(expiration),
 	}
+
 	c.cache.Store(key, item)
 }

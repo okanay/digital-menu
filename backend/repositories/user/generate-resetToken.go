@@ -6,7 +6,7 @@ import (
 	"github.com/okanay/digital-menu/utils"
 )
 
-func (r *Repository) UpdatePasswordResetToken(email string) error {
+func (r *Repository) GenerateRandomPasswordResetToken(email string) (string, error) {
 	defer utils.TimeTrack(time.Now(), "User -> Update Password Reset Token User")
 
 	token := utils.GenerateRandomString(8)
@@ -14,8 +14,8 @@ func (r *Repository) UpdatePasswordResetToken(email string) error {
 
 	_, err := r.db.Exec(query, token, email)
 	if err != nil {
-		return err
+		return token, err
 	}
 
-	return nil
+	return token, nil
 }

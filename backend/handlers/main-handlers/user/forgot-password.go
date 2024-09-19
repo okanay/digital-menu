@@ -43,7 +43,7 @@ func (h *Handler) ForgotPassword(c *gin.Context) {
 
 	go func() {
 		_ = h.sessionRepository.DeleteSessionByUserID(user.ID)
-		_ = h.userRepository.UpdatePasswordResetToken(req.Email)
+		_, _ = h.userRepository.GenerateRandomPasswordResetToken(req.Email)
 	}()
 
 	c.SetCookie("digital_menu_session", "", -1, "/", "", false, true)

@@ -9,8 +9,8 @@ import (
 )
 
 type cacheItem struct {
-	data       []byte
-	expiration time.Time
+	Data       []byte    `json:"data"`
+	Expiration time.Time `json:"expiration"`
 }
 
 type Cache struct {
