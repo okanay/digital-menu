@@ -8,10 +8,9 @@ import (
 )
 
 func (h *Handler) SelectMenu(c *gin.Context) {
-	slug := c.Param("restaurantSlug")
 	menuId := c.Param("menuId")
 
-	if slug == "" || menuId == "" {
+	if menuId == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad request."})
 		return
 	}
@@ -20,18 +19,6 @@ func (h *Handler) SelectMenu(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Menu not found."})
 		return
-	}
-
-	restaurants, err := h.restaurantRepository.SelectRestauranstBySlug(slug)
-	if err != nil || len(restaurants) == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Restaurant not found."})
-		return
-	}
-
-	for _, restaurant := range restaurants {
-		if menu.RestaurantID == restaurant.ID {
-			break
-		}
 	}
 
 	menuResponse := types.MenuResponse{

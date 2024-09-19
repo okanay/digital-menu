@@ -16,13 +16,9 @@ func (r *Repository) CreateRestaurant(req types.CreateRestaurantReq) (types.Rest
 		return restaurant, err
 	}
 
-	query := `
-	INSERT INTO restaurants (user_id, name, slug, location, description)
-	VALUES ($1, $2, $3, $4, $5)
-	RETURNING id, user_id, name, slug, location, description, is_active, menu_count, created_at, updated_at
-	`
-	err = r.db.QueryRow(query, req.UserID, req.Name, slug, req.Location, req.Description).Scan(&restaurant.ID, &restaurant.UserID, &restaurant.Name, &restaurant.Slug, &restaurant.Location, &restaurant.Description, &restaurant.IsActive, &restaurant.MenuCount, &restaurant.CreatedAt, &restaurant.UpdatedAt)
-
+	query := `INSERT INTO restaurants (user_id, name, slug, location, description) VALUES ($1, $2, $3, $4, $5) RETURNING *`
+	row := r.db.QueryRow(query, req.UserID, req.Name, slug, req.Location, req.Description)
+	err = utils.ScanStructByDBTags(row, &restaurant)
 	if err != nil {
 		return restaurant, err
 	}

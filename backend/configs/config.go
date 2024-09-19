@@ -3,10 +3,13 @@ package configs
 import "time"
 
 const (
+	// Memory Cache Rules
+	MEMORY_CACHE_ACTIVE            = true
+	MEMORY_CLEANUP_TICKER_DURATION = 5 * time.Minute
+
 	// Rate Limit Rules
-	RATE_LIMIT          = 100              // 100 requests per duration
-	RATE_LIMIT_DURATION = 10 * time.Minute // 10 minute duration
-	RATE_LIMIT_CLEANUP  = 5 * time.Minute  // 5 minutes cleanup
+	RATE_LIMIT          = 20              // amaount of requests
+	RATE_LIMIT_DURATION = 1 * time.Minute // amount of time
 
 	// Session Rules
 	SESSION_DURATION = 30 * 24 * time.Hour
@@ -21,9 +24,6 @@ const (
 	PRO_MAX_RESTAURANT_COUNT     = 10
 	PREMIUM_MAX_RESTAURANT_COUNT = 20
 
-	// Restaurant Name Rules
-	MAX_RESTAURANT_SLUG_LENGTH = 64
-
 	// Menu Rules
 	BASIC_ALLOWED_MENU_TYPES = 1
 	PRO_MAX_MENU_COUNT       = 10
@@ -34,11 +34,13 @@ const (
 	PRO_ALLOWED_MENU_TYPES     = 10
 	PREMIUM_ALLOWED_MENU_TYPES = 20
 
-	// Image Rules
-	BASIC_ALLOWED_IMAGE    = 10
-	BASIC_MAX_IMAGE_SIZE   = 5 * 1024 * 1024
-	PRO_ALLOWED_IMAGE      = 100
-	PRO_MAX_IMAGE_SIZE     = 10 * 1024 * 1024
-	PREMIUM_ALLOWED_IMAGE  = 250
-	PREMIUM_MAX_IMAGE_SIZE = 20 * 1024 * 1024
+	// Image Allowed Rules
+	BASIC_ALLOWED_IMAGE   = 10
+	PRO_ALLOWED_IMAGE     = 100
+	PREMIUM_ALLOWED_IMAGE = 250
+
+	// Image Size Rules
+	BASIC_MAX_IMAGE_SIZE   = 1024 * 1024 * 5  // 5 MB
+	PRO_MAX_IMAGE_SIZE     = 1024 * 1024 * 8  // 8 MB
+	PREMIUM_MAX_IMAGE_SIZE = 1024 * 1024 * 10 // 10 MB
 )

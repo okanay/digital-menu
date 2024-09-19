@@ -1,23 +1,17 @@
 package utils
 
 import (
-	"errors"
 	"regexp"
 	"strings"
 	"unicode"
 
 	"github.com/mozillazg/go-unidecode"
-	"github.com/okanay/digital-menu/configs"
 	"golang.org/x/text/runes"
 	"golang.org/x/text/transform"
 	"golang.org/x/text/unicode/norm"
 )
 
 func GenerateSlug(input string, randomString bool) (string, error) {
-	// Boş girişi kontrol et
-	if strings.TrimSpace(input) == "" {
-		return "", errors.New("input cannot be empty")
-	}
 
 	// Küçük harfe çevir
 	slug := strings.ToLower(input)
@@ -37,15 +31,9 @@ func GenerateSlug(input string, randomString bool) (string, error) {
 	slug = strings.Trim(slug, "-")
 
 	// Random string ekle
-	if randomString || len(slug) < 4 {
+	if randomString || len(slug) < 3 {
 		randomString := GenerateRandomString(6)
 		slug = randomString + slug
-	}
-
-	// Slug uzunluğunu kontrol et
-	const max = configs.MAX_RESTAURANT_SLUG_LENGTH
-	if len(slug) > max {
-		slug = slug[:max]
 	}
 
 	return slug, nil

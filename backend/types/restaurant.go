@@ -1,16 +1,16 @@
 package types
 
 type Restaurant struct {
-	ID          string `json:"id"`
-	UserID      string `json:"userId"`
-	Name        string `json:"name"`
-	Slug        string `json:"slug"`
-	Location    string `json:"location"`
-	Description string `json:"description"`
-	IsActive    bool   `json:"isActive"`
-	MenuCount   int    `json:"menuCount"`
-	CreatedAt   string `json:"createdAt"`
-	UpdatedAt   string `json:"updatedAt"`
+	ID          string `db:"id" json:"id"`
+	UserID      string `db:"user_id" json:"userId"`
+	Name        string `db:"name" json:"name"`
+	Slug        string `db:"slug" json:"slug"`
+	Location    string `db:"location" json:"location"`
+	Description string `db:"description" json:"description"`
+	IsActive    bool   `db:"is_active" json:"isActive"`
+	MenuCount   int    `db:"menu_count" json:"menuCount"`
+	CreatedAt   string `db:"created_at" json:"createdAt"`
+	UpdatedAt   string `db:"updated_at" json:"updatedAt"`
 }
 
 type CreateRestaurantReq struct {

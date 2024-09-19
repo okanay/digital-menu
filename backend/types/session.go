@@ -3,14 +3,14 @@ package types
 import "time"
 
 type Session struct {
-	ID           string    `json:"id"`
-	UserID       string    `json:"userId"`
-	Token        string    `json:"token"`
-	IPAddress    string    `json:"ipAddress"`
-	UserAgent    string    `json:"userAgent"`
-	ExpiresAt    time.Time `json:"expiresAt"`
-	CreatedAt    time.Time `json:"createdAt"`
-	LastAccessed time.Time `json:"lastAccessed"`
+	ID           string    `db:"id" json:"id"`
+	UserID       string    `db:"user_id" json:"userId"`
+	Token        string    `db:"token" json:"token"`
+	IPAddress    string    `db:"ip_address" json:"ipAddress"`
+	UserAgent    string    `db:"user_agent" json:"userAgent"`
+	ExpiresAt    time.Time `db:"expires_at" json:"expiresAt"`
+	CreatedAt    time.Time `db:"created_at" json:"createdAt"`
+	LastAccessed time.Time `db:"last_accessed" json:"lastAccessed"`
 }
 
 type CreateSessionReq struct {

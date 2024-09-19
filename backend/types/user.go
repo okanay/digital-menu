@@ -12,16 +12,16 @@ const (
 )
 
 type User struct {
-	ID                     string         `json:"id"`
-	Email                  string         `json:"email"`
-	HashedPassword         string         `json:"hashedPassword"`
-	Membership             MembershipType `json:"membership"`
-	EmailVerified          bool           `json:"emailVerified"`
-	EmailVerificationToken string         `json:"emailVerificationToken"`
-	PasswordResetToken     string         `json:"passwordResetToken"`
-	CreatedAt              time.Time      `json:"createdAt"`
-	UpdatedAt              time.Time      `json:"updatedAt"`
-	LastLogin              time.Time      `json:"lastLogin"`
+	ID                     string         `db:"id" json:"id"`
+	Email                  string         `db:"email" json:"email"`
+	HashedPassword         string         `db:"hashed_password" json:"hashedPassword"`
+	Membership             MembershipType `db:"membership" json:"membership"`
+	EmailVerified          bool           `db:"email_verified" json:"emailVerified"`
+	EmailVerificationToken string         `db:"email_verification_token" json:"emailVerificationToken"`
+	PasswordResetToken     string         `db:"password_reset_token" json:"passwordResetToken"`
+	CreatedAt              time.Time      `db:"created_at" json:"createdAt"`
+	LastLogin              time.Time      `db:"last_login" json:"lastLogin"`
+	UpdatedAt              time.Time      `db:"updated_at" json:"updatedAt"`
 }
 
 type UserResponse struct {

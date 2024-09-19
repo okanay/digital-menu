@@ -17,6 +17,7 @@ import (
 	g "github.com/okanay/digital-menu/handlers/main-handlers"
 	mh "github.com/okanay/digital-menu/handlers/main-handlers/menu"
 	uh "github.com/okanay/digital-menu/handlers/main-handlers/user"
+	memory "github.com/okanay/digital-menu/memory"
 	mr "github.com/okanay/digital-menu/repositories/menu"
 	rr "github.com/okanay/digital-menu/repositories/restaurant"
 	sr "github.com/okanay/digital-menu/repositories/session"
@@ -38,12 +39,17 @@ func main() {
 	}
 	defer sqlDB.Close()
 
+	// ->> Memory
+	memoryRepository := memory.Init()
+
+	// :: Rate Limit
+	rateLimit := mw.NewRateLimit(memoryRepository)
+
 	// ->> Repositories
 	userRepository := ur.NewRepository(sqlDB)
 	sessionRepository := sr.NewRepository(sqlDB)
 	menuRepository := mr.NewRepository(sqlDB)
 	restaurantRepository := rr.NewRepository(sqlDB)
-	rateLimitRepository := mw.NewRateLimiter(c.RATE_LIMIT, c.RATE_LIMIT_DURATION, c.RATE_LIMIT_CLEANUP)
 
 	// ->> Handlers
 	userHandler := uh.NewHandler(userRepository, sessionRepository)
@@ -58,7 +64,7 @@ func main() {
 	router.Use(c.CorsConfig())
 	router.Use(mw.SecureMiddleware)
 	router.Use(mw.TimeoutMiddleware(150 * time.Second))
-	router.Use(rateLimitRepository.Middleware())
+	router.Use(rateLimit.Middleware())
 	// :: Auth
 	auth := router.Group("/auth")
 	auth.Use(mw.AuthMiddleware(sessionRepository))
@@ -87,7 +93,7 @@ func main() {
 	auth.PATCH("/menu/:menuId", authMenuHandler.UpdateMenu)
 	auth.DELETE("/menu/:menuId", authMenuHandler.DeleteMenu)
 	auth.GET("/menu/:restaurantId", authMenuHandler.SelectMenus)
-	router.GET(":restaurantSlug/:menuId", menuHandler.SelectMenu)
+	router.GET(":menuId", menuHandler.SelectMenu)
 
 	err = router.Run(":" + os.Getenv("PORT"))
 	if err != nil {

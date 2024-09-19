@@ -19,18 +19,18 @@ const (
 )
 
 type Menu struct {
-	ID           string    `json:"id"`
-	UserID       string    `json:"userId"`
-	RestaurantID string    `json:"restaurantId"`
-	Name         string    `json:"name"`
-	Type         int       `json:"type"`
-	Json         string    `json:"json"`
-	Description  string    `json:"description"`
-	Language     Language  `json:"language"`
-	IsActive     bool      `json:"isActive"`
-	ExpiresAt    time.Time `json:"expiresAt"`
-	CreatedAt    time.Time `json:"createdAt"`
-	UpdatedAt    time.Time `json:"updatedAt"`
+	ID           string    `db:"id" json:"id"`
+	UserID       string    `db:"user_id" json:"userId"`
+	RestaurantID string    `db:"restaurant_id" json:"restaurantId"`
+	Name         string    `db:"name" json:"name"`
+	Type         int       `db:"type" json:"type"`
+	Json         string    `db:"json" json:"json"`
+	Description  string    `db:"description" json:"description"`
+	Language     Language  `db:"language" json:"language"`
+	IsActive     bool      `db:"is_active" json:"isActive"`
+	ExpiresAt    time.Time `db:"expires_at" json:"expiresAt"`
+	CreatedAt    time.Time `db:"created_at" json:"createdAt"`
+	UpdatedAt    time.Time `db:"updated_at" json:"updatedAt"`
 }
 
 type MenuResponse struct {

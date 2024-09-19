@@ -50,16 +50,15 @@ func (r *Repository) UpdateRestaurant(req types.UpdateRestaurantReq) (types.Rest
 		argCount++
 	}
 
-	queryBuilder.WriteString(fmt.Sprintf(" WHERE id = $%d AND user_id = $%d RETURNING id, user_id, name, slug, location, description, is_active, menu_count, created_at, updated_at", argCount, argCount+1))
+	queryBuilder.WriteString(fmt.Sprintf(" WHERE id = $%d AND user_id = $%d RETURNING *", argCount, argCount+1))
 	args = append(args, req.ID, req.UserID)
 
-	err := r.db.QueryRow(queryBuilder.String(), args...).Scan(
-		&restaurant.ID, &restaurant.UserID, &restaurant.Name, &restaurant.Slug, &restaurant.Location,
-		&restaurant.Description, &restaurant.IsActive, &restaurant.MenuCount,
-		&restaurant.CreatedAt, &restaurant.UpdatedAt,
-	)
+	row := r.db.QueryRow(queryBuilder.String(), args...)
+	err := utils.ScanStructByDBTags(row, &restaurant)
+
 	if err != nil {
-		return restaurant, fmt.Errorf("failed to update restaurant: %w", err)
+		return restaurant, err
 	}
+
 	return restaurant, nil
 }

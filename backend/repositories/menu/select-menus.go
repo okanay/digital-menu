@@ -18,14 +18,17 @@ func (r *Repository) SelectMenus(restaurantId string, userId string) ([]types.Me
 		return menus, err
 	}
 
+	defer rows.Close()
 	for rows.Next() {
-		var menu types.Menu
-		err := rows.Scan(&menu.ID, &menu.UserID, &menu.RestaurantID, &menu.Name, &menu.Type, &menu.Json, &menu.Description, &menu.Language, &menu.IsActive, &menu.ExpiresAt, &menu.CreatedAt, &menu.UpdatedAt)
+		var res types.Menu
+		err := utils.ScanStructByDBTagsForRows(rows, &res)
+
 		if err != nil {
-			fmt.Println("[ERROR] SelectMenus -> rows.Scan: ", err)
+			fmt.Println("[ERROR] failed to scan menu: ", err)
 			continue
 		}
-		menus = append(menus, menu)
+
+		menus = append(menus, res)
 	}
 
 	return menus, nil
