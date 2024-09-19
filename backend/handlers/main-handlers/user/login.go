@@ -19,8 +19,8 @@ func (h *Handler) Login(c *gin.Context) {
 	}
 
 	var req types.LoginReq
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body."})
+	err = utils.ValidateRequest(c, &req)
+	if err != nil {
 		return
 	}
 

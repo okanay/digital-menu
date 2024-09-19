@@ -12,8 +12,8 @@ func (h *Handler) UpdatePassword(c *gin.Context) {
 	user := c.MustGet("user").(types.User)
 
 	var req types.UpdatePasswordReq
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body."})
+	err := utils.ValidateRequest(c, &req)
+	if err != nil {
 		return
 	}
 
@@ -23,7 +23,7 @@ func (h *Handler) UpdatePassword(c *gin.Context) {
 		return
 	}
 
-	err := h.userRepository.UpdatePassword(req)
+	err = h.userRepository.UpdatePassword(req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

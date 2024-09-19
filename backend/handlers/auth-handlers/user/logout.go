@@ -5,14 +5,15 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/okanay/digital-menu/types"
+	"github.com/okanay/digital-menu/utils"
 )
 
 func (h *Handler) Logout(c *gin.Context) {
 	sessionContext := c.MustGet("session").(types.Session)
 
 	var req types.LogoutSessionReq
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body."})
+	err := utils.ValidateRequest(c, &req)
+	if err != nil {
 		return
 	}
 

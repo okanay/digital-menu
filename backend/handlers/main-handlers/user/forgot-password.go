@@ -5,12 +5,14 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/okanay/digital-menu/types"
+	"github.com/okanay/digital-menu/utils"
 )
 
 func (h *Handler) ForgotPassword(c *gin.Context) {
 	var req types.PasswordResetWithTokenReq
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request."})
+
+	err := utils.ValidateRequest(c, &req)
+	if err != nil {
 		return
 	}
 
