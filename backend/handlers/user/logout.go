@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/okanay/digital-menu/configs"
 	"github.com/okanay/digital-menu/types"
 	"github.com/okanay/digital-menu/utils"
 )
@@ -25,6 +26,6 @@ func (h *Handler) Logout(c *gin.Context) {
 		}
 	}()
 
-	c.SetCookie("digital_menu_session", "", -1, "/", "", false, true)
+	c.SetCookie(configs.SESSION_NAME, "", -1, "/", "", false, true)
 	c.JSON(http.StatusOK, gin.H{"message": "Logout successful."})
 }

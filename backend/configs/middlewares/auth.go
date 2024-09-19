@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/okanay/digital-menu/configs"
 	sr "github.com/okanay/digital-menu/repositories/session"
 	ur "github.com/okanay/digital-menu/repositories/user"
 	"github.com/okanay/digital-menu/types"
@@ -13,7 +14,7 @@ import (
 
 func AuthMiddleware(sr *sr.Repository, ur *ur.Repository) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token, err := c.Cookie("digital_menu_session")
+		token, err := c.Cookie(configs.SESSION_NAME)
 		if err != nil {
 			handleUnauthorized(c, "Session not found.")
 			return

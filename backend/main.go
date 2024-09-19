@@ -73,20 +73,20 @@ func main() {
 	router.NoRoute(handlers.NoRoute)
 
 	// User Routes
-	router.POST("/login", userHandler.Login)
-	router.POST("/register", userHandler.Register)
-	verified.POST("/forgot-password", userHandler.ForgotPassword)
-	verified.POST("/forgot-password-request", userHandler.ForgotPasswordRequest)
+	verifiedAuth.POST("/update-password", userHandler.UpdatePassword)
 	auth.GET("/check", userHandler.Check)
 	auth.POST("/logout", userHandler.Logout)
-	verifiedAuth.POST("/update-password", userHandler.UpdatePassword)
+	verified.POST("/forgot-password", userHandler.ForgotPassword)
+	verified.POST("/forgot-password-request", userHandler.ForgotPasswordRequest)
+	router.POST("/login", userHandler.Login)
+	router.POST("/register", userHandler.Register)
 
 	// Restaurant Routes
-	auth.GET("/restaurants", restaurantHandler.SelectRestaurants)
-	auth.GET("/restaurant/:restaurantId", restaurantHandler.SelectRestaurant)
 	verifiedAuth.POST("/restaurant", restaurantHandler.CreateRestaurant)
 	verifiedAuth.PATCH("/restaurant/:restaurantId", restaurantHandler.UpdateRestaurant)
 	verifiedAuth.DELETE("/restaurant/:restaurantId", restaurantHandler.DeleteRestaurant)
+	auth.GET("/restaurants", restaurantHandler.SelectRestaurants)
+	auth.GET("/restaurant/:restaurantId", restaurantHandler.SelectRestaurant)
 
 	// Menu Routes
 	verifiedAuth.POST("/menu", menuHandler.CreateMenu)

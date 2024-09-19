@@ -3,6 +3,7 @@ package configs
 import "time"
 
 const (
+
 	// Memory Cache Rules
 	MEMORY_CACHE_ACTIVE            = true
 	MEMORY_CLEANUP_TICKER_DURATION = 5 * time.Minute
@@ -16,6 +17,7 @@ const (
 
 	// Session Rules
 	SESSION_DURATION = 30 * 24 * time.Hour
+	SESSION_NAME     = "session"
 
 	// Expertaion Rules
 	BASIC_EXPIRATION_DURATION   = 7 * 24 * time.Hour       // 1 week

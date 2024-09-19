@@ -12,7 +12,7 @@ import (
 )
 
 func (h *Handler) Login(c *gin.Context) {
-	_, err := c.Cookie("digital_menu_session")
+	_, err := c.Cookie(configs.SESSION_NAME)
 	if err == nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Cannot login while session is actively used, please logout first."})
 		return
@@ -35,11 +35,6 @@ func (h *Handler) Login(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Password does not match."})
 		return
 	}
-
-	// if user.EmailVerified == false {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "Email not verified."})
-	// 	return
-	// }
 
 	token := utils.GenerateRandomString(64)
 	expireAt := time.Now().Add(configs.SESSION_DURATION)
@@ -74,7 +69,7 @@ func (h *Handler) Login(c *gin.Context) {
 	}()
 
 	c.SetSameSite(http.SameSiteLaxMode)
-	c.SetCookie("digital_menu_session", token, cookieDuration, "/", "", false, true)
+	c.SetCookie(configs.SESSION_NAME, token, cookieDuration, "/", "", true, true)
 
 	c.JSON(http.StatusOK, gin.H{"user": userRes})
 }
