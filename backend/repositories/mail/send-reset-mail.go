@@ -114,7 +114,7 @@ const ResetPasswordEmailTemplate = `<!DOCTYPE html>
 <body>
     <div class="container">
         <div class="header">
-            <img src="https://menu-arts.s3.eu-north-1.amazonaws.com/logo.jpeg" alt="Logo" />
+            <img src="https://menu-arts.s3.eu-north-1.amazonaws.com/logo.jpeg" alt="Menu Arts" />
             <h1>Reset Password</h1>
         </div>
         <p>Hello,</p>

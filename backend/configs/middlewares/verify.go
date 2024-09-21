@@ -14,7 +14,7 @@ type VerifiedReq struct {
 	Email string `json:"email" validate:"required,email"`
 }
 
-func VerifiedMiddleware(ur *ur.Repository) gin.HandlerFunc {
+func VerifyMiddleware(ur *ur.Repository) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var bodyBytes []byte
 		if c.Request.Body != nil {

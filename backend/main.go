@@ -62,12 +62,15 @@ func main() {
 	router.Use(rateLimit.Middleware())
 
 	// 7. Route Groups
+	// :: Only verified email users can access these routes without authentication.
+	verifyMail := router.Group("/")
+	verifyMail.Use(mw.VerifyMiddleware(userRepository))
+	// :: Only authenticated users can access these routes
 	auth := router.Group("/auth")
 	auth.Use(mw.AuthMiddleware(sessionRepository, userRepository))
-	verified := router.Group("/")
-	verified.Use(mw.VerifiedMiddleware(userRepository))
-	verifiedAuth := auth.Group("/")
-	verifiedAuth.Use(mw.VerifiedAuthMiddleware())
+	// :: Only verified email users can access these routes with authentication.
+	verifyAuth := auth.Group("/")
+	verifyAuth.Use(mw.VerifyAuthMiddleware())
 
 	// 8. API Routes
 	// Global Routes
@@ -77,24 +80,24 @@ func main() {
 	// User Routes
 	auth.GET("/check", authHandler.Check)
 	auth.POST("/logout", authHandler.Logout)
-	verified.POST("/reset-password", authHandler.ResetPassword)
-	verified.POST("/reset-password-request", authHandler.ResetPasswordRequest)
+	verifyMail.POST("/reset-password", authHandler.ResetPassword)
+	verifyMail.POST("/reset-password-request", authHandler.ResetPasswordRequest)
 	router.POST("/verify-email-request", authHandler.SendEmailVerify)
 	router.POST("/verify-email", authHandler.VerifyEmail)
 	router.POST("/login", authHandler.Login)
 	router.POST("/register", authHandler.Register)
 
 	// Restaurant Routes
-	verifiedAuth.POST("/restaurant", restaurantHandler.CreateRestaurant)
-	verifiedAuth.PATCH("/restaurant/:restaurantId", restaurantHandler.UpdateRestaurant)
-	verifiedAuth.DELETE("/restaurant/:restaurantId", restaurantHandler.DeleteRestaurant)
+	verifyAuth.POST("/restaurant", restaurantHandler.CreateRestaurant)
+	verifyAuth.PATCH("/restaurant/:restaurantId", restaurantHandler.UpdateRestaurant)
+	verifyAuth.DELETE("/restaurant/:restaurantId", restaurantHandler.DeleteRestaurant)
 	auth.GET("/restaurants", restaurantHandler.SelectRestaurants)
 	auth.GET("/restaurant/:restaurantId", restaurantHandler.SelectRestaurant)
 
 	// Menu Routes
-	verifiedAuth.POST("/menu", menuHandler.CreateMenu)
-	verifiedAuth.PATCH("/menu/:menuId", menuHandler.UpdateMenu)
-	verifiedAuth.DELETE("/menu/:menuId", menuHandler.DeleteMenu)
+	verifyAuth.POST("/menu", menuHandler.CreateMenu)
+	verifyAuth.PATCH("/menu/:menuId", menuHandler.UpdateMenu)
+	verifyAuth.DELETE("/menu/:menuId", menuHandler.DeleteMenu)
 	auth.GET("/menu/:restaurantId", menuHandler.SelectMenus)
 	router.GET("/menu/:menuId", menuHandler.SelectMenu)
 

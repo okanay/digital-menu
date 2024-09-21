@@ -19,7 +19,7 @@ const (
 	RATE_LIMIT_DURATION = 45 * time.Second
 
 	// Timeout Rules
-	REQUEST_MAX_DURATION = 30 * time.Second
+	REQUEST_MAX_DURATION = 10 * time.Second
 
 	// Session Rules
 	SESSION_DURATION    = 30 * 24 * time.Hour

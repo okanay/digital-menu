@@ -45,7 +45,7 @@ func AuthMiddleware(sr *sr.Repository, ur *ur.Repository) gin.HandlerFunc {
 	}
 }
 
-func VerifiedAuthMiddleware() gin.HandlerFunc {
+func VerifyAuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		userContext := c.MustGet("user").(types.User)
 
