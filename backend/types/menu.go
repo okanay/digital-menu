@@ -19,9 +19,10 @@ const (
 )
 
 type Menu struct {
-	ID           string    `db:"id" json:"id"`
-	UserID       string    `db:"user_id" json:"userId"`
-	RestaurantID string    `db:"restaurant_id" json:"restaurantId"`
+	ID           int       `db:"id" json:"id"`
+	UserID       int       `db:"user_id" json:"userId"`
+	RestaurantID int       `db:"restaurant_id" json:"restaurantId"`
+	UniqueID     string    `db:"unique_id" json:"uniqueId"`
 	Name         string    `db:"name" json:"name"`
 	Type         int       `db:"type" json:"type"`
 	Json         string    `db:"json" json:"json"`
@@ -46,8 +47,8 @@ type MenuResponse struct {
 }
 
 type CreateMenuReq struct {
-	UserID       string    `json:"userId" validate:"required"`
-	RestaurantID string    `json:"restaurantId" validate:"required"`
+	UserID       int       `json:"userId" validate:"required"`
+	RestaurantID int       `json:"restaurantId" validate:"required"`
 	Name         string    `json:"name" validate:"required,min=3,max=64"`
 	Type         int       `json:"type" validate:"required"`
 	Json         string    `json:"json" validate:"required"`
@@ -58,8 +59,8 @@ type CreateMenuReq struct {
 }
 
 type UpdateMenuReq struct {
-	UserID      string     `json:"userId" validate:"required,min=3,max=64"`
-	ID          string     `json:"id" validate:"required,min=3,max=64"`
+	UserID      int        `json:"userId" validate:"required,min=3,max=64"`
+	ID          int        `json:"id" validate:"required,min=3,max=64"`
 	Name        *string    `json:"name" validate:"omitempty,min=3,max=64"`
 	Type        *int       `json:"type" validate:"omitempty,min=0,max=64"`
 	Json        *string    `json:"json" validate:"omitempty"`

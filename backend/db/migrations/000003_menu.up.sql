@@ -13,9 +13,10 @@ CREATE TYPE language AS ENUM (
 );
 
 CREATE TABLE IF NOT EXISTS menus (
-    id TEXT PRIMARY KEY DEFAULT ('1' || substring(md5(random()::text) from 1 for 5)) ,
-    user_id TEXT NOT NULL,
-    restaurant_id TEXT NOT NULL,
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    user_id BIGINT NOT NULL,
+    restaurant_id BIGINT NOT NULL,
+    unique_id TEXT DEFAULT ('1' || substring(md5(random()::text) from 1 for 5)) UNIQUE,
     name TEXT NOT NULL,
     type TEXT NOT NULL,
     json TEXT NOT NULL,

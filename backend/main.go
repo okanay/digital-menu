@@ -6,15 +6,16 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
-	"github.com/okanay/digital-menu/db"
-	"github.com/okanay/digital-menu/handlers"
-	mh "github.com/okanay/digital-menu/handlers/menu"
-	rh "github.com/okanay/digital-menu/handlers/restaurant"
-	uh "github.com/okanay/digital-menu/handlers/user"
-
 	c "github.com/okanay/digital-menu/configs"
+	"github.com/okanay/digital-menu/configs/cleanup"
 	memory "github.com/okanay/digital-menu/configs/memory"
 	mw "github.com/okanay/digital-menu/configs/middlewares"
+	"github.com/okanay/digital-menu/db"
+	"github.com/okanay/digital-menu/handlers"
+	ah "github.com/okanay/digital-menu/handlers/auth"
+	mh "github.com/okanay/digital-menu/handlers/menu"
+	rh "github.com/okanay/digital-menu/handlers/restaurant"
+	"github.com/okanay/digital-menu/repositories/mail"
 	mr "github.com/okanay/digital-menu/repositories/menu"
 	rr "github.com/okanay/digital-menu/repositories/restaurant"
 	sr "github.com/okanay/digital-menu/repositories/session"
@@ -22,7 +23,7 @@ import (
 )
 
 func main() {
-	// 1. Environment ve Database
+	// 1. Environment Variables and Database Connection
 	if err := godotenv.Load(".env.local"); err != nil {
 		log.Fatalf("Error loading .env file")
 		return
@@ -35,51 +36,53 @@ func main() {
 	}
 	defer sqlDB.Close()
 
-	// 2. Memory ve Rate Limit
+	// 2. Configurations
+	cleanup.Init(sqlDB)
 	memory := memory.Init()
 	rateLimit := mw.NewRateLimit(memory)
+	timeout := mw.NewTimeout()
 
-	// 3. Repositories
+	// 4. Repositories
 	userRepository := ur.NewRepository(sqlDB)
 	sessionRepository := sr.NewRepository(sqlDB)
 	menuRepository := mr.NewRepository(sqlDB)
 	restaurantRepository := rr.NewRepository(sqlDB)
+	mailRepository := mail.NewRepository()
 
-	// 4. Handlers
-	userHandler := uh.NewHandler(userRepository, sessionRepository)
-	menuHandler := mh.NewHandler(menuRepository, restaurantRepository)
-	restaurantHandler := rh.NewHandler(menuRepository, restaurantRepository)
+	// 5. Handlers
+	authHandler := ah.NewHandler(userRepository, sessionRepository, mailRepository)
+	menuHandler := mh.NewHandler(menuRepository, restaurantRepository, mailRepository)
+	restaurantHandler := rh.NewHandler(menuRepository, restaurantRepository, mailRepository)
 
-	// 5. Router Setup
+	// 6. Router Initialize
 	router := gin.Default()
+	router.Use(c.SecureConfig)
 	router.Use(c.CorsConfig())
-	router.Use(mw.SecureMiddleware)
-	router.Use(mw.TimeoutMiddleware())
+	router.Use(timeout.Middleware())
 	router.Use(rateLimit.Middleware())
 
-	// 6. Route Groups
+	// 7. Route Groups
 	auth := router.Group("/auth")
 	auth.Use(mw.AuthMiddleware(sessionRepository, userRepository))
-
 	verified := router.Group("/")
 	verified.Use(mw.VerifiedMiddleware(userRepository))
-
 	verifiedAuth := auth.Group("/")
 	verifiedAuth.Use(mw.VerifiedAuthMiddleware())
 
-	// 7. Routes
+	// 8. API Routes
 	// Global Routes
 	router.GET("/", handlers.Index)
 	router.NoRoute(handlers.NoRoute)
 
 	// User Routes
-	verifiedAuth.POST("/update-password", userHandler.UpdatePassword)
-	auth.GET("/check", userHandler.Check)
-	auth.POST("/logout", userHandler.Logout)
-	verified.POST("/forgot-password", userHandler.ForgotPassword)
-	verified.POST("/forgot-password-request", userHandler.ForgotPasswordRequest)
-	router.POST("/login", userHandler.Login)
-	router.POST("/register", userHandler.Register)
+	auth.GET("/check", authHandler.Check)
+	auth.POST("/logout", authHandler.Logout)
+	verified.POST("/reset-password", authHandler.ResetPassword)
+	verified.POST("/reset-password-request", authHandler.ResetPasswordRequest)
+	router.POST("/verify-email-request", authHandler.SendEmailVerify)
+	router.POST("/verify-email", authHandler.VerifyEmail)
+	router.POST("/login", authHandler.Login)
+	router.POST("/register", authHandler.Register)
 
 	// Restaurant Routes
 	verifiedAuth.POST("/restaurant", restaurantHandler.CreateRestaurant)
@@ -95,9 +98,9 @@ func main() {
 	auth.GET("/menu/:restaurantId", menuHandler.SelectMenus)
 	router.GET("/menu/:menuId", menuHandler.SelectMenu)
 
-	// 8. Start Server
+	// 9. Start Server
 	err = router.Run(":" + os.Getenv("PORT"))
 	if err != nil {
-		return
+		log.Fatalf("Error starting server: %v", err)
 	}
 }

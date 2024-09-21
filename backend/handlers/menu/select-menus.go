@@ -2,6 +2,7 @@ package menuHandler
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/okanay/digital-menu/types"
@@ -10,9 +11,15 @@ import (
 func (h *Handler) SelectMenus(c *gin.Context) {
 	userContext := c.MustGet("user").(types.User)
 
-	id := c.Param("restaurantId")
-	if id == "" {
+	idStr := c.Param("restaurantId")
+	if idStr == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "restaurant id is required."})
+		return
+	}
+
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "restaurant id must be a number."})
 		return
 	}
 

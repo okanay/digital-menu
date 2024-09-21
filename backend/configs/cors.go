@@ -1,13 +1,15 @@
 package configs
 
 import (
+	"os"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
 func CorsConfig() gin.HandlerFunc {
 	var origins = []string{
-		"http://localhost:3000",
+		os.Getenv("FRONTEND_URL"),
 	}
 
 	return cors.New(cors.Config{

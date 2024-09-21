@@ -8,7 +8,7 @@ import (
 	"github.com/okanay/digital-menu/utils"
 )
 
-func (r *Repository) SelectRestaurants(userID string) ([]types.Restaurant, error) {
+func (r *Repository) SelectRestaurants(userID int) ([]types.Restaurant, error) {
 	defer utils.TimeTrack(time.Now(), "Restaurant -> Select Restaurants")
 
 	var restaurants []types.Restaurant

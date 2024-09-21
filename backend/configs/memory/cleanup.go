@@ -3,8 +3,6 @@ package memory
 import (
 	"fmt"
 	"time"
-
-	"github.com/okanay/digital-menu/configs"
 )
 
 func (c *Cache) CleanupExpiredItems() {
@@ -24,7 +22,7 @@ func (c *Cache) CleanupExpiredItems() {
 }
 
 func (c *Cache) StartCleanupRoutine() {
-	ticker := time.NewTicker(configs.MEMORY_CLEANUP_TICKER_DURATION)
+	ticker := time.NewTicker(c.cleanInterval)
 	defer ticker.Stop()
 
 	for range ticker.C {

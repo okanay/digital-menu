@@ -14,7 +14,7 @@ import (
 
 func AuthMiddleware(sr *sr.Repository, ur *ur.Repository) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token, err := c.Cookie(configs.SESSION_NAME)
+		token, err := c.Cookie(configs.SESSION_COOKIE_NAME)
 		if err != nil {
 			handleUnauthorized(c, "Session not found.")
 			return
@@ -22,7 +22,7 @@ func AuthMiddleware(sr *sr.Repository, ur *ur.Repository) gin.HandlerFunc {
 
 		session, user, err := sr.SelectSessionAndUser(token)
 		if err != nil {
-			handleUnauthorized(c, "Session not valid.")
+			handleUnauthorized(c, err.Error())
 			return
 		}
 
@@ -60,7 +60,7 @@ func VerifiedAuthMiddleware() gin.HandlerFunc {
 }
 
 func handleUnauthorized(c *gin.Context, message string) {
-	c.SetCookie("digital_menu_session", "", -1, "/", "", false, true)
+	c.SetCookie(configs.SESSION_COOKIE_NAME, "", -1, "/", "", false, true)
 	c.JSON(http.StatusUnauthorized, gin.H{"error": message})
 	c.Abort()
 }

@@ -16,3 +16,7 @@ func GenerateRandomString(length int) string {
 
 	return string(b)
 }
+
+func GenerateRandomInt(min, max int) int {
+	return rand.Intn(max-min) + min
+}

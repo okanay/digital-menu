@@ -12,7 +12,7 @@ import (
 )
 
 func (h *Handler) Login(c *gin.Context) {
-	_, err := c.Cookie(configs.SESSION_NAME)
+	_, err := c.Cookie(configs.SESSION_COOKIE_NAME)
 	if err == nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Cannot login while session is actively used, please logout first."})
 		return
@@ -69,7 +69,7 @@ func (h *Handler) Login(c *gin.Context) {
 	}()
 
 	c.SetSameSite(http.SameSiteLaxMode)
-	c.SetCookie(configs.SESSION_NAME, token, cookieDuration, "/", "", true, true)
+	c.SetCookie(configs.SESSION_COOKIE_NAME, token, cookieDuration, "/", "", true, true)
 
 	c.JSON(http.StatusOK, gin.H{"user": userRes})
 }

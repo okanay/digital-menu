@@ -8,12 +8,12 @@ import (
 )
 
 func Index(c *gin.Context) {
-	cacheStatus := configs.MEMORY_CACHE_ACTIVE
+	cacheStatus := configs.MEMORY_ACTIVE
 	cacheDuration := configs.MEMORY_CLEANUP_TICKER_DURATION.Minutes()
 	rateLimit := configs.RATE_LIMIT
 	rateLimitDuration := configs.RATE_LIMIT_DURATION.Seconds()
 	sessionDuration := configs.SESSION_DURATION.Hours() / 24
-	timeoutDuration := configs.TIMEOUT_DURATION.Seconds()
+	timeoutDuration := configs.REQUEST_MAX_DURATION.Seconds()
 
 	c.JSON(200, gin.H{
 		"Language":  "Golang",

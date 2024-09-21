@@ -1,6 +1,8 @@
 package middlewares
 
 import (
+	"bytes"
+	"io"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -8,15 +10,23 @@ import (
 	"github.com/okanay/digital-menu/utils"
 )
 
-type Request struct {
-	Email string `db:"email" json:"email" validate:"required,email"`
+type VerifiedReq struct {
+	Email string `json:"email" validate:"required,email"`
 }
 
 func VerifiedMiddleware(ur *ur.Repository) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var req Request
+		var bodyBytes []byte
+		if c.Request.Body != nil {
+			bodyBytes, _ = io.ReadAll(c.Request.Body)
+		}
+
+		c.Request.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
+
+		var req VerifiedReq
 		err := utils.ValidateRequest(c, &req)
 		if err != nil {
+			c.Abort()
 			return
 		}
 
@@ -27,12 +37,13 @@ func VerifiedMiddleware(ur *ur.Repository) gin.HandlerFunc {
 			return
 		}
 
-		if user.EmailVerified == false {
+		if !user.EmailVerified {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Email not verified."})
 			c.Abort()
 			return
 		}
 
+		c.Request.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
 		c.Set("user", user)
 		c.Next()
 	}

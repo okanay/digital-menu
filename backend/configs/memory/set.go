@@ -6,7 +6,7 @@ import (
 )
 
 func (c *Cache) Set(key string, value interface{}, expiration time.Duration) {
-	if !c.cacheIsActive {
+	if !c.isActive {
 		return
 	}
 

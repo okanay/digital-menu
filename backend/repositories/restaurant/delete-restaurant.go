@@ -8,7 +8,7 @@ import (
 	"github.com/okanay/digital-menu/utils"
 )
 
-func (r *Repository) DeleteRestaurant(id string, userID string) error {
+func (r *Repository) DeleteRestaurant(id string, userID int) error {
 	defer utils.TimeTrack(time.Now(), "Restaurant -> Delete Restaurant")
 
 	// "error": "sql: Scan error on column index 0, name \"case\": converting NULL to string is unsupported"

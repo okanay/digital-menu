@@ -3,8 +3,8 @@ package types
 import "time"
 
 type Session struct {
-	ID           string    `db:"id" json:"id"`
-	UserID       string    `db:"user_id" json:"userId"`
+	ID           int       `db:"id" json:"id"`
+	UserID       int       `db:"user_id" json:"userId"`
 	Token        string    `db:"token" json:"token"`
 	IPAddress    string    `db:"ip_address" json:"ipAddress"`
 	UserAgent    string    `db:"user_agent" json:"userAgent"`
@@ -14,7 +14,7 @@ type Session struct {
 }
 
 type CreateSessionReq struct {
-	UserID    string    `json:"userId"`
+	UserID    int       `json:"userId"`
 	Token     string    `json:"token"`
 	ExpiresAt time.Time `json:"expiresAt"`
 	IPAddress string    `json:"ipAddress"`
@@ -22,5 +22,5 @@ type CreateSessionReq struct {
 }
 
 type LogoutSessionReq struct {
-	LogoutAllDevices bool `json:"logoutAllDevices" validate:"required" binding:"required"`
+	LogoutAllDevices bool `json:"logoutAllDevices" validate:"omitempty"`
 }

@@ -1,8 +1,8 @@
-package middlewares
+package configs
 
 import "github.com/gin-contrib/secure"
 
-var SecureMiddleware = secure.New(secure.Config{
+var SecureConfig = secure.New(secure.Config{
 	FrameDeny:             true,
 	ContentTypeNosniff:    true,
 	BrowserXssFilter:      true,

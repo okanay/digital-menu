@@ -7,11 +7,9 @@ import (
 	"github.com/go-playground/validator"
 )
 
-// buradaki req typescript deki any gibi olmali yani herhangi bir struct olabilir
 func ValidateRequest(c *gin.Context, req interface{}) error {
-	// Parse the JSON request and populate the User struct
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request."})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request.", "message": err.Error()})
 		return err
 	}
 

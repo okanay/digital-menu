@@ -26,6 +26,6 @@ func (h *Handler) Logout(c *gin.Context) {
 		}
 	}()
 
-	c.SetCookie(configs.SESSION_NAME, "", -1, "/", "", false, true)
+	c.SetCookie(configs.SESSION_COOKIE_NAME, "", -1, "/", "", false, true)
 	c.JSON(http.StatusOK, gin.H{"message": "Logout successful."})
 }

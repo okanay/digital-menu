@@ -8,7 +8,7 @@ import (
 	"github.com/okanay/digital-menu/utils"
 )
 
-func (r *Repository) DeleteMenu(userId string, id string) error {
+func (r *Repository) DeleteMenu(userId int, id int) error {
 	defer utils.TimeTrack(time.Now(), "Menu -> Delete Menu")
 
 	query := `

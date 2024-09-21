@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS restaurants (
-    id TEXT PRIMARY KEY DEFAULT ('1' || substring(md5(random()::text) from 1 for 5)) UNIQUE,
-    user_id TEXT NOT NULL,
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    user_id BIGINT NOT NULL,
+    unique_id TEXT DEFAULT ('1' || substring(md5(random()::text) from 1 for 8)) UNIQUE,
     name TEXT NOT NULL,
     slug TEXT NOT NULL,
     location TEXT,
@@ -14,4 +15,3 @@ CREATE TABLE IF NOT EXISTS restaurants (
 
 create index if not exists idx_restaurants_user_id on restaurants (user_id);
 create index if not exists idx_restaurants_name on restaurants (name);
-create index if not exists idx_restaurants_location on restaurants (location);

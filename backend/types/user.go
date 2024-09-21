@@ -12,20 +12,19 @@ const (
 )
 
 type User struct {
-	ID                     string         `db:"id" json:"id"`
-	Email                  string         `db:"email" json:"email"`
-	HashedPassword         string         `db:"hashed_password" json:"hashedPassword"`
-	Membership             MembershipType `db:"membership" json:"membership"`
-	EmailVerified          bool           `db:"email_verified" json:"emailVerified"`
-	EmailVerificationToken string         `db:"email_verification_token" json:"emailVerificationToken"`
-	PasswordResetToken     string         `db:"password_reset_token" json:"passwordResetToken"`
-	CreatedAt              time.Time      `db:"created_at" json:"createdAt"`
-	LastLogin              time.Time      `db:"last_login" json:"lastLogin"`
-	UpdatedAt              time.Time      `db:"updated_at" json:"updatedAt"`
+	ID             int            `db:"id" json:"id"`
+	UniqueID       string         `db:"unique_id" json:"uniqueId"`
+	Email          string         `db:"email" json:"email"`
+	HashedPassword string         `db:"hashed_password" json:"hashedPassword"`
+	Membership     MembershipType `db:"membership" json:"membership"`
+	EmailVerified  bool           `db:"email_verified" json:"emailVerified"`
+	CreatedAt      time.Time      `db:"created_at" json:"createdAt"`
+	LastLogin      time.Time      `db:"last_login" json:"lastLogin"`
+	UpdatedAt      time.Time      `db:"updated_at" json:"updatedAt"`
 }
 
 type UserResponse struct {
-	ID            string         `json:"id"`
+	ID            int            `json:"id"`
 	Email         string         `json:"email"`
 	Membership    MembershipType `json:"membership"`
 	EmailVerified bool           `json:"emailVerified"`
@@ -41,18 +40,43 @@ type LoginReq struct {
 	Password string `json:"password" validate:"required,min=8,max=32"`
 }
 
-type UpdatePasswordReq struct {
-	Email           string `json:"email" validate:"required,email"`
-	CurrentPassword string `json:"currentPassword" validate:"required,min=8,max=32"`
-	NewPassword     string `json:"newPassword" validate:"required,min=8,max=32"`
-}
-
-type PasswordResetWithTokenReq struct {
-	Email              string `json:"email" validate:"required,email"`
-	PasswordResetToken string `json:"passwordResetToken" validate:"required"`
-	NewPassword        string `json:"newPassword" validate:"required,min=8,max=32"`
-}
-
 type RequestForgotPasswordReq struct {
 	Email string `db:"email" json:"email" validate:"required,email"`
+}
+
+type ResetPassword struct {
+	ID        int       `db:"id" json:"id"`
+	Email     string    `db:"email" json:"email"`
+	Token     string    `db:"token" json:"token"`
+	CreatedAt time.Time `db:"created_at" json:"createdAt"`
+	ExpiresAt time.Time `db:"expires_at" json:"expiresAt"`
+	IsUsed    bool      `db:"is_used" json:"isUsed"`
+}
+
+type ResetPasswordMail struct {
+	Email string `json:"email" validate:"required,email"`
+}
+
+type ResetPasswordReq struct {
+	Email    string `json:"email" validate:"required,email"`
+	Token    string `json:"token" validate:"required"`
+	Password string `json:"password" validate:"required,min=8,max=32"`
+}
+
+type EmailVerification struct {
+	ID        int       `db:"id" json:"id"`
+	Email     string    `db:"email" json:"email"`
+	Token     string    `db:"token" json:"token"`
+	CreatedAt time.Time `db:"created_at" json:"createdAt"`
+	ExpiresAt time.Time `db:"expires_at" json:"expiresAt"`
+	IsUsed    bool      `db:"is_used" json:"isUsed"`
+}
+
+type EmailVerificationMail struct {
+	Email string `json:"email" validate:"required,email"`
+}
+
+type VerifyEmailReq struct {
+	Email string `json:"email" validate:"required,email"`
+	Token string `json:"token" validate:"required"`
 }

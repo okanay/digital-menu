@@ -1,8 +1,9 @@
 package types
 
 type Restaurant struct {
-	ID          string `db:"id" json:"id"`
-	UserID      string `db:"user_id" json:"userId"`
+	ID          int    `db:"id" json:"id"`
+	UserID      int    `db:"user_id" json:"userId"`
+	UniqueID    string `db:"unique_id" json:"uniqueId"`
 	Name        string `db:"name" json:"name"`
 	Slug        string `db:"slug" json:"slug"`
 	Location    string `db:"location" json:"location"`
@@ -14,15 +15,15 @@ type Restaurant struct {
 }
 
 type CreateRestaurantReq struct {
-	UserID      string `json:"userId" validate:"required"`
+	UserID      int    `json:"userId" validate:"required"`
 	Name        string `json:"name" validate:"required,min=3,max=64"`
 	Location    string `json:"location" validate:"required,min=3,max=64"`
 	Description string `json:"description" validate:"required,max=128"`
 }
 
 type UpdateRestaurantReq struct {
-	UserID      string  `json:"userId" validate:"required"`
-	ID          string  `json:"id" validate:"required"`
+	UserID      int     `json:"userId" validate:"required"`
+	ID          int     `json:"id" validate:"required"`
 	Name        *string `json:"name" validate:"omitempty,min=3,max=64"`
 	Location    *string `json:"location" validate:"omitempty,min=3,max=64"`
 	Description *string `json:"description" validate:"omitempty,max=128"`

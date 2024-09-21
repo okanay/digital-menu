@@ -3,21 +3,27 @@ package configs
 import "time"
 
 const (
+	// Project Rules
+	PROJECT_NAME = "Menu Arts"
 
 	// Memory Cache Rules
-	MEMORY_CACHE_ACTIVE            = true
-	MEMORY_CLEANUP_TICKER_DURATION = 5 * time.Minute
+	MEMORY_ACTIVE                  = true
+	MEMORY_CLEANUP_TICKER_DURATION = 20 * time.Minute
+
+	// Clean Up Rules
+	CLEANUP_ACTIVE          = true
+	CLEANUP_TICKER_DURATION = 2 * time.Hour
 
 	// Rate Limit Rules
 	RATE_LIMIT          = 10
 	RATE_LIMIT_DURATION = 45 * time.Second
 
 	// Timeout Rules
-	TIMEOUT_DURATION = 20 * time.Second
+	REQUEST_MAX_DURATION = 30 * time.Second
 
 	// Session Rules
-	SESSION_DURATION = 30 * 24 * time.Hour
-	SESSION_NAME     = "session"
+	SESSION_DURATION    = 30 * 24 * time.Hour
+	SESSION_COOKIE_NAME = "menu-arts-session"
 
 	// Expertaion Rules
 	BASIC_EXPIRATION_DURATION   = 7 * 24 * time.Hour       // 1 week

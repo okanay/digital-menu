@@ -7,7 +7,7 @@ import (
 )
 
 func (c *Cache) Get(key string, result interface{}) error {
-	if !c.cacheIsActive {
+	if !c.isActive {
 		return fmt.Errorf("cache not active")
 	}
 
