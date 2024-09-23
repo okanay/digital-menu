@@ -60,15 +60,15 @@ const VerificationMailTemplate = `<!DOCTYPE html>
             border-radius: 0.5rem;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
-        .button {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background-color: #FF706E;
-            color: #ffffff;
-            text-decoration: none;
-            font-weight: 600;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
+    .button {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background-color: #FF706E;
+        color: #ffffff;
+	    text-decoration: none;
+        font-weight: 600;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
         }
         .button:hover {
             background-color: #FF5A5A;

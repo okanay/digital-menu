@@ -6,6 +6,13 @@ const (
 	// Project Rules
 	PROJECT_NAME = "Menu Arts"
 
+	// Statistics Rules
+	STATISTICS_ACTIVE              = true
+	STATISTICS_MAX_GOROUTINE_COUNT = 20
+	STATISTICS_LAST_SEEN_TICKER    = 30 * time.Second
+	STATISTICS_LAST_LOGIN_TICKER   = 30 * time.Minute
+	STATISTICS_VISITOR_MENU_TICKER = 15 * time.Minute
+
 	// Memory Cache Rules
 	MEMORY_ACTIVE                  = true
 	MEMORY_CLEANUP_TICKER_DURATION = 20 * time.Minute

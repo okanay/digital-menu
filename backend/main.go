@@ -7,8 +7,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	c "github.com/okanay/digital-menu/configs"
-	"github.com/okanay/digital-menu/configs/cleanup"
-	memory "github.com/okanay/digital-menu/configs/memory"
+	cache "github.com/okanay/digital-menu/configs/managers/cache"
+	"github.com/okanay/digital-menu/configs/managers/cleanup"
+	"github.com/okanay/digital-menu/configs/managers/statistics"
 	mw "github.com/okanay/digital-menu/configs/middlewares"
 	"github.com/okanay/digital-menu/db"
 	"github.com/okanay/digital-menu/handlers"
@@ -37,9 +38,10 @@ func main() {
 	defer sqlDB.Close()
 
 	// 2. Configurations
+	statistics := statistics.Init(sqlDB)
 	cleanup.Init(sqlDB)
-	memory := memory.Init()
-	rateLimit := mw.NewRateLimit(memory)
+	cache := cache.Init()
+	rateLimit := mw.NewRateLimit(cache)
 	timeout := mw.NewTimeout()
 
 	// 4. Repositories
@@ -50,9 +52,9 @@ func main() {
 	mailRepository := mail.NewRepository()
 
 	// 5. Handlers
-	authHandler := ah.NewHandler(userRepository, sessionRepository, mailRepository)
-	menuHandler := mh.NewHandler(menuRepository, restaurantRepository, mailRepository)
-	restaurantHandler := rh.NewHandler(menuRepository, restaurantRepository, mailRepository)
+	authHandler := ah.NewHandler(userRepository, sessionRepository, mailRepository, statistics)
+	menuHandler := mh.NewHandler(menuRepository, restaurantRepository, mailRepository, statistics)
+	restaurantHandler := rh.NewHandler(menuRepository, restaurantRepository, mailRepository, statistics)
 
 	// 6. Router Initialize
 	router := gin.Default()
@@ -67,7 +69,7 @@ func main() {
 	verifyMail.Use(mw.VerifyMiddleware(userRepository))
 	// :: Only authenticated users can access these routes
 	auth := router.Group("/auth")
-	auth.Use(mw.AuthMiddleware(sessionRepository, userRepository))
+	auth.Use(mw.AuthMiddleware(sessionRepository, userRepository, statistics))
 	// :: Only verified email users can access these routes with authentication.
 	verifyAuth := auth.Group("/")
 	verifyAuth.Use(mw.VerifyAuthMiddleware())

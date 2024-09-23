@@ -1,18 +1,18 @@
 package middlewares
 
 import (
-	"fmt"
 	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/okanay/digital-menu/configs"
+	s "github.com/okanay/digital-menu/configs/managers/statistics"
 	sr "github.com/okanay/digital-menu/repositories/session"
 	ur "github.com/okanay/digital-menu/repositories/user"
 	"github.com/okanay/digital-menu/types"
 )
 
-func AuthMiddleware(sr *sr.Repository, ur *ur.Repository) gin.HandlerFunc {
+func AuthMiddleware(sr *sr.Repository, ur *ur.Repository, statistics *s.Statistics) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token, err := c.Cookie(configs.SESSION_COOKIE_NAME)
 		if err != nil {
@@ -32,12 +32,10 @@ func AuthMiddleware(sr *sr.Repository, ur *ur.Repository) gin.HandlerFunc {
 			return
 		}
 
-		go func() {
-			err = sr.UpdateLastAccessed(session.ID)
-			if err != nil {
-				fmt.Println("[ERROR SESSION] Session last accessed update failed.")
-			}
-		}()
+		statistics.RecordSession().Add(session.Token, s.LastSeenSessionRecord{
+			SessionID: session.ID,
+			LastSeen:  time.Now(),
+		})
 
 		c.Set("session", session)
 		c.Set("user", user)

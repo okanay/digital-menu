@@ -1,12 +1,12 @@
 package userHandler
 
 import (
-	"fmt"
 	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/okanay/digital-menu/configs"
+	"github.com/okanay/digital-menu/configs/managers/statistics"
 	"github.com/okanay/digital-menu/types"
 	"github.com/okanay/digital-menu/utils"
 )
@@ -61,12 +61,10 @@ func (h *Handler) Login(c *gin.Context) {
 		Membership:    user.Membership,
 	}
 
-	go func() {
-		err := h.userRepository.UpdateLastLogin(user.Email)
-		if err != nil {
-			fmt.Println("[ERROR LOGIN] : User last login could not be updated.", err.Error())
-		}
-	}()
+	h.statistics.RecordUserLogin().Add(user.Email, statistics.UserLastLoginRecord{
+		UserID:    user.ID,
+		LastLogin: time.Now(),
+	})
 
 	c.SetSameSite(http.SameSiteLaxMode)
 	c.SetCookie(configs.SESSION_COOKIE_NAME, token, cookieDuration, "/", "", true, true)
