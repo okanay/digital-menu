@@ -20,7 +20,6 @@ type Record struct {
 }
 
 type CollectionName string
-
 type Collection struct {
 	name    CollectionName
 	Records []Record
@@ -42,8 +41,8 @@ func Init(db *sql.DB) *Statistics {
 		MaxGoroutineCount: configs.STATISTICS_MAX_GOROUTINE_COUNT,
 	}
 
-	collectionNames := []CollectionName{LastSeenSessionCollection, MenuVisitorCollection, UserLastLoginCollection}
-	for _, collectionName := range collectionNames {
+	collectionsInit := []CollectionName{LastSeenSessionCollection, MenuVisitorCollection, UserLastLoginCollection}
+	for _, collectionName := range collectionsInit {
 		s.Collections[collectionName] = &Collection{name: collectionName}
 	}
 

@@ -8,7 +8,7 @@ import (
 	"github.com/joho/godotenv"
 	c "github.com/okanay/digital-menu/configs"
 	cache "github.com/okanay/digital-menu/configs/managers/cache"
-	"github.com/okanay/digital-menu/configs/managers/cleanup"
+	dbCleanup "github.com/okanay/digital-menu/configs/managers/db-cleanup"
 	"github.com/okanay/digital-menu/configs/managers/statistics"
 	mw "github.com/okanay/digital-menu/configs/middlewares"
 	"github.com/okanay/digital-menu/db"
@@ -38,11 +38,12 @@ func main() {
 	defer sqlDB.Close()
 
 	// 2. Configurations
-	statistics := statistics.Init(sqlDB)
-	cleanup.Init(sqlDB)
 	cache := cache.Init()
 	rateLimit := mw.NewRateLimit(cache)
 	timeout := mw.NewTimeout()
+
+	statistics := statistics.Init(sqlDB)
+	dbCleanup.Init(sqlDB)
 
 	// 4. Repositories
 	userRepository := ur.NewRepository(sqlDB)

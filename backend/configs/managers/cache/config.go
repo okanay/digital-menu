@@ -14,21 +14,20 @@ type cacheItem struct {
 }
 
 type Cache struct {
-	cache         sync.Map
-	isActive      bool
-	cleanInterval time.Duration
+	Cache              sync.Map
+	IsActive           bool
+	CacheCleanDuration time.Duration
 }
 
 func Init() *Cache {
-	fmt.Println("[CACHE] Initializing the memory cache")
-
 	c := &Cache{
-		cache:         sync.Map{},
-		isActive:      configs.MEMORY_ACTIVE,
-		cleanInterval: configs.MEMORY_CLEANUP_TICKER_DURATION,
+		Cache:              sync.Map{},
+		IsActive:           configs.MEMORY_ACTIVE,
+		CacheCleanDuration: configs.MEMORY_CLEANUP_TICKER_DURATION,
 	}
 
-	if c.isActive {
+	if c.IsActive {
+		fmt.Println("[CACHE] Memory cache is active.")
 		go c.StartCleanupRoutine()
 	}
 

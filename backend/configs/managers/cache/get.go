@@ -7,20 +7,17 @@ import (
 )
 
 func (c *Cache) Get(key string, result interface{}) error {
-	if !c.isActive {
-		return fmt.Errorf("cache not active")
-	}
-
-	value, ok := c.cache.Load(key)
+	value, ok := c.Cache.Load(key)
 	if !ok {
 		return fmt.Errorf("key %s not found", key)
 	}
 
 	item, ok := value.(*cacheItem)
 	if !ok || time.Now().After(item.Expiration) {
-		c.cache.Delete(key)
+		c.Cache.Delete(key)
 		return fmt.Errorf("key %s expired or invalid type", key)
 	}
 
 	return json.Unmarshal(item.Data, result)
+
 }

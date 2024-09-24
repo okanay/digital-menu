@@ -9,15 +9,15 @@ import (
 func (c *Cache) CleanupExpiredItems() {
 	defer utils.TimeTrack(time.Now(), "[CACHE] All expired items are deleted")
 
-	c.cache.Range(func(key, value interface{}) bool {
+	c.Cache.Range(func(key, value interface{}) bool {
 		item, ok := value.(*cacheItem)
 		if !ok {
-			c.cache.Delete(key)
+			c.Cache.Delete(key)
 			return true
 		}
 
 		if time.Now().After(item.Expiration) {
-			c.cache.Delete(key)
+			c.Cache.Delete(key)
 		}
 
 		return true
@@ -25,7 +25,7 @@ func (c *Cache) CleanupExpiredItems() {
 }
 
 func (c *Cache) StartCleanupRoutine() {
-	ticker := time.NewTicker(c.cleanInterval)
+	ticker := time.NewTicker(c.CacheCleanDuration)
 	defer ticker.Stop()
 
 	for range ticker.C {
