@@ -1,6 +1,7 @@
 package userHandler
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -21,6 +22,7 @@ func (h *Handler) Login(c *gin.Context) {
 	var req types.LoginReq
 	err = utils.ValidateRequest(c, &req)
 	if err != nil {
+		fmt.Println("[ERROR LOGIN] : ", err.Error())
 		return
 	}
 

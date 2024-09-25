@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-50: 252 243 249;
+  --primary-100: 249 234 245;
+  --primary-200: 245 213 235;
+  --primary-300: 238 179 219;
+  --primary-400: 226 132 194;
+  --primary-500: 214 94 170;
+  --primary-600: 199 77 148;
+  --primary-700: 168 46 114;
+  --primary-800: 139 41 94;
+  --primary-900: 117 38 81;
+  --primary-950: 70 17 45;
+}
+
+.dark {
+  --primary-50: 17 32 34;
+  --primary-100: 37 59 60;
+  --primary-200: 40 70 71;
+  --primary-300: 46 86 87;
+  --primary-400: 53 108 108;
+  --primary-500: 67 132 131;
+  --primary-600: 95 162 160;
+  --primary-700: 136 192 189;
+  --primary-800: 181 218 214;
+  --primary-900: 218 237 235;
+  --primary-950: 244 249 248;
+}
+
+@layer base {
+  select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+}

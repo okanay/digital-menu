@@ -41,7 +41,6 @@ func (r *Repository) StartCleanupRoutine() {
 func (r *Repository) CleanupPasswordResetTokens() {
 	defer utils.TimeTrack(time.Now(), "[DB-CLEANUP] All unused password reset tokens are deleted")
 
-	fmt.Println("[DB-CLEANUP] Cleaning password reset tokens")
 	query := `DELETE FROM password_reset_tokens WHERE expires_at < NOW() OR is_used = true`
 	_, err := r.db.Exec(query)
 
@@ -52,6 +51,7 @@ func (r *Repository) CleanupPasswordResetTokens() {
 
 func (r *Repository) CleanupVerificationTokens() {
 	defer utils.TimeTrack(time.Now(), "[DB-CLEANUP] All unused verification tokens are deleted")
+
 	query := `DELETE FROM email_verification_tokens WHERE expires_at < NOW() OR is_used = true`
 	_, err := r.db.Exec(query)
 

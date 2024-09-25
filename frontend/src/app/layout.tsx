@@ -1,5 +1,8 @@
+import { Providers } from "@/providers";
+import { CheckUserIsLoggedIn } from "@/components/check-user-is-logged-in";
+
 import type { Metadata } from "next";
-import "../assets/styles/globals.css";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
@@ -9,14 +12,15 @@ export const metadata: Metadata = {
   description: "Free menu design for your restaurant, cafe, or bar.",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout(props: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <Providers>
+          {props.children}
+          <CheckUserIsLoggedIn />
+        </Providers>
+      </body>
     </html>
   );
 }

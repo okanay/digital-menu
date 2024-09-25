@@ -1,6 +1,6 @@
-/*!***************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[12].use[3]!./src/assets/styles/globals.css ***!
-  \***************************************************************************************************************************************************************************************************************************************************************************/
+/*!*****************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[12].use[3]!./src/app/globals.css ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************/
 /*
 ! tailwindcss v3.4.11 | MIT License | https://tailwindcss.com
 *//*
@@ -389,6 +389,11 @@ video {
 [hidden] {
   display: none;
 }
+  select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
 
 *, ::before, ::after {
   --tw-border-spacing-x: 0;
@@ -512,45 +517,77 @@ video {
 .justify-center {
   justify-content: center;
 }
+.justify-between {
+  justify-content: space-between;
+}
 .gap-2 {
   gap: 0.5rem;
 }
-.bg-white {
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+.gap-4 {
+  gap: 1rem;
+}
+.bg-primary-50 {
+  background-color: rgb(var(--primary-50));
+}
+.bg-primary-500 {
+  background-color: rgb(var(--primary-500));
+}
+.px-8 {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 .font-mono {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
 .text-lg {
   font-size: 1.125rem;
   line-height: 1.75rem;
+}
+.font-bold {
+  font-weight: 700;
 }
 .tracking-wide {
   letter-spacing: 0.025em;
 }
 
 :root {
+  --primary-50: 252 243 249;
+  --primary-100: 249 234 245;
+  --primary-200: 245 213 235;
+  --primary-300: 238 179 219;
+  --primary-400: 226 132 194;
+  --primary-500: 214 94 170;
+  --primary-600: 199 77 148;
+  --primary-700: 168 46 114;
+  --primary-800: 139 41 94;
+  --primary-900: 117 38 81;
+  --primary-950: 70 17 45;
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-    }
+.dark {
+  --primary-50: 17 32 34;
+  --primary-100: 37 59 60;
+  --primary-200: 40 70 71;
+  --primary-300: 46 86 87;
+  --primary-400: 53 108 108;
+  --primary-500: 67 132 131;
+  --primary-600: 95 162 160;
+  --primary-700: 136 192 189;
+  --primary-800: 181 218 214;
+  --primary-900: 218 237 235;
+  --primary-950: 244 249 248;
 }
 
-body {
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .dark\:bg-black {
-    --tw-bg-opacity: 1;
-    background-color: rgb(0 0 0 / var(--tw-bg-opacity));
-  }
-
-  .dark\:invert {
-    --tw-invert: invert(100%);
-    filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-  }
+.dark\:invert:is(.dark *) {
+  --tw-invert: invert(100%);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 

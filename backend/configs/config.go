@@ -22,7 +22,7 @@ const (
 	CLEANUP_TICKER_DURATION = 2 * time.Hour
 
 	// Rate Limit Rules
-	RATE_LIMIT          = 10
+	RATE_LIMIT          = 50
 	RATE_LIMIT_DURATION = 45 * time.Second
 
 	// Timeout Rules

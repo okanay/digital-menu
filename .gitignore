@@ -47,3 +47,5 @@ dist/
 
 # datagrip
 datagrip/
+
+.next/
