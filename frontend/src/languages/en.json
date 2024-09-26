@@ -1,5 +1,11 @@
 {
-  "HomePage": {
+  "root": {
+    "metadata": {
+      "title": "Hello world!",
+      "description": "This is a simple example of a web page."
+    }
+  },
+  "main-page": {
     "title": "Hello world!"
   }
 }

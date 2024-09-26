@@ -1,5 +1,11 @@
 {
-  "HomePage": {
-    "title": "Merhaba"
+  "root": {
+    "metadata": {
+      "title": "Merhaba dünya!",
+      "description": "Bu, bir web sayfasının basit bir örneğidir."
+    }
+  },
+  "main-page": {
+    "title": "Merhaba dünya!"
   }
 }

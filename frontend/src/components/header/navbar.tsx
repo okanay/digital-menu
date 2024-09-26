@@ -1,30 +1,24 @@
 "use client";
-import LoginRequest from "@/utils/login-request";
-import { useAuth } from "@/hooks/use-auth";
+
+import { useLanguage } from "@/hooks/use-language";
 
 const Navbar: React.FC = () => {
-  const auth = useAuth();
-
-  const handleSignIn = async () => {
-    await LoginRequest(auth, {
-      email: "okanay@hotmail.com",
-      password: "admin1234",
-    });
-  };
+  const { setLocale } = useLanguage();
 
   return (
-    <nav className="flex items-center justify-between">
-      <div className="flex items-center gap-4">
-        {auth.session === "loading" && <div>Loading...</div>}
-
-        {auth.session === "authorize" && (
-          <button onClick={auth.signOut}>Sign Out</button>
-        )}
-
-        {auth.session === "unauthorize" && (
-          <button onClick={handleSignIn}>Sign In</button>
-        )}
-      </div>
+    <nav className="flex items-center justify-between gap-2">
+      <button
+        onClick={() => setLocale("en")}
+        className="border-primary-950/10 size-8 rounded border"
+      >
+        🇺🇸
+      </button>
+      <button
+        onClick={() => setLocale("tr")}
+        className="border-primary-950/10 size-8 rounded border"
+      >
+        🇹🇷
+      </button>
     </nav>
   );
 };
