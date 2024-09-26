@@ -1,24 +1,21 @@
 "use client";
 
+import { useAuth } from "@/hooks/use-auth";
 import { useLanguage } from "@/hooks/use-language";
 
 const Navbar: React.FC = () => {
   const { setLocale } = useLanguage();
+  const { session, user } = useAuth();
 
   return (
     <nav className="flex items-center justify-between gap-2">
-      <button
-        onClick={() => setLocale("en")}
-        className="border-primary-950/10 size-8 rounded border"
-      >
-        🇺🇸
-      </button>
-      <button
-        onClick={() => setLocale("tr")}
-        className="border-primary-950/10 size-8 rounded border"
-      >
-        🇹🇷
-      </button>
+      {session === "authorize" && (
+        <div className="flex items-center gap-2">Logout</div>
+      )}
+
+      {session === "unauthorize" && (
+        <div className="flex items-center gap-2">Login</div>
+      )}
     </nav>
   );
 };

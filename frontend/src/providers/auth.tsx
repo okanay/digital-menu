@@ -14,10 +14,14 @@ export const AuthContext = createContext<{
   signOut: () => void;
 } | null>(null);
 
+interface Props extends PropsWithChildren {
+  user: User | null;
+  session: SessionType;
+}
 
-export function AuthProvider(props: PropsWithChildren) {
-  const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<SessionType>("loading");
+export function AuthProvider(props: Props) {
+  const [user, setUser] = useState<User | null>(props.user);
+  const [session, setSession] = useState<SessionType>(props.session);
 
   const signIn = (user: User) => {
     setUser(user);

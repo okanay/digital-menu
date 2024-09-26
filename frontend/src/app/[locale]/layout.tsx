@@ -1,34 +1,37 @@
-import { getMessages, getTranslations } from "next-intl/server";
+// prettier-ignore
+import { getMessages, getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
-import { type Metadata } from "next";
-import "./globals.css";
+import { ReactNode } from "react";
+import { routing } from "@/i18n/routing";
 
-type i18Metadata = {
-  params: { locale: Locale };
+type Props = {
+  children: ReactNode;
+  params: { locale: string };
 };
 
-// prettier-ignore
-export async function generateMetadata({ params: { locale }}: i18Metadata): Promise<Metadata> {
-  const t = await getTranslations({ locale, namespace: "root" });
+type i18nMetadata = Omit<Props, "children">;
+
+export async function generateMetadata(props: i18nMetadata) {
+  const t = await getTranslations({
+    locale: props.params.locale,
+    namespace: "root.metadata",
+  });
 
   return {
-    title: t("metadata.title"),
-    description: t("metadata.description"),
+    title: t("title"),
   };
 }
 
-type Props = {
-  children: React.ReactNode;
-  params: {
-    locale: Locale;
-  };
-};
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
 
-const RootLayout: React.FC<Props> = async (props) => {
+export default async function LocaleLayout(props: Props) {
+  unstable_setRequestLocale(props.params.locale);
   const messages = await getMessages();
 
   return (
-    <html lang={props.params.locale} suppressHydrationWarning>
+    <html lang={props.params.locale}>
       <body>
         <NextIntlClientProvider messages={messages}>
           {props.children}
@@ -36,6 +39,4 @@ const RootLayout: React.FC<Props> = async (props) => {
       </body>
     </html>
   );
-};
-
-export default RootLayout;
+}
