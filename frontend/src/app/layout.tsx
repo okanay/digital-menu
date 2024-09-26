@@ -1,5 +1,5 @@
-import { Providers } from "@/providers";
-import { CheckUserIsLoggedIn } from "@/components/check-user-is-logged-in";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
 
 import type { Metadata } from "next";
 import "./globals.css";
@@ -12,14 +12,16 @@ export const metadata: Metadata = {
   description: "Free menu design for your restaurant, cafe, or bar.",
 };
 
-export default function RootLayout(props: { children: React.ReactNode }) {
+export default async function RootLayout(props: { children: React.ReactNode }) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <body>
-        <Providers>
+        <NextIntlClientProvider messages={messages}>
           {props.children}
-          <CheckUserIsLoggedIn />
-        </Providers>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

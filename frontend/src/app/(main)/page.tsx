@@ -1,7 +1,11 @@
-export default function Home() {
+import { useTranslations } from "next-intl";
+
+export default function MainPage() {
+  const t = useTranslations("HomePage");
+
   return (
     <main className="flex h-screen flex-col items-center justify-center gap-2 bg-primary-50">
-      <p className="font-mono text-lg tracking-wide">Coming soon...</p>
+      <h1>{t("title")}</h1>
     </main>
   );
 }
