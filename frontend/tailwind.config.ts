@@ -10,12 +10,11 @@ const config: Config = {
   theme: {
     extend: {
       screens: {
-        xs: "320px",
-        sm: "360px",
-        md: "400px",
-        lg: "640px",
-        xl: "768px",
-        "2xl": "1024px",
+        xsp: "320px",
+        smp: "360px",
+        mdp: "380px",
+        lgp: "420px",
+        xlp: "440px",
       },
       colors: {
         primary: setColors("primary"),

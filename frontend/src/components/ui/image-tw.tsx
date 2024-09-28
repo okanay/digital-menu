@@ -9,7 +9,8 @@ export const ImageTW: React.FC<ImageProps> = ({ className, ...props }) => {
       width="0"
       height="0"
       sizes="100vw"
-      priority
+      // placeholder="blur"
+      // priority
     />
   );
 };

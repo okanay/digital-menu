@@ -6,7 +6,7 @@ import { ButtonPrimary, ButtonSecondary } from "@/components/ui/buttons";
 
 export const Account: React.FC = () => {
   return (
-    <ul className="hidden items-center justify-end gap-4 2xl:flex">
+    <ul className="hidden items-center justify-end gap-4 lg:flex">
       <li>
         <ThemeSwitcher />
       </li>

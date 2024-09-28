@@ -31,7 +31,7 @@ export const LanguageSwitcher: React.FC = () => {
       <div className="group">
         <ModalExplanation>Switch Language</ModalExplanation>
         <button
-          className="border-corner/10 bg-fill inline-flex items-center justify-center rounded-md border px-4 py-2 text-sm transition-all duration-300 hover:opacity-75 active:scale-95"
+          className="inline-flex h-[2.5rem] items-center justify-center rounded-md border border-corner/10 bg-fill px-4 py-2 text-sm transition-all duration-300 hover:opacity-75 active:scale-95"
           onClick={() => setOpen(!open)}
         >
           <ImageTW
@@ -44,11 +44,11 @@ export const LanguageSwitcher: React.FC = () => {
 
       {open && (
         <div className="absolute right-0 mt-1.5 w-24 origin-top-right">
-          <div className="border-corner/10 bg-fill flex flex-col items-start rounded border text-sm">
+          <div className="flex flex-col items-start rounded border border-corner/10 bg-fill text-sm">
             {languageOptions.map((option) => (
               <button
                 key={option.language}
-                className="bg-fill-primary/0 hover:bg-fill-primary/30 group flex w-full items-center gap-2 px-2 py-1.5 transition-colors duration-300"
+                className="group flex w-full items-center gap-2 bg-fill-primary/0 px-2 py-1.5 transition-colors duration-300 hover:bg-fill-primary/30"
                 onClick={() => {
                   setOpen(false);
                   setLocal(option.language);

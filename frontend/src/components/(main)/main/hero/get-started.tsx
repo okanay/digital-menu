@@ -1,4 +1,4 @@
-import { ButtonPrimary } from "@/components/ui/buttons";
+import { ButtonPrimary, ButtonSecondary } from "@/components/ui/buttons";
 
 export const GetStarted: React.FC = () => {
   return (
@@ -7,9 +7,9 @@ export const GetStarted: React.FC = () => {
         Enhance your business's efficiency and customer experience with our QR
         menus solutions.
       </p>
-      <ButtonPrimary className="rounded-lg px-8 text-xl lg:text-3xl">
+      <ButtonSecondary className="dark:to- h-fit rounded-lg border-primary-400 px-8 py-3 text-xl shadow shadow-primary-200 dark:border-primary-50 dark:from-zinc-950 dark:to-primary-950 dark:shadow-primary-50/50 lg:text-2xl">
         Try for Free
-      </ButtonPrimary>
+      </ButtonSecondary>
       <span className="font-custom-mono text-xs text-font-secondary">
         Start your 14-day free trial. <br /> No credit card required.
       </span>

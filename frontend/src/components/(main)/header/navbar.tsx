@@ -28,9 +28,9 @@ const Navbar: React.FC = () => {
   return (
     <nav className="">
       <ul className="flex items-center gap-8 text-sm tracking-wide">
-        <Link href="/">
+        <Link href="/" className="h-[32px] w-[120px] sm:h-[40px] sm:w-[160px]">
           <ImageTW
-            className="w-40 dark:invert"
+            className="w-full dark:invert"
             src="/logo.png"
             alt="Menu Arts Logo"
           />
@@ -38,7 +38,7 @@ const Navbar: React.FC = () => {
         {navItems.map((item, index) => (
           <li
             key={item.name}
-            className="hidden transition-all duration-300 hover:opacity-50 active:scale-95 lg:block"
+            className="hidden text-font-primary transition-all duration-300 hover:opacity-50 active:scale-95 sm:block"
           >
             <Link href={item.link}>{item.name}</Link>
           </li>
