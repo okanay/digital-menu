@@ -26,13 +26,6 @@ export async function generateMetadata(props: i18nMetadata): Promise<Metadata> {
   };
 }
 
-export const viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#000000" },
-  ],
-};
-
 export default async function LocaleLayout(props: Props) {
   unstable_setRequestLocale(props.params.locale);
   const messages = await getMessages();
@@ -52,6 +45,6 @@ export default async function LocaleLayout(props: Props) {
   );
 }
 
-export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }));
-}
+// export function generateStaticParams() {
+//   return routing.locales.map((locale) => ({ locale }));
+// }
