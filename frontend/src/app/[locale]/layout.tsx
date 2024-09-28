@@ -1,7 +1,7 @@
 // prettier-ignore
 import { getMessages, getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import { routing } from "@/providers/i18n/routing";
-
+import { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { ReactNode } from "react";
 import fontSans from "@/assets/fonts/sans";
@@ -15,7 +15,7 @@ type Props = {
 
 type i18nMetadata = Omit<Props, "children">;
 
-export async function generateMetadata(props: i18nMetadata) {
+export async function generateMetadata(props: i18nMetadata): Promise<Metadata> {
   const t = await getTranslations({
     locale: props.params.locale,
     namespace: "root.metadata",
@@ -26,9 +26,12 @@ export async function generateMetadata(props: i18nMetadata) {
   };
 }
 
-export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }));
-}
+export const viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+  ],
+};
 
 export default async function LocaleLayout(props: Props) {
   unstable_setRequestLocale(props.params.locale);
@@ -47,4 +50,8 @@ export default async function LocaleLayout(props: Props) {
       </body>
     </html>
   );
+}
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
 }

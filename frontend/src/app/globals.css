@@ -15,17 +15,19 @@
   --primary-900: 111 44 80;
   --primary-950: 66 21 45;
 
-  --corner-default: 25 25 25; /* Çok koyu gri, neredeyse siyah */
-  --corner-primary: 55 55 55; /* Koyu gri */
-  --corner-secondary: 95 95 95; /* Orta-koyu gri */
+  --corner-default: 25 25 25;
+  --corner-primary: 55 55 55;
+  --corner-secondary: 95 95 95;
 
-  --fill-default: 244 244 244; /* Açık gri, neredeyse beyaz */
-  --fill-primary: 200 200 200; /* Orta açık gri */
-  --fill-secondary: 160 160 160; /* Orta gri */
+  --fill-default: 226 226 226;
+  --fill-primary: 200 200 200;
+  --fill-secondary: 160 160 160;
 
-  --font-default: 24 24 24; /* Koyu gri, neredeyse siyah */
-  --font-primary: 64 64 64; /* Orta koyu gri */
-  --font-secondary: 110 110 110; /* Orta gri */
+  --font-default: 25 25 25;
+  --font-primary: 55 55 55;
+  --font-secondary: 95 95 95;
+
+  --background-color: #ffffff;
 }
 
 .dark {
@@ -41,20 +43,26 @@
   --primary-900: 29 68 61;
   --primary-950: 11 35 35;
 
-  --corner-default: 244 244 244; /* Açık gri, neredeyse beyaz */
-  --corner-primary: 200 200 200; /* Orta açık gri */
-  --corner-secondary: 160 160 160; /* Orta gri */
+  --corner-default: 244 244 244;
+  --corner-primary: 200 200 200;
+  --corner-secondary: 160 160 160;
 
-  --fill-default: 25 25 25; /* Çok koyu gri, neredeyse siyah */
-  --fill-primary: 55 55 55; /* Koyu gri */
-  --fill-secondary: 95 95 95; /* Orta-koyu gri */
+  --fill-default: 25 25 25;
+  --fill-primary: 55 55 55;
+  --fill-secondary: 95 95 95;
 
-  --font-default: 226 226 226; /* Çok açık gri, neredeyse beyaz */
-  --font-primary: 200 200 200; /* Açık gri */
-  --font-secondary: 160 160 160; /* Orta-açık gri */
+  --font-default: 226 226 226;
+  --font-primary: 200 200 200;
+  --font-secondary: 160 160 160;
+
+  --background-color: #000000;
 }
 
 @layer base {
+  body {
+    background-color: var(--background-color);
+  }
+
   select {
     -webkit-appearance: none;
     -moz-appearance: none;
