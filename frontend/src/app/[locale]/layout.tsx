@@ -1,8 +1,12 @@
 // prettier-ignore
 import { getMessages, getTranslations, unstable_setRequestLocale } from "next-intl/server";
+import { routing } from "@/providers/i18n/routing";
+
 import { NextIntlClientProvider } from "next-intl";
 import { ReactNode } from "react";
-import { routing } from "@/i18n/routing";
+import fontSans from "@/assets/fonts/sans";
+import fontSerif from "@/assets/fonts/serif";
+import fontMono from "@/assets/fonts/mono";
 
 type Props = {
   children: ReactNode;
@@ -31,8 +35,12 @@ export default async function LocaleLayout(props: Props) {
   const messages = await getMessages();
 
   return (
-    <html lang={props.params.locale}>
-      <body>
+    <html
+      lang={props.params.locale}
+      suppressHydrationWarning
+      className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable}`}
+    >
+      <body className="bg-white text-font dark:bg-black">
         <NextIntlClientProvider messages={messages}>
           {props.children}
         </NextIntlClientProvider>

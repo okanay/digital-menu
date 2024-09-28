@@ -3,13 +3,11 @@
 import { LogoutRequest } from "@/utils/logout-request";
 import { createContext, PropsWithChildren, useState } from "react";
 
-export type SessionType = "loading" | "authorize" | "unauthorize";
+export type SessionType = "authorize" | "unauthorize";
 
 export const AuthContext = createContext<{
   user: User | null;
   session: SessionType;
-  setUser: (user: User | null) => void;
-  setSession: (session: SessionType) => void;
   signIn: (user: User) => void;
   signOut: () => void;
 } | null>(null);
@@ -31,14 +29,12 @@ export function AuthProvider(props: Props) {
   const signOut = () => {
     setUser(null);
     setSession("unauthorize");
-    LogoutRequest().then(() => console.log("[AUTH] Credentials deleted"));
+    LogoutRequest();
   };
 
   const value = {
     user,
     session,
-    setUser,
-    setSession,
     signIn,
     signOut,
   };

@@ -10,14 +10,35 @@ const config: Config = {
   theme: {
     extend: {
       screens: {
-        "xs-phone": "320px",
-        "sm-phone": "360px",
-        "base-phone": "400px",
-        "lg-phone": "440px",
-        "xl-phone": "480px",
+        xs: "320px",
+        sm: "360px",
+        md: "400px",
+        lg: "640px",
+        xl: "768px",
+        "2xl": "1024px",
       },
       colors: {
         primary: setColors("primary"),
+        font: {
+          DEFAULT: "rgb(var(--corner-default))",
+          primary: "rgb(var(--font-primary))",
+          secondary: "rgb(var(--font-secondary))",
+        },
+        fill: {
+          DEFAULT: "rgb(var(--fill-default))",
+          primary: "rgb(var(--fill-primary))",
+          secondary: "rgb(var(--fill-secondary))",
+        },
+        corner: {
+          DEFAULT: "rgb(var(--corner-default))",
+          primary: "rgb(var(--corner-primary))",
+          secondary: "rgb(var(--corner-secondary))",
+        },
+      },
+      fontFamily: {
+        "custom-serif": ["var(--font-serif)"],
+        "custom-sans": ["var(--font-sans)"],
+        "custom-mono": ["var(--font-mono)"],
       },
     },
   },
@@ -25,8 +46,7 @@ const config: Config = {
 };
 export default config;
 
-
-function setColors(color : string) {
+function setColors(color: string) {
   return {
     50: `rgb(var(--${color}-50))`,
     100: `rgb(var(--${color}-100))`,

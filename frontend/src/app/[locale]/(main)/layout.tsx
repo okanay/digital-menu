@@ -1,4 +1,5 @@
-import { Header } from "@/components/header";
+import { Footer } from "@/components/(main)/footer";
+import { Header } from "@/components/(main)/header";
 import { MainProviders } from "@/providers";
 
 export default function AppLayout(props: { children: React.ReactNode }) {
@@ -6,6 +7,7 @@ export default function AppLayout(props: { children: React.ReactNode }) {
     <MainProviders>
       <Header />
       {props.children}
+      <Footer />
     </MainProviders>
   );
 }
