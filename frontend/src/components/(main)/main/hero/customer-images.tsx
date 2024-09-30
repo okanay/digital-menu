@@ -1,4 +1,11 @@
-import { ImageTW } from "@/components/ui/image-tw";
+import Image from "next/image";
+import min1 from "../../../../../public/images/1-min.png";
+import min2 from "../../../../../public/images/2-min.png";
+import min3 from "../../../../../public/images/3-min.png";
+import min4 from "../../../../../public/images/4-min.png";
+import min5 from "../../../../../public/images/5-min.png";
+import min6 from "../../../../../public/images/6-min.png";
+import min7 from "../../../../../public/images/7-min.png";
 
 export const CustomerImages: React.FC = () => {
   return (
@@ -25,10 +32,10 @@ export const CustomerImages: React.FC = () => {
           }}
           className="relative flex-shrink-0 rounded-full bg-primary-100 dark:bg-primary-950"
         >
-          <ImageTW
-            src="/images/7-min.png"
+          <Image
+            src={min7}
             alt="Customers Image"
-            loading="lazy"
+            placeholder={"blur"}
             className="absolute left-0 top-0 h-full w-full rounded-full object-cover"
           />
           <span
@@ -48,10 +55,10 @@ export const CustomerImages: React.FC = () => {
           }}
           className="relative flex-shrink-0 overflow-hidden rounded-full bg-primary-100 dark:bg-primary-950"
         >
-          <ImageTW
-            src="/images/2-min.png"
+          <Image
+            src={min2}
             alt="Customer Image"
-            loading="lazy"
+            placeholder={"blur"}
             className="absolute left-0 top-0 h-full w-full object-cover"
           />
         </div>
@@ -67,10 +74,10 @@ export const CustomerImages: React.FC = () => {
           }}
           className="relative overflow-hidden rounded-full bg-primary-100 dark:bg-primary-950"
         >
-          <ImageTW
-            src="/images/1-min.png"
+          <Image
+            src={min1}
             alt="Customer Image"
-            loading="lazy"
+            placeholder={"blur"}
             className="absolute left-0 top-0 h-full w-full object-cover"
           />
         </div>
@@ -81,10 +88,10 @@ export const CustomerImages: React.FC = () => {
           }}
           className="relative overflow-hidden rounded-full bg-primary-100 dark:bg-primary-950"
         >
-          <ImageTW
-            src="/images/3-min.png"
+          <Image
+            src={min3}
             alt="Customer Image"
-            loading="lazy"
+            placeholder={"blur"}
             className="absolute left-0 top-0 h-full w-full object-cover"
           />
         </div>
@@ -103,10 +110,10 @@ export const CustomerImages: React.FC = () => {
           }}
           className="relative overflow-hidden rounded-full bg-primary-100 dark:bg-primary-950"
         >
-          <ImageTW
-            src="/images/4-min.png"
+          <Image
+            src={min4}
             alt="Customer Image"
-            loading="lazy"
+            placeholder={"blur"}
             className="absolute left-0 top-0 h-full w-full object-cover"
           />
         </div>
@@ -118,10 +125,10 @@ export const CustomerImages: React.FC = () => {
           }}
           className="relative rounded-full bg-primary-100 dark:bg-primary-950"
         >
-          <ImageTW
-            src="/images/5-min.png"
+          <Image
+            src={min5}
             alt="Customer Image"
-            loading="lazy"
+            placeholder={"blur"}
             className="absolute left-0 top-0 h-full w-full rounded-full object-cover"
           />
           <span

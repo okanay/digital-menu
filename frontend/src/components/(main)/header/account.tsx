@@ -3,6 +3,7 @@
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { ButtonPrimary, ButtonSecondary } from "@/components/ui/buttons";
+import { Link } from "@/providers/i18n/routing";
 
 export const Account: React.FC = () => {
   return (
@@ -14,10 +15,14 @@ export const Account: React.FC = () => {
         <LanguageSwitcher />
       </li>
       <li>
-        <ButtonPrimary>Sign up</ButtonPrimary>
+        <Link href={"/sign-up"}>
+          <ButtonPrimary>Sign Up</ButtonPrimary>
+        </Link>
       </li>
       <li className="-ml-2">
-        <ButtonSecondary>Log in</ButtonSecondary>
+        <Link href={"/sign-in"}>
+          <ButtonSecondary>Sign In</ButtonSecondary>
+        </Link>
       </li>
     </ul>
   );

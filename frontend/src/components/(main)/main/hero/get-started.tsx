@@ -7,7 +7,13 @@ export const GetStarted: React.FC = () => {
         Enhance your business's efficiency and customer experience with our QR
         menus solutions.
       </p>
-      <ButtonSecondary className="dark:to- h-fit rounded-lg border-primary-400 px-8 py-3 text-xl shadow shadow-primary-200 dark:border-primary-50 dark:from-zinc-950 dark:to-primary-950 dark:shadow-primary-50/50 lg:text-2xl">
+      <ButtonSecondary
+        style={{
+          width: "clamp(11.25rem, 10.4167rem + 4.1667vw, 13.75rem)",
+          height: "clamp(2.75rem, 2.5rem + 1.25vw, 3.5rem)",
+        }}
+        className="rounded-lg border-primary-500 from-zinc-50 to-primary-50 text-xl shadow-lg shadow-primary-500/30 dark:border-primary-100 dark:from-zinc-900 dark:to-zinc-800 dark:shadow-primary-100/20 lg:text-2xl"
+      >
         Try for Free
       </ButtonSecondary>
       <span className="font-custom-mono text-xs text-font-secondary">

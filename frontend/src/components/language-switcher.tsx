@@ -2,7 +2,7 @@
 
 import useClickOutside from "@/hooks/use-click-outside";
 import { useCallback, useState } from "react";
-import { ImageTW } from "./ui/image-tw";
+import { IconImage } from "./ui/icon-image";
 import { ModalExplanation } from "./ui/modal-explanation";
 import { useLanguage } from "@/hooks/use-language";
 
@@ -31,10 +31,10 @@ export const LanguageSwitcher: React.FC = () => {
       <div className="group">
         <ModalExplanation>Switch Language</ModalExplanation>
         <button
-          className="inline-flex h-[2.5rem] items-center justify-center rounded-md border border-corner/10 bg-fill px-4 py-2 text-sm transition-all duration-300 hover:opacity-75 active:scale-95"
+          className="inline-flex h-[2.5rem] items-center justify-center rounded-lg border border-corner/10 bg-fill px-4 py-2 text-sm transition-all duration-300 hover:opacity-75 active:scale-95"
           onClick={() => setOpen(!open)}
         >
-          <ImageTW
+          <IconImage
             src={"/svgs/globe.svg"}
             alt="moon svg"
             className="w-5 dark:invert"
@@ -54,7 +54,7 @@ export const LanguageSwitcher: React.FC = () => {
                   setLocal(option.language);
                 }}
               >
-                <ImageTW
+                <IconImage
                   alt={`${option.label} svg`}
                   src={option.svg}
                   className="w-4 transition-all duration-300 group-active:scale-90"

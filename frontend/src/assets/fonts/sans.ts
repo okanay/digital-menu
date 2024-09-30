@@ -1,8 +1,8 @@
-import { Noto_Sans } from "next/font/google";
+import { Raleway } from "next/font/google";
 
-const fontSans = Noto_Sans({
+const fontSans = Raleway({
   subsets: ["latin-ext"],
-  weight: ["300", "500", "700", "900"],
+  weight: ["200", "500", "600", "800"],
   fallback: ["sans-serif"],
   variable: "--font-sans",
 });

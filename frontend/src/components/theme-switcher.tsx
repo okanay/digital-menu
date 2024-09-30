@@ -3,7 +3,7 @@
 import useClickOutside from "@/hooks/use-click-outside";
 import { useTheme } from "next-themes";
 import { useCallback, useState } from "react";
-import { ImageTW } from "./ui/image-tw";
+import { IconImage } from "./ui/icon-image";
 import { ModalExplanation } from "./ui/modal-explanation";
 
 const themeOptions = [
@@ -24,15 +24,15 @@ export const ThemeSwitcher: React.FC = () => {
       <div className="group">
         <ModalExplanation>Switch Theme</ModalExplanation>
         <button
-          className="inline-flex h-[2.5rem] items-center justify-center rounded-md border border-corner/10 bg-fill px-4 py-2 text-sm transition-all duration-300 hover:opacity-75 active:scale-95"
+          className="inline-flex h-[2.5rem] items-center justify-center rounded-lg border border-corner/10 bg-fill px-4 py-2 text-sm transition-all duration-300 hover:opacity-75 active:scale-95"
           onClick={() => setOpen(!open)}
         >
-          <ImageTW
+          <IconImage
             src={"/svgs/moon.svg"}
             alt="moon svg"
             className="hidden w-5 dark:block dark:invert"
           />
-          <ImageTW
+          <IconImage
             src={"/svgs/sun.svg"}
             alt="sun svg"
             className="block w-5 dark:hidden dark:invert"
@@ -51,7 +51,7 @@ export const ThemeSwitcher: React.FC = () => {
                   setOpen(false);
                 }}
               >
-                <ImageTW
+                <IconImage
                   alt={`${option.label} svg`}
                   src={option.svg}
                   className="w-4 transition-all duration-300 group-active:scale-90 dark:invert"

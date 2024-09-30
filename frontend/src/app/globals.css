@@ -5,7 +5,7 @@
 :root {
   --primary-50: 252 243 248;
   --primary-100: 250 233 242;
-  --primary-200: 246 212 230;
+  --primary-200: 246 212 230; /* F6D4E6 */
   --primary-300: 240 177 209;
   --primary-400: 233 149 190;
   --primary-500: 217 91 149;
@@ -33,7 +33,7 @@
 .dark {
   --primary-50: 242 251 248;
   --primary-100: 212 243 233;
-  --primary-200: 168 231 211;
+  --primary-200: 168 231 211; /* 206557 */
   --primary-300: 117 211 184;
   --primary-400: 90 191 165;
   --primary-500: 47 157 131;
@@ -61,6 +61,14 @@
 @layer base {
   body {
     background-color: var(--background-color);
+  }
+
+  * {
+    @apply focus:rounded-lg focus:outline-offset-8 focus:outline-primary-400 dark:focus:outline-primary-600;
+  }
+
+  img {
+    @apply pointer-events-none;
   }
 
   select {

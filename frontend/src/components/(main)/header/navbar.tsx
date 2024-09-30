@@ -1,4 +1,4 @@
-import { ImageTW } from "@/components/ui/image-tw";
+import { BrandLogo } from "@/components/ui/brand-logo";
 import { Link } from "@/providers/i18n/routing";
 
 const navItems = [
@@ -28,13 +28,7 @@ const Navbar: React.FC = () => {
   return (
     <nav className="">
       <ul className="flex items-center gap-8 text-sm tracking-wide">
-        <Link href="/" className="h-[32px] w-[120px] sm:h-[40px] sm:w-[160px]">
-          <ImageTW
-            className="w-full dark:invert"
-            src="/logo.png"
-            alt="Menu Arts Logo"
-          />
-        </Link>
+        <BrandLogo />
         {navItems.map((item, index) => (
           <li
             key={item.name}
