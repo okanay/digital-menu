@@ -83,8 +83,8 @@ func main() {
 	// User Routes
 	auth.GET("/check", authHandler.Check)
 	auth.POST("/logout", authHandler.Logout)
-	verifyMail.POST("/reset-password", authHandler.ResetPassword)
-	verifyMail.POST("/reset-password-request", authHandler.ResetPasswordRequest)
+	verifyMail.POST("/password-reset", authHandler.ResetPassword)
+	verifyMail.POST("/password-reset-request", authHandler.ResetPasswordRequest)
 	router.POST("/verify-email-request", authHandler.SendEmailVerify)
 	router.POST("/verify-email", authHandler.VerifyEmail)
 	router.POST("/login", authHandler.Login)

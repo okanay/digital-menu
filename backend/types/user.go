@@ -32,12 +32,12 @@ type UserResponse struct {
 
 type CreateUserReq struct {
 	Email    string `json:"email" validate:"required,email"`
-	Password string `json:"password" validate:"required,min=8,max=32"`
+	Password string `json:"password" validate:"required,min=8,max=20"`
 }
 
 type LoginReq struct {
 	Email    string `json:"email" validate:"required,email"`
-	Password string `json:"password" validate:"required,min=8,max=32"`
+	Password string `json:"password" validate:"required,min=8,max=20"`
 }
 
 type RequestForgotPasswordReq struct {
@@ -58,9 +58,8 @@ type ResetPasswordMail struct {
 }
 
 type ResetPasswordReq struct {
-	Email    string `json:"email" validate:"required,email"`
 	Token    string `json:"token" validate:"required"`
-	Password string `json:"password" validate:"required,min=8,max=32"`
+	Password string `json:"password" validate:"required,min=8,max=20"`
 }
 
 type EmailVerification struct {

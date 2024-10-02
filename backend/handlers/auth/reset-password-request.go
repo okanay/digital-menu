@@ -20,7 +20,7 @@ func (h *Handler) ResetPasswordRequest(c *gin.Context) {
 	go func() {
 		mail := mail.ResetMailRequest{
 			To:       user.Email,
-			Title:    "Reset Password : " + token.Token,
+			Title:    "Password Reset Request",
 			Token:    token.Token,
 			ExpireAt: token.ExpiresAt,
 		}

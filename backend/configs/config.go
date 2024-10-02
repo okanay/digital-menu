@@ -9,7 +9,7 @@ const (
 	// Statistics Rules
 	STATISTICS_ACTIVE              = true
 	STATISTICS_MAX_GOROUTINE_COUNT = 20
-	STATISTICS_LAST_SEEN_TICKER    = 30 * time.Second
+	STATISTICS_LAST_SEEN_TICKER    = 5 * time.Minute
 	STATISTICS_LAST_LOGIN_TICKER   = 30 * time.Minute
 	STATISTICS_VISITOR_MENU_TICKER = 15 * time.Minute
 

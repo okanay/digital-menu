@@ -1,10 +1,9 @@
 import { BrandLogo } from "@/components/ui/brand-logo";
-import { ButtonPrimary } from "@/components/ui/buttons";
-import { IconImage } from "@/components/ui/icon-image";
-import { Link } from "@/providers/i18n/routing";
+import { FormHR } from "../ui/form-hr";
 import Image from "next/image";
 import ilDark from "../../../../public/illustration/il-2-dark.svg";
 import ilLight from "../../../../public/illustration/il-2-light.svg";
+import { SignUpForm } from "./form";
 
 type Props = {
   locale: string;
@@ -26,63 +25,10 @@ export const SignUp: React.FC<Props> = () => {
           className="-mt-12 hidden h-[360px] w-screen bg-primary-950/50 object-fill dark:block"
           priority
         />
-        <form className="flex w-full flex-col gap-8 px-4 pt-6">
-          <h3 className="text-3xl font-semibold tracking-wide text-primary-400">
-            Sign Up
-          </h3>
-
-          <div className="relative flex items-center">
-            <input
-              name="email"
-              type="text"
-              required
-              className="w-full rounded-none border-b border-corner/20 bg-white/0 px-2 py-3 text-sm outline-none focus:border-primary-500 focus:outline-none dark:bg-black/0"
-              placeholder="Enter email"
-            />
-            <IconImage
-              src={"/svgs/email.svg"}
-              alt={"email-svg-icon"}
-              className="absolute right-0 top-0 size-5 translate-y-[50%] contrast-[60%] dark:invert"
-            />
-          </div>
-
-          <div className="relative flex items-center">
-            <input
-              name="password"
-              type="password"
-              required
-              className="w-full rounded-none border-b border-corner/20 bg-white/0 px-2 py-3 text-sm outline-none focus:border-primary-500 focus:outline-none dark:bg-black/0"
-              placeholder="Enter password"
-            />
-            <IconImage
-              src={"/svgs/password.svg"}
-              alt={"password-svg-icon"}
-              className="absolute right-0 top-0 size-5 translate-y-[50%] contrast-[60%] dark:invert"
-            />
-          </div>
-
-          <ButtonPrimary className="h-[52px] w-full text-lg font-semibold">
-            Sign Up
-          </ButtonPrimary>
-
-          <div className="flex flex-col items-center gap-1 text-center text-sm">
-            <Link
-              href={"/email-verify"}
-              className="font-semibold text-primary-400"
-            >
-              Send verification email.
-            </Link>
-            <p className="max-w-[320px] text-wrap">
-              Already have an account?{" "}
-              <Link href={"sign-in"} className="font-semibold text-primary-400">
-                login here
-              </Link>
-            </p>
-          </div>
-        </form>
-        <hr className="my-6 border-corner/10" />
+        <SignUpForm />
+        <FormHR />
         <div className="flex items-center justify-center">
-          <BrandLogo className="contrast-[60%]" />
+          <BrandLogo />
         </div>
       </div>
     </div>

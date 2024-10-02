@@ -11,7 +11,7 @@ func (r *Repository) CreateResetToken(email string) (types.ResetPassword, error)
 	defer utils.TimeTrack(time.Now(), "User -> Create Reset Token")
 	var rp types.ResetPassword
 
-	token := utils.GenerateRandomInt(10000, 99999)
+	token := utils.GenerateRandomString(20)
 	query := `INSERT INTO password_reset_tokens (email, token) VALUES ($1, $2) RETURNING *`
 
 	row := r.db.QueryRow(query, email, token)

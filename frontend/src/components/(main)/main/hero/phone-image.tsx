@@ -14,7 +14,8 @@ export const PhoneImage: React.FC = () => {
         src={phone}
         alt="iPhone Empty Screen"
         className="h-full w-full object-contain"
-        loading="lazy"
+        priority
+        loading="eager"
       />
     </div>
   );

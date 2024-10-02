@@ -1,9 +1,9 @@
 "use client";
 
 import { LogoutRequest } from "@/utils/logout-request";
-import { createContext, PropsWithChildren, useState } from "react";
+import { createContext, PropsWithChildren, useEffect, useState } from "react";
 
-export type SessionType = "authorize" | "unauthorize";
+export type SessionType = "authorize" | "unauthorize" | "loading";
 
 export const AuthContext = createContext<{
   user: User | null;
@@ -21,15 +21,16 @@ export function AuthProvider(props: Props) {
   const [user, setUser] = useState<User | null>(props.user);
   const [session, setSession] = useState<SessionType>(props.session);
 
+  const signOut = () => {
+    LogoutRequest().then(() => {
+      setUser(null);
+      setSession("unauthorize");
+    });
+  };
+
   const signIn = (user: User) => {
     setUser(user);
     setSession("authorize");
-  };
-
-  const signOut = () => {
-    setUser(null);
-    setSession("unauthorize");
-    LogoutRequest();
   };
 
   const value = {

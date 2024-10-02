@@ -1,3 +1,3 @@
 export default function SignLayout(props: { children: React.ReactNode }) {
-  return props.children;
+  return <>{props.children}</>;
 }

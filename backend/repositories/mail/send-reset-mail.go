@@ -17,14 +17,14 @@ type ResetMailRequest struct {
 }
 
 func (r *Repository) SendResetPasswordMail(req ResetMailRequest) error {
-	link := os.Getenv("FRONTEND_URL") + "/reset-password?token=" + req.Token + "&email=" + req.To
+	link := os.Getenv("FRONTEND_URL") + "/password-reset?token=" + req.Token + "&email=" + req.To
 	expireAt := fmt.Sprintf("%.0f min", req.ExpireAt.Sub(time.Now()).Minutes())
 
 	m := gomail.NewMessage()
 	m.SetHeader("From", m.FormatAddress(r.Mail, configs.PROJECT_NAME+" - Support"))
 	m.SetHeader("To", req.To)
 	m.SetHeader("Subject", req.Title)
-	m.SetBody("text/html", fmt.Sprintf(ResetPasswordEmailTemplate, req.Token, link, link, expireAt, configs.PROJECT_NAME))
+	m.SetBody("text/html", fmt.Sprintf(ResetPasswordEmailTemplate, link, link, expireAt, configs.PROJECT_NAME))
 
 	d := gomail.NewDialer(r.Host, r.Port, r.Mail, r.Password)
 	if err := d.DialAndSend(m); err != nil {
@@ -119,10 +119,6 @@ const ResetPasswordEmailTemplate = `<!DOCTYPE html>
         </div>
         <p>Hello,</p>
         <p>We received a request to reset your password. If you didn't make the request, you can safely ignore this email.</p>
-        <div class="code-container">
-            <p>Your reset code is:</p>
-            <div class="code">%s</div>
-        </div>
         <p style="text-align: left;">Click the button below to reset your password:</p>
         <p style="text-align: left;"><a href="%s" class="button">Reset Password</a></p>
         <p style="text-align: left;">If you can't click the button, you can copy and paste the following link into your browser:</p>

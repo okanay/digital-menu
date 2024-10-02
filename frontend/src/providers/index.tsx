@@ -1,6 +1,6 @@
 import { ThemeProvider } from "next-themes";
 import { JotaiProvider } from "./jotai";
-import { AuthWrapper } from "./auth/wrapper";
+import { AuthWrapper } from "./auth/provider";
 
 export const MainProviders: ComponentWithChildren = async (props) => {
   return (

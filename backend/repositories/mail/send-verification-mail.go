@@ -17,7 +17,7 @@ type VerificationMailRequest struct {
 }
 
 func (r *Repository) SendVerificationMail(req VerificationMailRequest) error {
-	link := os.Getenv("FRONTEND_URL") + "/verified-email?token=" + req.Token + "&email=" + req.To
+	link := os.Getenv("FRONTEND_URL") + "/email-verify-check?token=" + req.Token + "&email=" + req.To
 	expireAt := fmt.Sprintf("%.0f hours", req.ExpireAt.Sub(time.Now()).Hours())
 
 	m := gomail.NewMessage()

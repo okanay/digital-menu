@@ -22,7 +22,7 @@ export const BrandLogo: React.FC<Props> = (props) => {
       <Image
         src={logo}
         alt="Menu Arts Logo"
-        className="w-full dark:invert"
+        className="w-full contrast-[60%] dark:contrast-[75] dark:invert"
         priority
       />
     </Link>

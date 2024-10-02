@@ -43,6 +43,13 @@ func AuthMiddleware(sr *sr.Repository, ur *ur.Repository, statistics *s.Statisti
 	}
 }
 
+func handleUnauthorized(c *gin.Context, message string) {
+	c.SetSameSite(http.SameSiteLaxMode)
+	c.SetCookie(configs.SESSION_COOKIE_NAME, "", -1, "/", "", false, false)
+	c.JSON(http.StatusUnauthorized, gin.H{"error": message})
+	c.Abort()
+}
+
 func VerifyAuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		userContext := c.MustGet("user").(types.User)
@@ -55,10 +62,4 @@ func VerifyAuthMiddleware() gin.HandlerFunc {
 
 		c.Next()
 	}
-}
-
-func handleUnauthorized(c *gin.Context, message string) {
-	c.SetCookie(configs.SESSION_COOKIE_NAME, "", -1, "/", "", false, true)
-	c.JSON(http.StatusUnauthorized, gin.H{"error": message})
-	c.Abort()
 }
