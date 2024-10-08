@@ -15,17 +15,18 @@
   --primary-900: 119 36 66;
   --primary-950: 72 15 36;
 
-  --corner-default: 25 25 25;
-  --corner-primary: 55 55 55;
-  --corner-secondary: 95 95 95;
+  --corner-default: 24 24 24;
+  --corner-primary: 44 44 44;
+  --corner-secondary: 98 98 98;
 
-  --fill-default: 236 242 236;
-  --fill-primary: 200 200 200;
-  --fill-secondary: 160 160 160;
+  --fill-default: 244 244 244;
+  --fill-primary: 222 222 222;
+  --fill-secondary: 180 180 180;
 
-  --font-default: 25 25 25;
-  --font-primary: 55 55 55;
-  --font-secondary: 95 95 95;
+  --font-default: 24 24 24;
+  --font-primary: 44 44 44;
+  --font-secondary: 98 98 98;
+  --font-custom-light: 30 40 190;
 
   --background-color: #ffffff;
 }
@@ -54,6 +55,7 @@
   --font-default: 226 226 226;
   --font-primary: 200 200 200;
   --font-secondary: 160 160 160;
+  --font-custom-dark: 30 190 86;
 
   --background-color: #000000;
 }
@@ -64,7 +66,7 @@
   }
 
   * {
-    @apply focus:rounded-lg focus:outline-offset-8 focus:outline-primary-400 dark:focus:outline-primary-600;
+    @apply data-[style=true]:text-font-custom-light dark:data-[style=true]:text-font-custom-dark focus:rounded-lg focus:outline-offset-8 focus:outline-primary-400 dark:focus:outline-primary-600;
   }
 
   img {

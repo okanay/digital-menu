@@ -1,16 +1,16 @@
-import {notFound} from 'next/navigation';
-import {getRequestConfig} from 'next-intl/server';
-import {routing} from './routing';
+import { getRequestConfig } from "next-intl/server";
+import { routing } from "./routing";
 
-export default getRequestConfig(async ({locale}) => {
-  if (!routing.locales.includes(locale as any)) notFound();
+export default getRequestConfig(async ({ locale }) => {
+  if (!routing.locales.includes(locale as any)) locale = "en";
 
-  return {
-    messages: (
-      await (locale === 'en'
-        ? // When using Turbopack, this will enable HMR for `en`
-          import('../../../messages/en.json')
-        : import(`../../../messages/${locale}.json`))
-    ).default
-  };
+  try {
+    return {
+      messages: (await import(`../../../messages/${locale}.json`)).default,
+    };
+  } catch (error) {
+    return {
+      messages: (await import("../../../messages/en.json")).default,
+    };
+  }
 });

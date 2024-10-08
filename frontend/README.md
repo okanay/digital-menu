@@ -18,4 +18,6 @@ bun dev
 import { useTranslations } from "next-intl";
 
 import { unstable_setRequestLocale } from "next-intl/server";
+
+const t = useTranslations("main");
 ```

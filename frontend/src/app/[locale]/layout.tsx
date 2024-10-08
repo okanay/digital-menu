@@ -1,6 +1,5 @@
 // prettier-ignore
 import { getMessages, getTranslations, unstable_setRequestLocale } from "next-intl/server";
-import { routing } from "@/providers/i18n/routing";
 import { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { ReactNode } from "react";
@@ -36,7 +35,7 @@ export default async function LocaleLayout(props: Props) {
       suppressHydrationWarning
       className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable}`}
     >
-      <body className="bg-white text-font dark:bg-black">
+      <body className="bg-white font-custom-sans text-font dark:bg-black">
         <NextIntlClientProvider messages={messages}>
           {props.children}
         </NextIntlClientProvider>

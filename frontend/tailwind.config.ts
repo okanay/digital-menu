@@ -22,6 +22,10 @@ const config: Config = {
           DEFAULT: "rgb(var(--corner-default))",
           primary: "rgb(var(--font-primary))",
           secondary: "rgb(var(--font-secondary))",
+          custom: {
+            light: "rgb(var(--font-custom-light))",
+            dark: "rgb(var(--font-custom-dark))",
+          },
         },
         fill: {
           DEFAULT: "rgb(var(--fill-default))",
@@ -42,6 +46,7 @@ const config: Config = {
     },
   },
   plugins: [],
+  safelist: ["group"],
 };
 export default config;
 

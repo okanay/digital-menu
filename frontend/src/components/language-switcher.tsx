@@ -1,23 +1,12 @@
 "use client";
-
 import useClickOutside from "@/hooks/use-click-outside";
+
+import { useLanguage } from "@/hooks/use-language";
+import { locales } from "@/utils/locales";
 import { useCallback, useState } from "react";
+import { FlagButton, LangDictionary } from "./ui/flag-icon";
 import { IconImage } from "./ui/icon-image";
 import { ModalExplanation } from "./ui/modal-explanation";
-import { useLanguage } from "@/hooks/use-language";
-
-const languageOptions = [
-  {
-    language: "en" as Locale,
-    svg: "/svgs/uk.svg",
-    label: "English",
-  },
-  {
-    language: "tr" as Locale,
-    svg: "/svgs/tr.svg",
-    label: "Turkish",
-  },
-];
 
 export const LanguageSwitcher: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -43,25 +32,19 @@ export const LanguageSwitcher: React.FC = () => {
       </div>
 
       {open && (
-        <div className="absolute right-0 mt-1.5 w-24 origin-top-right">
+        <div className="absolute right-0 mt-1.5 w-28 origin-top-right">
           <div className="flex flex-col items-start rounded border border-corner/10 bg-fill text-sm">
-            {languageOptions.map((option) => (
+            {locales.map((option) => (
               <button
-                key={option.language}
+                key={option + "switcher"}
                 className="group flex w-full items-center gap-2 bg-fill-primary/0 px-2 py-1.5 transition-colors duration-300 hover:bg-fill-primary/30"
                 onClick={() => {
                   setOpen(false);
-                  setLocal(option.language);
+                  setLocal(option as Languages);
                 }}
               >
-                <IconImage
-                  alt={`${option.label} svg`}
-                  src={option.svg}
-                  className="w-4 transition-all duration-300 group-active:scale-90"
-                />
-                <span className="transition-all duration-300 group-active:scale-95">
-                  {option.label}
-                </span>
+                <FlagButton lang={option as Languages} />
+                <LangDictionary lang={option as Languages} />
               </button>
             ))}
           </div>

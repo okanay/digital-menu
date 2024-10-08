@@ -52,13 +52,16 @@ const (
 	PRO_ALLOWED_MENU_TYPES     = 10
 	PREMIUM_ALLOWED_MENU_TYPES = 20
 
-	// Image Allowed Rules
-	BASIC_ALLOWED_IMAGE   = 10
-	PRO_ALLOWED_IMAGE     = 100
-	PREMIUM_ALLOWED_IMAGE = 250
+	// R2 Rules
+	R2_BASE_URL = "https://image.menuarts.com/"
+
+	// Image Max Count Rules
+	BASIC_MAX_IMAGE_COUNT   = 10
+	PRO_MAX_IMAGE_COUNT     = 40
+	PREMIUM_MAX_IMAGE_COUNT = 80
 
 	// Image Size Rules
-	BASIC_MAX_IMAGE_SIZE   = 1024 * 1024 * 5  // 5 MB
-	PRO_MAX_IMAGE_SIZE     = 1024 * 1024 * 8  // 8 MB
+	BASIC_MAX_IMAGE_SIZE   = 1024 * 1024 * 2  // 2 MB
+	PRO_MAX_IMAGE_SIZE     = 1024 * 1024 * 5  // 8 MB
 	PREMIUM_MAX_IMAGE_SIZE = 1024 * 1024 * 10 // 10 MB
 )

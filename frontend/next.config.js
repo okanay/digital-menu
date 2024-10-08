@@ -5,6 +5,17 @@ const withNextIntl = require("next-intl/plugin")(
 );
 
 /** @type {import('next').NextConfig} */
-const config = {};
+const config = {
+  reactStrictMode: false,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "image.menuarts.com",
+        pathname: "/**",
+      },
+    ],
+  },
+};
 
 module.exports = withNextIntl(config);

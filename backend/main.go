@@ -14,10 +14,13 @@ import (
 	"github.com/okanay/digital-menu/db"
 	"github.com/okanay/digital-menu/handlers"
 	ah "github.com/okanay/digital-menu/handlers/auth"
+	imagesHandler "github.com/okanay/digital-menu/handlers/images"
 	mh "github.com/okanay/digital-menu/handlers/menu"
 	rh "github.com/okanay/digital-menu/handlers/restaurant"
+	imageRepository "github.com/okanay/digital-menu/repositories/images"
 	"github.com/okanay/digital-menu/repositories/mail"
 	mr "github.com/okanay/digital-menu/repositories/menu"
+	r2Repository "github.com/okanay/digital-menu/repositories/r2"
 	rr "github.com/okanay/digital-menu/repositories/restaurant"
 	sr "github.com/okanay/digital-menu/repositories/session"
 	ur "github.com/okanay/digital-menu/repositories/user"
@@ -51,11 +54,14 @@ func main() {
 	menuRepository := mr.NewRepository(sqlDB)
 	restaurantRepository := rr.NewRepository(sqlDB)
 	mailRepository := mail.NewRepository()
+	imageRepository := imageRepository.NewRepository(sqlDB)
+	r2Repository, _ := r2Repository.NewRepository(os.Getenv("R2_BUCKET_NAME"), os.Getenv("R2_ACCOUNT_ID"), os.Getenv("R2_ACCESS_KEY_ID"), os.Getenv("R2_SECRET_ACCESS_KEY"))
 
 	// 5. Handlers
 	authHandler := ah.NewHandler(userRepository, sessionRepository, mailRepository, statistics)
 	menuHandler := mh.NewHandler(menuRepository, restaurantRepository, mailRepository, statistics)
 	restaurantHandler := rh.NewHandler(menuRepository, restaurantRepository, mailRepository, statistics)
+	imagesHandler := imagesHandler.NewHandler(r2Repository, imageRepository, userRepository, statistics)
 
 	// 6. Router Initialize
 	router := gin.Default()
@@ -103,6 +109,11 @@ func main() {
 	verifyAuth.DELETE("/menu/:menuId", menuHandler.DeleteMenu)
 	auth.GET("/menu/:restaurantId", menuHandler.SelectMenus)
 	router.GET("/menu/:menuId", menuHandler.SelectMenu)
+
+	// Image Routes
+	auth.POST("/image/upload", imagesHandler.UploadHandler)
+	auth.GET("/image/all", imagesHandler.GetUserFiles)
+	auth.DELETE("/image/delete", imagesHandler.DeleteFiles)
 
 	// 9. Start Server
 	err = router.Run(":" + os.Getenv("PORT"))

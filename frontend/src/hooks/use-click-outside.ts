@@ -4,13 +4,16 @@ type Handler = (event: MouseEvent | TouchEvent) => void;
 
 function useClickOutside<T extends HTMLElement = HTMLElement>(
   handler: Handler,
+  active: boolean = true,
 ): RefObject<T> {
   const ref = useRef<T>(null);
 
   useEffect(() => {
+    if (!active) return;
+
     const listener = (event: MouseEvent | TouchEvent) => {
       const el = ref.current;
-      if (!el || el.contains((event.target as Node) || null)) {
+      if (!el || el.contains(event.target as Node)) {
         return;
       }
 
@@ -24,7 +27,7 @@ function useClickOutside<T extends HTMLElement = HTMLElement>(
       document.removeEventListener("mousedown", listener);
       document.removeEventListener("touchstart", listener);
     };
-  }, [ref, handler]);
+  }, [handler, active]);
 
   return ref;
 }
