@@ -11,8 +11,9 @@ func (r *Repository) SelectMenu(id string) (types.Menu, error) {
 	defer utils.TimeTrack(time.Now(), "Menu -> Select Menu")
 	var menu types.Menu
 
-	query := `SELECT * FROM menus WHERE id = $1`
-	err := r.db.QueryRow(query, id).Scan(&menu.ID, &menu.UserID, &menu.RestaurantID, &menu.Name, &menu.Type, &menu.Json, &menu.Description, &menu.Language, &menu.IsActive, &menu.ExpiresAt, &menu.CreatedAt, &menu.UpdatedAt)
+	query := `SELECT * FROM menus WHERE unique_id = $1`
+	row := r.db.QueryRow(query, id)
+	err := utils.ScanStructByDBTags(row, &menu)
 	if err != nil {
 		return menu, err
 	}

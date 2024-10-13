@@ -7,14 +7,8 @@ import (
 	"github.com/okanay/digital-menu/types"
 )
 
-func (h *Handler) SelectMenusByShopID(c *gin.Context) {
+func (h *Handler) SelectMenusByUserID(c *gin.Context) {
 	userContext := c.MustGet("user").(types.User)
-
-	idStr := c.Param("uniqueId")
-	if idStr == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "shop uniqueId is required."})
-		return
-	}
 
 	menus, err := h.menuRepository.SelectMenus(userContext.ID)
 	if err != nil {
@@ -24,17 +18,12 @@ func (h *Handler) SelectMenusByShopID(c *gin.Context) {
 
 	menuResponse := []types.MenuResponse{}
 	for _, menu := range menus {
-
-		if menu.ShopUniqueID != idStr {
-			continue
-		}
-
 		menuResponse = append(menuResponse, types.MenuResponse{
 			ShopUniqueID: menu.ShopUniqueID,
 			UniqueID:     menu.UniqueID,
 			Name:         menu.Name,
 			Type:         menu.Type,
-			Json:         "not-reachable-when-selecting-all-menus",
+			Json:         menu.Json,
 			IsActive:     menu.IsActive,
 			CreatedAt:    menu.CreatedAt,
 			UpdatedAt:    menu.UpdatedAt,

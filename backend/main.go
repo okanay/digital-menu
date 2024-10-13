@@ -16,13 +16,13 @@ import (
 	ah "github.com/okanay/digital-menu/handlers/auth"
 	imagesHandler "github.com/okanay/digital-menu/handlers/images"
 	mh "github.com/okanay/digital-menu/handlers/menu"
-	rh "github.com/okanay/digital-menu/handlers/restaurant"
+	sh "github.com/okanay/digital-menu/handlers/shop"
 	imageRepository "github.com/okanay/digital-menu/repositories/images"
 	"github.com/okanay/digital-menu/repositories/mail"
 	mr "github.com/okanay/digital-menu/repositories/menu"
 	r2Repository "github.com/okanay/digital-menu/repositories/r2"
-	rr "github.com/okanay/digital-menu/repositories/restaurant"
 	sr "github.com/okanay/digital-menu/repositories/session"
+	shopRepository "github.com/okanay/digital-menu/repositories/shop"
 	ur "github.com/okanay/digital-menu/repositories/user"
 )
 
@@ -52,15 +52,15 @@ func main() {
 	userRepository := ur.NewRepository(sqlDB)
 	sessionRepository := sr.NewRepository(sqlDB)
 	menuRepository := mr.NewRepository(sqlDB)
-	restaurantRepository := rr.NewRepository(sqlDB)
+	shopRepository := shopRepository.NewRepository(sqlDB)
 	mailRepository := mail.NewRepository()
 	imageRepository := imageRepository.NewRepository(sqlDB)
 	r2Repository, _ := r2Repository.NewRepository(os.Getenv("R2_BUCKET_NAME"), os.Getenv("R2_ACCOUNT_ID"), os.Getenv("R2_ACCESS_KEY_ID"), os.Getenv("R2_SECRET_ACCESS_KEY"))
 
 	// 5. Handlers
 	authHandler := ah.NewHandler(userRepository, sessionRepository, mailRepository, statistics)
-	menuHandler := mh.NewHandler(menuRepository, restaurantRepository, mailRepository, statistics)
-	restaurantHandler := rh.NewHandler(menuRepository, restaurantRepository, mailRepository, statistics)
+	menuHandler := mh.NewHandler(menuRepository, shopRepository, mailRepository, statistics)
+	shopHandler := sh.NewHandler(menuRepository, shopRepository, mailRepository, statistics)
 	imagesHandler := imagesHandler.NewHandler(r2Repository, imageRepository, userRepository, statistics)
 
 	// 6. Router Initialize
@@ -97,18 +97,20 @@ func main() {
 	router.POST("/register", authHandler.Register)
 
 	// Restaurant Routes
-	verifyAuth.POST("/restaurant", restaurantHandler.CreateRestaurant)
-	verifyAuth.PATCH("/restaurant/:restaurantId", restaurantHandler.UpdateRestaurant)
-	verifyAuth.DELETE("/restaurant/:restaurantId", restaurantHandler.DeleteRestaurant)
-	auth.GET("/restaurants", restaurantHandler.SelectRestaurants)
-	auth.GET("/restaurant/:restaurantId", restaurantHandler.SelectRestaurant)
+	verifyAuth.POST("/shops", shopHandler.CreateShop)
+	verifyAuth.PATCH("/shops/:uniqueId", shopHandler.UpdateShop)
+	verifyAuth.DELETE("/shops/:uniqueId", shopHandler.DeleteShop)
+	auth.GET("/shops", shopHandler.SelectShops)
+	auth.GET("/shops/:uniqueId", shopHandler.SelectShop)
 
 	// Menu Routes
-	verifyAuth.POST("/menu", menuHandler.CreateMenu)
-	verifyAuth.PATCH("/menu/:menuId", menuHandler.UpdateMenu)
-	verifyAuth.DELETE("/menu/:menuId", menuHandler.DeleteMenu)
-	auth.GET("/menu/:restaurantId", menuHandler.SelectMenus)
-	router.GET("/menu/:menuId", menuHandler.SelectMenu)
+	auth.POST("/menu", menuHandler.CreateMenu)
+	auth.PATCH("/menu/:uniqueId", menuHandler.UpdateMenu)
+	auth.DELETE("/menu/:uniqueId", menuHandler.DeleteMenu)
+	auth.GET("/menus/res/:uniqueId", menuHandler.SelectMenusByShopID)
+	auth.GET("/menus/all", menuHandler.SelectMenusByUserID)
+	auth.GET("/menu/:uniqueId", menuHandler.SelectMenuWithAuth)
+	router.GET("/menu/:uniqueId", menuHandler.SelectMenu)
 
 	// Image Routes
 	auth.POST("/image/upload", imagesHandler.UploadHandler)

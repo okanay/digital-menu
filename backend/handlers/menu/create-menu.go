@@ -2,7 +2,6 @@ package menuHandler
 
 import (
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/okanay/digital-menu/types"
@@ -13,16 +12,15 @@ func (h *Handler) CreateMenu(c *gin.Context) {
 	userContext := c.MustGet("user").(types.User)
 
 	req := types.CreateMenuReq{
-		UserID:    userContext.ID,
-		IsActive:  true,
-		ExpiresAt: time.Now().Add(h.getExpiryDuration(userContext.Membership)),
+		UserID:   userContext.ID,
+		IsActive: true,
 	}
 
 	if err := utils.ValidateRequest(c, &req); err != nil {
 		return
 	}
 
-	err := h.checkMenuLimit(c, req.RestaurantID, userContext)
+	err := h.checkMenuLimit(c, userContext)
 	if err != nil {
 		return
 	}
@@ -32,16 +30,27 @@ func (h *Handler) CreateMenu(c *gin.Context) {
 		return
 	}
 
-	err = h.checkRestaurantOwner(c, req.RestaurantID, userContext)
+	shop, err := h.checkShopOwner(c, req.ShopUniqueID, userContext)
 	if err != nil {
 		return
 	}
 
-	menu, err := h.menuRepository.CreateMenu(req)
+	menu, err := h.menuRepository.CreateMenu(shop.ID, req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"menu": menu})
+	menuResponse := types.MenuResponse{
+		ShopUniqueID: menu.ShopUniqueID,
+		UniqueID:     menu.UniqueID,
+		Name:         menu.Name,
+		Type:         menu.Type,
+		Json:         menu.Json,
+		IsActive:     menu.IsActive,
+		CreatedAt:    menu.CreatedAt,
+		UpdatedAt:    menu.UpdatedAt,
+	}
+
+	c.JSON(http.StatusOK, gin.H{"menu": menuResponse})
 }

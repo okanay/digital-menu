@@ -1,4 +1,4 @@
-package menuHandler
+package shopHandler
 
 import (
 	s "github.com/okanay/digital-menu/configs/managers/statistics"
@@ -14,6 +14,6 @@ type Handler struct {
 	statistics     *s.Statistics
 }
 
-func NewHandler(mr *mr.Repository, sr *sr.Repository, m *m.Repository, s *s.Statistics) *Handler {
-	return &Handler{menuRepository: mr, shopRepository: sr, mailRepository: m, statistics: s}
+func NewHandler(mr *mr.Repository, rr *sr.Repository, m *m.Repository, s *s.Statistics) *Handler {
+	return &Handler{menuRepository: mr, shopRepository: rr, mailRepository: m, statistics: s}
 }

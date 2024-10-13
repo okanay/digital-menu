@@ -11,8 +11,8 @@ import (
 	"github.com/okanay/digital-menu/types"
 )
 
-func (h *Handler) checkMenuLimit(c *gin.Context, restaurantId int, user types.User) error {
-	menus, err := h.menuRepository.SelectMenus(restaurantId, user.ID)
+func (h *Handler) checkMenuLimit(c *gin.Context, user types.User) error {
+	menus, err := h.menuRepository.SelectMenus(user.ID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Something went wrong, while checking menu limit."})
 		return err
@@ -21,7 +21,7 @@ func (h *Handler) checkMenuLimit(c *gin.Context, restaurantId int, user types.Us
 	limit := h.getMenuLimit(user.Membership)
 	if len(menus) >= limit {
 		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("Only %d menu are allowed for your membership.", limit)})
-		return errors.New("restaurant limit exceeded")
+		return errors.New("shop limit exceeded")
 	}
 
 	return nil
@@ -37,20 +37,19 @@ func (h *Handler) checkMenuTypeLimit(c *gin.Context, types int, user types.User)
 	return nil
 }
 
-func (h *Handler) checkRestaurantOwner(c *gin.Context, restaurantId int, user types.User) error {
-	restauntIdStr := fmt.Sprintf("%d", restaurantId)
-	restaurant, err := h.restaurantRepository.SelectRestaurantByID(restauntIdStr)
+func (h *Handler) checkShopOwner(c *gin.Context, shopUniqueId string, user types.User) (types.Shop, error) {
+	shop, err := h.shopRepository.SelectShopByUniqueID(shopUniqueId)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Something went wrong, while checking restaurant owner."})
-		return err
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Something went wrong, while checking shop owner."})
+		return types.Shop{}, err
 	}
 
-	if restaurant.UserID != user.ID {
-		c.JSON(http.StatusForbidden, gin.H{"error": "You are not the owner of this restaurant."})
-		return errors.New("not restaurant owner")
+	if shop.UserID != user.ID {
+		c.JSON(http.StatusForbidden, gin.H{"error": "You are not the owner of this shop."})
+		return types.Shop{}, errors.New("not shop owner")
 	}
 
-	return nil
+	return shop, nil
 }
 
 func (h *Handler) getMenuLimit(membership types.MembershipType) int {

@@ -2,7 +2,6 @@ package menuHandler
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/okanay/digital-menu/types"
@@ -12,21 +11,15 @@ import (
 func (h *Handler) UpdateMenu(c *gin.Context) {
 	user := c.MustGet("user").(types.User)
 
-	idStr := c.Param("menuId")
-	if idStr == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "menuId is required"})
-		return
-	}
-
-	id, err := strconv.Atoi(idStr)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "restaurant id must be a number."})
+	uniqueId := c.Param("uniqueId")
+	if uniqueId == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "uniqueId is required"})
 		return
 	}
 
 	req := types.UpdateMenuReq{
-		UserID: user.ID,
-		ID:     id,
+		UserID:   user.ID,
+		UniqueID: uniqueId,
 	}
 
 	if err := utils.ValidateRequest(c, &req); err != nil {
@@ -39,5 +32,16 @@ func (h *Handler) UpdateMenu(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"menu": updatedMenu})
+	menuResponse := types.MenuResponse{
+		ShopUniqueID: updatedMenu.ShopUniqueID,
+		UniqueID:     updatedMenu.UniqueID,
+		Name:         updatedMenu.Name,
+		Type:         updatedMenu.Type,
+		Json:         updatedMenu.Json,
+		IsActive:     updatedMenu.IsActive,
+		CreatedAt:    updatedMenu.CreatedAt,
+		UpdatedAt:    updatedMenu.UpdatedAt,
+	}
+
+	c.JSON(http.StatusOK, gin.H{"menu": menuResponse})
 }

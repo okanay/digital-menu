@@ -1,4 +1,4 @@
-package restaurantRepository
+package shopRepository
 
 import (
 	"database/sql"

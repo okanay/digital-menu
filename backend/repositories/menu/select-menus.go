@@ -8,12 +8,12 @@ import (
 	"github.com/okanay/digital-menu/utils"
 )
 
-func (r *Repository) SelectMenus(restaurantId int, userId int) ([]types.Menu, error) {
-	defer utils.TimeTrack(time.Now(), "Menu -> Select Menu")
+func (r *Repository) SelectMenus(userId int) ([]types.Menu, error) {
+	defer utils.TimeTrack(time.Now(), "Menu -> Select Menus")
 	var menus []types.Menu
 
-	query := `SELECT * FROM menus WHERE restaurant_id = $1 AND user_id = $2`
-	rows, err := r.db.Query(query, restaurantId, userId)
+	query := `SELECT * FROM menus WHERE user_id = $1`
+	rows, err := r.db.Query(query, userId)
 	if err != nil {
 		return menus, err
 	}

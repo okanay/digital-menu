@@ -31,29 +31,14 @@ func (r *Repository) UpdateMenu(req types.UpdateMenuReq) (types.Menu, error) {
 		args = append(args, *req.Json)
 		argCount++
 	}
-	if req.Description != nil {
-		queryBuilder.WriteString(fmt.Sprintf(", description = $%d", argCount))
-		args = append(args, *req.Description)
-		argCount++
-	}
-	if req.Language != nil {
-		queryBuilder.WriteString(fmt.Sprintf(", language = $%d", argCount))
-		args = append(args, *req.Language)
-		argCount++
-	}
 	if req.IsActive != nil {
 		queryBuilder.WriteString(fmt.Sprintf(", is_active = $%d", argCount))
 		args = append(args, *req.IsActive)
 		argCount++
 	}
-	if req.ExpiresAt != nil {
-		queryBuilder.WriteString(fmt.Sprintf(", expires_at = $%d", argCount))
-		args = append(args, *req.ExpiresAt)
-		argCount++
-	}
 
-	queryBuilder.WriteString(fmt.Sprintf(" WHERE id = $%d AND user_id = $%d RETURNING id, user_id, restaurant_id, name, type, json, description, language, is_active, expires_at, created_at, updated_at", argCount, argCount+1))
-	args = append(args, req.ID, req.UserID)
+	queryBuilder.WriteString(fmt.Sprintf(" WHERE unique_id = $%d AND user_id = $%d RETURNING *", argCount, argCount+1))
+	args = append(args, req.UniqueID, req.UserID)
 
 	row := r.db.QueryRow(queryBuilder.String(), args...)
 	err := utils.ScanStructByDBTags(row, &menu)

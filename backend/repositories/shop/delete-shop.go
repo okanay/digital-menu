@@ -1,4 +1,4 @@
-package restaurantRepository
+package shopRepository
 
 import (
 	"database/sql"
@@ -8,15 +8,13 @@ import (
 	"github.com/okanay/digital-menu/utils"
 )
 
-func (r *Repository) DeleteRestaurant(id string, userID int) error {
-	defer utils.TimeTrack(time.Now(), "Restaurant -> Delete Restaurant")
-
-	// "error": "sql: Scan error on column index 0, name \"case\": converting NULL to string is unsupported"
+func (r *Repository) DeleteShop(id string, userID int) error {
+	defer utils.TimeTrack(time.Now(), "Shops -> Delete Shop")
 
 	query := `
 	WITH deleted AS (
-		DELETE FROM restaurants
-		WHERE id = $1 AND user_id = $2
+		DELETE FROM shops
+		WHERE unique_id = $1 AND user_id = $2
 		RETURNING id
 	)
 	SELECT CASE WHEN COUNT(*) = 0 THEN true ELSE NULL END
@@ -30,7 +28,7 @@ func (r *Repository) DeleteRestaurant(id string, userID int) error {
 	}
 
 	if result.Valid {
-		return fmt.Errorf("Restaurant not found.")
+		return fmt.Errorf("Shop not found.")
 	}
 
 	fmt.Println(result)

@@ -7,9 +7,7 @@ import (
 	"github.com/okanay/digital-menu/types"
 )
 
-func (h *Handler) SelectMenuWithAuth(c *gin.Context) {
-	userContext := c.MustGet("user").(types.User)
-
+func (h *Handler) SelectMenu(c *gin.Context) {
 	uniqueId := c.Param("uniqueId")
 
 	if uniqueId == "" {
@@ -21,10 +19,6 @@ func (h *Handler) SelectMenuWithAuth(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Menu not found."})
 		return
-	}
-
-	if menu.UserID != userContext.ID {
-		c.JSON(http.StatusForbidden, gin.H{"error": "You are not allowed to access this"})
 	}
 
 	menuResponse := types.MenuResponse{

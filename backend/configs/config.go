@@ -37,20 +37,20 @@ const (
 	PRO_EXPIRATION_DURATION     = 12 * 30 * 24 * time.Hour // 1 year
 	PREMIUM_EXPIRATION_DURATION = 12 * 30 * 24 * time.Hour // 1 year
 
-	// Restaurant Rules
-	BASIC_MAX_RESTAURANT_COUNT   = 1
-	PRO_MAX_RESTAURANT_COUNT     = 10
-	PREMIUM_MAX_RESTAURANT_COUNT = 20
+	// Restaurant Max Count Rules
+	BASIC_MAX_RESTAURANT_COUNT   = 2
+	PRO_MAX_RESTAURANT_COUNT     = 5
+	PREMIUM_MAX_RESTAURANT_COUNT = 10
 
-	// Menu Rules
+	// Menu Max Count Rules
+	BASIC_MAX_MENU_COUNT       = 2
+	PRO_ALLOWED_MENU_TYPES     = 10
+	PREMIUM_ALLOWED_MENU_TYPES = 20
+
+	// Menu Type Rules
 	BASIC_ALLOWED_MENU_TYPES = 1
 	PRO_MAX_MENU_COUNT       = 10
 	PREMIUM_MAX_MENU_COUNT   = 20
-
-	// Menu Type Rules
-	BASIC_MAX_MENU_COUNT       = 1
-	PRO_ALLOWED_MENU_TYPES     = 10
-	PREMIUM_ALLOWED_MENU_TYPES = 20
 
 	// R2 Rules
 	R2_BASE_URL = "https://image.menuarts.com/"
