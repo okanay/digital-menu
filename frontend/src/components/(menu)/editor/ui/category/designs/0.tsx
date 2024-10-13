@@ -18,9 +18,14 @@ export const CategoryDesign0 = ({ category, menu }: Props) => {
     : "bg-gradient-to-tr";
 
   return (
-    <div className="relative overflow-hidden border-b border-primary-50 dark:border-primary-950">
+    <div className="border-b border-primary-50 dark:border-primary-950">
       {/* Image */}
-      <div className={twMerge("absolute top-0 h-full w-1/2", imagePosition)}>
+      <div
+        className={twMerge(
+          "absolute top-0 h-full max-h-[200px] w-1/2",
+          imagePosition,
+        )}
+      >
         <CategoryImageEditWrapper
           category={category}
           imageBorderRadius={imageBorderRadius}
@@ -42,10 +47,10 @@ export const CategoryDesign0 = ({ category, menu }: Props) => {
 
       {/* Title, Description */}
       <div className="relative px-5 py-4">
-        <div className="w-1/2 rounded-t-lg px-2 py-1 font-custom-serif text-5xl font-semibold text-primary-950 dark:text-primary-50">
+        <div className="w-fit min-w-[15%] max-w-[50%] rounded-t-lg px-2 py-1 font-custom-serif text-5xl font-semibold text-primary-950 dark:text-primary-50">
           <CategoryTitleEditWrapper category={category} />
         </div>
-        <div className="w-1/2 text-balance rounded-b-lg px-2 py-1 font-custom-sans text-sm tracking-wider text-primary-950/70 dark:text-primary-50/60">
+        <div className="w-fit min-w-[15%] max-w-[50%] text-balance rounded-b-lg px-2 py-1 font-custom-sans text-sm tracking-wider text-primary-950/70 dark:text-primary-50/60">
           <CategoryDescriptionEditWrapper category={category} />
         </div>
       </div>

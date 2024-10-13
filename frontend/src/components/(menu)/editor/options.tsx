@@ -1,11 +1,12 @@
-import { MenuEditorAddCategory } from "./ui/editor/add-category";
-import { MenuColorPicker } from "./ui/editor/color-picker";
-import { MenuCurrency } from "./ui/editor/currency";
-import { MenuFont } from "./ui/editor/font";
-import { MenuEditorImageGallery } from "./ui/editor/image-gallery";
-import { MenuLanguage } from "./ui/editor/language";
-import { MenuEditorRedo } from "./ui/editor/redo";
-import { MenuEditorUndo } from "./ui/editor/undo";
+import { MenuEditorAddCategory } from "./ui/options/add-category";
+import { MenuColorPicker } from "./ui/options/color-picker";
+import { MenuCurrency } from "./ui/options/currency";
+import { MenuFont } from "./ui/options/font";
+import { MenuEditorImageGallery } from "./ui/options/image-gallery";
+import { MenuLanguage } from "./ui/options/language";
+import { MenuEditorRedo } from "./ui/options/redo";
+import { MenuEditorSave } from "./ui/options/save";
+import { MenuEditorUndo } from "./ui/options/undo";
 
 export const MenuEditorOptions: React.FC = () => {
   return (
@@ -16,6 +17,7 @@ export const MenuEditorOptions: React.FC = () => {
       <MenuCurrency />
       <MenuColorPicker />
       <MenuFont />
+      <MenuEditorSave />
       <MenuEditorUndo />
       <MenuEditorRedo />
     </div>

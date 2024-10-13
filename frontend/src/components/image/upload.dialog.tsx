@@ -1,6 +1,6 @@
 import React from "react";
 import { useFileUpload } from "@/hooks/use-file-upload";
-import { useDialog } from "../(menu)/dialogues/use-dialogu";
+import { useDialog } from "@/providers/dialogue/use-dialogu";
 import { Image, Upload, XCircle, Crop } from "lucide-react";
 import { ButtonPrimary, ButtonSecondary } from "../ui/buttons";
 import { DialogWrapper } from "./dialog-wrapper";
@@ -39,7 +39,7 @@ export const UploadDialog: React.FC = (props) => {
       <div className="relative h-full overflow-hidden overflow-y-auto">
         <div className="flex h-full w-full flex-col gap-4">
           <p className="text-sm text-font-primary">
-            Yüklemek için dosya seçin ve daha iyi SEO için alt metin ekleyin.
+            Select a file to upload and add alt text for better SEO.
           </p>
           <div className="flex flex-col">
             {files.map((file, index) => (
@@ -53,13 +53,13 @@ export const UploadDialog: React.FC = (props) => {
                       onClick={() => setCropFile(file)}
                       className="text-primary-400 transition duration-300 ease-in-out hover:text-primary-600"
                     >
-                      <Crop className="size-7 rounded-full border border-corner/10 bg-fill p-1.5 text-font" />
+                      <Crop className="size-7 rounded-full border border-corner/10 bg-fill p-1.5 text-primary-500 transition-all duration-300 hover:opacity-75 active:scale-[88%] dark:text-primary-400" />
                     </button>
                     <button
                       onClick={() => handleFileRemove(file)}
                       className="text-red-400 transition duration-300 ease-in-out hover:text-red-600"
                     >
-                      <XCircle className="size-7 rounded-full border border-corner/10 bg-fill p-1.5 text-font" />
+                      <XCircle className="size-7 rounded-full border border-corner/10 bg-fill p-1.5 text-rose-500 transition-all duration-300 hover:opacity-75 active:scale-[88%] dark:text-rose-400" />
                     </button>
                   </div>
                 </div>

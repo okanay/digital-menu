@@ -1,6 +1,5 @@
-import { CustomFontClassNameWrapper } from "@/components/(menu)/helper/custom-font-className-wrapper.tsx";
-
 import { TranslatedText } from "../../translated-text";
+import { CustomStyleWrapper } from "../../custom-style-wrapper";
 
 type Props = {
   category: MenuCategory;
@@ -9,15 +8,8 @@ type Props = {
 
 export const CategoryTitleDisplay = ({ category, locale }: Props) => {
   return (
-    <CustomFontClassNameWrapper style={category.title.style}>
-      <TranslatedText
-        data-style={category.title.style.isActive}
-        style={
-          category.title.style.isActive ? category.title.style.attr : undefined
-        }
-        translations={category.title.texts}
-        locale={locale}
-      />
-    </CustomFontClassNameWrapper>
+    <CustomStyleWrapper style={category.title.style}>
+      <TranslatedText translations={category.title.texts} locale={locale} />
+    </CustomStyleWrapper>
   );
 };

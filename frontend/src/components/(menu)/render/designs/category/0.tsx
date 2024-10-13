@@ -1,6 +1,4 @@
-import Image from "next/image";
 import { twMerge } from "tailwind-merge";
-import { TranslatedText } from "../../translated-text";
 import { CategoryTitleDisplay } from "./title";
 import { CategoryDescriptionDisplay } from "./description";
 import { CategoryImageDisplay } from "./image";
@@ -19,7 +17,12 @@ export const Category0Display = ({ category, locale }: Props) => {
     : "bg-gradient-to-tr";
 
   return (
-    <div className="relative overflow-hidden border-b border-primary-50 dark:border-primary-950">
+    <div
+      style={{
+        direction: isArabic ? "rtl" : "ltr",
+      }}
+      className="relative overflow-hidden border-b border-primary-50 dark:border-primary-950"
+    >
       {/* Görsel container */}
       <div className={twMerge("absolute top-0 h-full w-1/2", imagePosition)}>
         <CategoryImageDisplay

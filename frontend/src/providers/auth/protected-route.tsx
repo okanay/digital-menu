@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/hooks/use-auth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "../i18n/routing";
 
 type RouteProps = {
@@ -17,7 +17,14 @@ function isProtectedPath(pathname: string): boolean {
   return PROTECTED_PATHS.some((path) => pathname.includes(path));
 }
 
-const PROTECTED_PATHS = ["/dashboard"];
+const PROTECTED_PATHS = [
+  "/profile",
+  "/restaurants",
+  "/account",
+  "/statistics",
+  "/menus",
+  "/help",
+];
 const NON_AUTHENTICATED_PATHS = [
   "/sign-in",
   "/sign-up",
@@ -29,6 +36,7 @@ export const ProtectedRoute: React.FC<RouteProps> = ({
   children,
   accessLevel = "public",
 }) => {
+  const [loading, setLoading] = useState(true);
   const auth = useAuth();
   const pathname = usePathname();
   const router = useRouter();
@@ -49,7 +57,13 @@ export const ProtectedRoute: React.FC<RouteProps> = ({
     ) {
       router.push("/sign-in");
     }
+
+    setLoading(false);
   }, []);
+
+  if (loading) {
+    return null;
+  }
 
   return <>{children}</>;
 };

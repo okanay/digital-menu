@@ -59,7 +59,7 @@ export const TranslatedInput: React.FC<Props> = ({
       {...props}
       ref={ref}
       className={twMerge(
-        "rounded border border-corner/0 bg-fill/0 transition-colors duration-300 hover:bg-fill",
+        "relative z-[38] rounded border border-corner/0 bg-fill/0 transition-colors duration-300 hover:bg-fill",
         isEditing && "border-corner/20 bg-fill duration-500 hover:bg-fill",
         className,
       )}
@@ -96,7 +96,7 @@ const TranslatedEditor = ({
   onBlur,
   className,
 }: TranslatedEditorProps) => (
-  <div className="flex flex-col">
+  <div className="flex-col] flex">
     <input
       type="text"
       value={text}
@@ -126,7 +126,7 @@ const TranslatedDisplay = ({
   <h2
     onClick={onClick}
     className={twMerge(
-      "cursor-pointer rounded border border-corner/0 hover:border-corner/10",
+      "cursor-pointer break-words rounded border border-corner/0 hover:border-corner/10",
       className,
     )}
   >

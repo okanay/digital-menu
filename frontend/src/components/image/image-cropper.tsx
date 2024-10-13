@@ -1,6 +1,8 @@
 import { useState, useRef, useCallback } from "react";
 import ReactCrop, { Crop, PixelCrop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
+import { ButtonPrimary, ButtonSecondary } from "../ui/buttons";
+import useClickOutside from "@/hooks/use-click-outside";
 
 interface ImageCropperProps {
   file: File;
@@ -17,11 +19,12 @@ export const ImageCropper = ({
   const imgRef = useRef<HTMLImageElement>(null);
   const [crop, setCrop] = useState<Crop>({
     unit: "%",
-    width: 50,
-    height: 50,
+    width: 60,
+    height: 40,
     x: 5,
     y: 5,
   });
+  const ref = useClickOutside<HTMLDivElement>(onCancel);
 
   // Resmi yükle
   useState(() => {
@@ -88,9 +91,11 @@ export const ImageCropper = ({
   }, [crop, getCroppedImg, onCropComplete]);
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4">
-      <div className="w-full max-w-2xl rounded-lg bg-white p-4">
-        <h3 className="mb-4 text-lg font-semibold">Görseli Kırp</h3>
+    <div className="fixed inset-0 flex items-center justify-center bg-fill-secondary/40">
+      <div ref={ref} className="w-full max-w-xl rounded-lg bg-fill p-4">
+        <h3 className="mb-4 text-lg font-semibold text-font">
+          Set the image crop area
+        </h3>
 
         {imgSrc && (
           <ReactCrop crop={crop} onChange={(c) => setCrop(c)} aspect={16 / 9}>
@@ -104,18 +109,8 @@ export const ImageCropper = ({
         )}
 
         <div className="mt-4 flex justify-end gap-2">
-          <button
-            onClick={onCancel}
-            className="rounded-md border px-4 py-2 hover:bg-gray-100"
-          >
-            İptal
-          </button>
-          <button
-            onClick={handleCropComplete}
-            className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-          >
-            Onayla
-          </button>
+          <ButtonSecondary onClick={onCancel}>Cancel</ButtonSecondary>
+          <ButtonPrimary onClick={handleCropComplete}>Crop</ButtonPrimary>
         </div>
       </div>
     </div>

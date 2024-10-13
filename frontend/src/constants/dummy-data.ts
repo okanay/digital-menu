@@ -1,4 +1,4 @@
-export const dummyData: Menu = {
+export const InitialMenuDesignData: Menu = {
   color: {
     isActive: false,
     colors: {
@@ -50,17 +50,13 @@ export const dummyData: Menu = {
       title: {
         texts: { en: "Breakfast", tr: "Kahvaltı" },
         style: {
-          isActive: true,
-          attr: {
-            color: "red",
-            opacity: "0.5",
-            fontSize: "2rem",
-            fontWeight: "600",
-            letterSpacing: "0.04em",
-            "--font-custom-light": "30 190 240",
-            "--font-custom-dark": "50 40 240",
+          isActive: false,
+          font: "Default",
+          attr: {},
+          textColor: {
+            light: "#f3f4f6",
+            dark: "#1f2937",
           },
-          font: "Raleway",
         },
       },
       description: {
@@ -70,8 +66,12 @@ export const dummyData: Menu = {
         },
         style: {
           isActive: false,
+          font: "Default",
           attr: {},
-          font: undefined,
+          textColor: {
+            light: "#f3f4f6",
+            dark: "#ffffff",
+          },
         },
       },
       items: [],
@@ -79,4 +79,15 @@ export const dummyData: Menu = {
   ],
 };
 
-export default dummyData;
+export default InitialMenuDesignData;
+
+export const TestMenuData: MenuData = {
+  shopUniqueId: "test-shop-unique-id",
+  uniqueId: "test-menu-unique-id",
+  name: "Alacarte Menu",
+  type: 1,
+  json: JSON.stringify(InitialMenuDesignData),
+  isActive: true,
+  createdAt: "2024-11-10T00:00:00.000Z",
+  updatedAt: "2024-11-10T00:00:00.000Z",
+};

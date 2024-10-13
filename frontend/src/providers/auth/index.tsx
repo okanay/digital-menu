@@ -23,8 +23,7 @@ export function AuthProvider(props: Props) {
 
   const signOut = () => {
     LogoutRequest().then(() => {
-      setUser(null);
-      setSession("unauthorize");
+      window.location.href = "/";
     });
   };
 

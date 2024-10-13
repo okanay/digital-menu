@@ -1,13 +1,19 @@
-import dummyData from "@/constants/dummy-data";
+import InitialMenuDesignData from "@/constants/dummy-data";
 import { createNewTranslatableItem } from "@/utils/create-translated-field";
 import { locales } from "@/utils/locales";
 import { useUndoRedo } from "@anandarizki/use-undo-redo";
+import { useEffect } from "react";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
+type Status = "idle" | "loading" | "success" | "error";
+
 interface DataState {
+  status: Status;
+  setStatus: (status: Status) => void;
   menu: Menu;
   setMenu: (menu: Menu) => void;
+  save: () => void;
   colors: {
     setActive: (isActive: boolean) => void;
     setCustomColors: (colors: { light: string; dark: string }) => void;
@@ -38,11 +44,26 @@ interface DataState {
 
 export const useStore = create<DataState>()(
   immer((set, get) => ({
-    menu: dummyData,
+    status: "loading",
+    setStatus: (status: "idle" | "loading" | "success" | "error") => {
+      set((state) => {
+        state.status = status;
+      });
+    },
+    menu: InitialMenuDesignData,
     setMenu: (menu: Menu) =>
       set((state) => {
         state.menu = menu;
+        state.status = "success";
       }),
+
+    save: () => {
+      set((state) => {
+        state.status = "loading";
+      });
+
+      return get().menu;
+    },
     font: {
       setActive: (isActive: boolean) =>
         set((state) => {
@@ -102,16 +123,24 @@ export const useStore = create<DataState>()(
                 texts: { defaultText: "" },
                 style: {
                   isActive: false,
-                  font: undefined,
+                  font: "Default",
                   attr: {},
+                  textColor: {
+                    light: "#000000",
+                    dark: "#ffffff",
+                  },
                 },
               },
               description: {
                 texts: { defaultText: "" },
                 style: {
                   isActive: false,
-                  font: undefined,
+                  font: "Default",
                   attr: {},
+                  textColor: {
+                    light: "#000000",
+                    dark: "#ffffff",
+                  },
                 },
               },
               items: [],
@@ -205,9 +234,12 @@ export const useStore = create<DataState>()(
   })),
 );
 
-export const useMenuEditor = () => {
+export const useMenuEditor = (initial?: MenuData) => {
+  const status = useStore((state) => state.status);
+  const setStatus = useStore((state) => state.setStatus);
   const menu = useStore((state) => state.menu);
   const setMenu = useStore((state) => state.setMenu);
+  const save = useStore((state) => state.save);
   const colors = useStore((state) => state.colors);
   const font = useStore((state) => state.font);
   const currency = useStore((state) => state.currency);
@@ -220,9 +252,19 @@ export const useMenuEditor = () => {
       capacity: 20,
     });
 
+  useEffect(() => {
+    if (initial) {
+      setStatus("loading");
+      setMenu(JSON.parse(initial.json));
+    }
+  }, [initial]);
+
   return {
+    status,
+    setStatus,
     menu,
     setMenu,
+    save,
     colors,
     font,
     currency,

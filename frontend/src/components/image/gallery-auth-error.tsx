@@ -1,6 +1,7 @@
 import { Link } from "@/providers/i18n/routing";
 import { MessageCircleWarning } from "lucide-react";
-import { useDialog } from "../(menu)/dialogues/use-dialogu";
+import { useDialog } from "@/providers/dialogue/use-dialogu";
+
 import { ButtonSecondary } from "../ui/buttons";
 import { DialogWrapper } from "./dialog-wrapper";
 

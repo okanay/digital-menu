@@ -20,7 +20,7 @@ const navItems = [
   },
   {
     name: "Demos",
-    link: "/editor/arts-1",
+    link: "/arts-1",
   },
 ];
 

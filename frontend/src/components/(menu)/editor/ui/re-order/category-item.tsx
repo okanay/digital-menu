@@ -1,7 +1,10 @@
 import { Reorder, useDragControls } from "framer-motion";
-import { Category } from "../category";
 import { useState } from "react";
 import { useMenuEditor } from "../../use-menu-editor";
+import { Category } from "../category";
+import { CategoryDeleteButton } from "../category/options/delete-button";
+import { CategoryDesignChange } from "../category/options/design-change";
+import { DragButton } from "./drag-button";
 
 type Props = {
   category: MenuCategory;
@@ -22,9 +25,9 @@ export const CategoryReOrderItem: React.FC<Props> = ({ category }) => {
       onDragStart={() => setIsDragging(true)}
       onDragEnd={() => setIsDragging(false)}
       value={category}
-      className="relative flex-shrink-0"
+      className="relative w-full flex-1"
       style={{
-        zIndex: isDragging ? 100 : "auto",
+        zIndex: isDragging ? 99999 : "1",
       }}
       whileDrag={{ scale: 1.02, cursor: "grabbing" }}
       initial={{ opacity: 0 }}
@@ -38,6 +41,13 @@ export const CategoryReOrderItem: React.FC<Props> = ({ category }) => {
       }}
     >
       <Category category={category} menu={menu} controls={controls} />
+      <div className="absolute top-0 flex h-full w-full items-start justify-end gap-4 pr-2 pt-2">
+        <div className="pointer-events-auto relative z-30 order-2 flex select-none flex-row items-center justify-end gap-3">
+          <CategoryDesignChange category={category} />
+          <DragButton onPointerDown={(event) => controls.start(event)} />
+          <CategoryDeleteButton category={category} />
+        </div>
+      </div>
     </Reorder.Item>
   );
 };

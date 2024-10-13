@@ -43,10 +43,19 @@ const config: Config = {
         "custom-sans": ["var(--font-sans)"],
         "custom-mono": ["var(--font-mono)"],
       },
+      keyframes: {
+        slideIn: {
+          "0%": { transform: "translateY(-10px)", opacity: "0" },
+          "100%": { transform: "translateY(0)", opacity: "1" },
+        },
+      },
+      animation: {
+        slideIn: "slideIn 0.2s ease-out",
+      },
     },
   },
   plugins: [],
-  safelist: ["group"],
+  safelist: ["group", "text-font-custom-light", "dark:text-font-custom-light"],
 };
 export default config;
 

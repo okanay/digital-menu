@@ -58,25 +58,26 @@ const deleteImage = async (uniqueName: string): Promise<boolean> => {
 // --- Zustand Store ---
 type ImageStore = {
   images: ImageProps[];
-  fetchStatus: ImageFetchStatus;
-  galleryImageClickHandler: ((image: ImageProps) => void) | null;
   setImages: (images: ImageProps[]) => void;
+
+  fetchStatus: ImageFetchStatus;
   setFetchStatus: (status: ImageFetchStatus) => void;
+
   handleRefresh: () => Promise<void>;
   handleDeleteRequest: (uniqueName: string) => Promise<void>;
+
+  galleryImageClickHandler: ((image: ImageProps) => void) | null;
   setGalleryImageClickHandler: (handler: (image: ImageProps) => void) => void;
   clearGalleryImageClickHandler: () => void;
 };
 
 export const useImageStore = create<ImageStore>((set, get) => ({
   images: [],
-  fetchStatus: "idle",
-  galleryImageClickHandler: null,
-
   setImages: (images) => set({ images }),
+
+  fetchStatus: "loading",
   setFetchStatus: (status) => set({ fetchStatus: status }),
 
-  // Fetch images and set fetch status
   handleRefresh: async () => {
     set({ images: [], fetchStatus: "loading" });
     const images = await fetchImages();
@@ -87,7 +88,6 @@ export const useImageStore = create<ImageStore>((set, get) => ({
     }
   },
 
-  // Handle image deletion
   handleDeleteRequest: async (uniqueName: string) => {
     const success = await deleteImage(uniqueName);
     if (success) {
@@ -97,7 +97,7 @@ export const useImageStore = create<ImageStore>((set, get) => ({
     }
   },
 
-  // Set and clear gallery image click handler
+  galleryImageClickHandler: null,
   setGalleryImageClickHandler: (handler) =>
     set({ galleryImageClickHandler: handler }),
   clearGalleryImageClickHandler: () => set({ galleryImageClickHandler: null }),
@@ -107,13 +107,22 @@ export const useImageStore = create<ImageStore>((set, get) => ({
 export const useImages = () => {
   const {
     images,
+    setImages,
     fetchStatus,
+    setFetchStatus,
     handleRefresh,
     handleDeleteRequest,
-    setGalleryImageClickHandler,
     galleryImageClickHandler,
+    setGalleryImageClickHandler,
     clearGalleryImageClickHandler,
   } = useImageStore();
+
+  useEffect(() => {
+    if (fetchStatus === "loading") {
+      handleRefresh();
+      setFetchStatus("idle");
+    }
+  }, []);
 
   return {
     images,

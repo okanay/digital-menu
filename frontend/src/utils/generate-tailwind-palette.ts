@@ -120,6 +120,12 @@ function hexToRgb(hex: string): RGB | null {
     : null;
 }
 
+export function hexToRgbString(hex: string): string {
+  const rgb = hexToRgb(hex);
+  if (!rgb) return "";
+  return `${rgb.r} ${rgb.g} ${rgb.b}`;
+}
+
 function rgbToHsl(r: number, g: number, b: number): HSL {
   r /= 255;
   g /= 255;

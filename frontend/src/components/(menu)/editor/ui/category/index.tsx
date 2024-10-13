@@ -21,16 +21,5 @@ export const Category: React.FC<Props> = ({ category, menu, controls }) => {
     }
   };
 
-  return (
-    <>
-      <div className="pointer-events-none absolute left-0 top-0 z-40 flex h-fit w-full justify-end gap-4 px-2">
-        <div className="group/editor pointer-events-auto relative flex items-center gap-4">
-          <CategoryDesignChange category={category} />
-          <DragButton onPointerDown={(event) => controls.start(event)} />
-          <CategoryDeleteButton category={category} />
-        </div>
-      </div>
-      {handleDesign()}
-    </>
-  );
+  return <>{handleDesign()}</>;
 };

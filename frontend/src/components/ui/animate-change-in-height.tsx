@@ -30,7 +30,7 @@ export const AnimateChangeInHeight: React.FC<AnimateChangeInHeightProps> = ({
 
   return (
     <motion.div
-      className="relative w-full overflow-hidden"
+      className="relative w-full"
       style={{ height }}
       animate={{ height }}
       transition={{ duration: 0.2 }}

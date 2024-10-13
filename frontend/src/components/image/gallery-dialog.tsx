@@ -1,5 +1,6 @@
 import { useImages } from "@/hooks/use-images";
-import { useDialog } from "../(menu)/dialogues/use-dialogu";
+import { useDialog } from "@/providers/dialogue/use-dialogu";
+
 import { ButtonSecondary } from "../ui/buttons";
 import { DialogWrapper } from "./dialog-wrapper";
 import { ImageGalleryError } from "./gallery-error";

@@ -1,5 +1,6 @@
-import { ArrowUp, ArrowDown } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useMenuEditor } from "../../../use-menu-editor";
+import { ModalExplanation } from "@/components/ui/modal-explanation";
 
 type Props = {
   category: MenuCategory;
@@ -46,19 +47,23 @@ export const CategoryDesignChange: React.FC<Props> = ({ category }) => {
   };
 
   return (
-    <div className="flex flex-col gap-0.5">
-      <button
-        onClick={handleDesignUp}
-        className="relative z-40 flex size-6 items-center justify-center rounded-lg border border-corner/20 bg-fill/40 p-1 transition-all duration-300 hover:bg-fill"
-      >
-        <ArrowUp className="size-4 text-font opacity-40 transition-all duration-300 group-hover/editor:opacity-100" />
-      </button>
-      <button
-        onClick={handleDesignDown}
-        className="relative z-40 flex size-6 items-center justify-center rounded-lg border border-corner/20 bg-fill/40 p-1 transition-all duration-300 hover:bg-fill"
-      >
-        <ArrowDown className="size-4 text-font opacity-40 transition-all duration-300 group-hover/editor:opacity-100" />
-      </button>
+    <div className="group relative z-[31] inline-block">
+      <ModalExplanation>Change Design</ModalExplanation>
+
+      <div className="flex items-center space-x-2">
+        <button
+          onClick={handleDesignUp}
+          className="group/up relative z-40 flex size-5 items-center justify-center rounded-lg border border-corner/20 bg-fill/60 p-0.5"
+        >
+          <ArrowLeft className="size-full text-font opacity-30 transition-all duration-300 group-hover/up:opacity-100" />
+        </button>
+        <button
+          onClick={handleDesignDown}
+          className="group/down relative z-40 flex size-5 items-center justify-center rounded-lg border border-corner/20 bg-fill/60 p-0.5"
+        >
+          <ArrowRight className="size-full text-font opacity-30 transition-all duration-300 group-hover/down:opacity-100" />
+        </button>
+      </div>
     </div>
   );
 };

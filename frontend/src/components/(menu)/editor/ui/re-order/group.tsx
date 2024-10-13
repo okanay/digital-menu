@@ -20,7 +20,7 @@ export const CategoryReOrderGroup: React.FC<Props> = ({
         dragDirectionLock={true}
         onReorder={onReorder}
         values={values}
-        className="flex flex-col gap-8"
+        className="flex flex-col gap-2"
       >
         <AnimatePresence initial={false}>
           {values.map((value) => (

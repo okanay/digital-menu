@@ -33,14 +33,8 @@ export const Account: React.FC = () => {
       ) : (
         <>
           <li className="-ml-2">
-            <Link href={"/"}>
-              <ButtonPrimary
-                onClick={() => {
-                  signOut();
-                }}
-              >
-                Dashboard
-              </ButtonPrimary>
+            <Link href={"/dashboard"}>
+              <ButtonPrimary>Dashboard</ButtonPrimary>
             </Link>
           </li>
         </>
