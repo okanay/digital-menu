@@ -49,7 +49,7 @@ export function generateSimplifiedTailwindPalette(
   try {
     // Hex renk doğrulama
     if (!isValidHexColor(hexColor)) {
-      throw new ColorError("Geçersiz HEX renk kodu");
+      throw new ColorError("Geçersiz HEX renk kodu" + hexColor);
     }
 
     // HEX'i HSL'ye çevir

@@ -5,7 +5,7 @@ import { FormTitle } from "../ui/form-title";
 import { TextInput } from "../ui/input-text";
 import { InputWrapper } from "../ui/input-wrapper";
 import { IconImage } from "@/components/ui/icon-image";
-import { Link } from "@/providers/i18n/routing";
+import { Link } from "@/i18n/routing";
 import { useVerifyLink } from "./use-verify-link";
 
 export const EmailVerifyLinkForm = () => {

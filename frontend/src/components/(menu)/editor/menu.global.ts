@@ -1,9 +1,94 @@
 interface Menu {
-  categories: MenuCategory[];
   language: LanguageConfig;
   currency: CurrencyConfig;
   color: ColorConfig;
   font: FontConfig;
+  sections: Sections[];
+}
+
+type TranslatedField = {
+  [key in string]: string;
+};
+
+interface Sections {
+  name: "categories";
+  data: MenuCategory[];
+}
+
+interface MenuCategory {
+  id: number;
+  design: {
+    selected: CategoryDesigns;
+    customizations?: {
+      background: {
+        selected: BackgroundDesigns;
+      };
+    };
+  };
+  image: {
+    isActive: boolean;
+    url: string;
+    description: string;
+  };
+  title: {
+    texts: TranslatedField;
+    style?: Style;
+  };
+  description: {
+    texts: TranslatedField;
+    style?: Style;
+  };
+  items: CategoryItem[];
+}
+
+interface CategoryItem {
+  id: number;
+  design: {
+    selected: CategoryDesigns;
+    customizations?: {
+      background: {
+        selected: BackgroundDesigns;
+      };
+    };
+  };
+  image: {
+    isActive: boolean;
+    url: string;
+    description: string;
+  };
+  title: {
+    texts: TranslatedField;
+    style?: Style;
+  };
+  description: {
+    texts: TranslatedField;
+    style?: Style;
+  };
+  price: Price;
+  allergens: number[];
+}
+
+interface Price {
+  text: string;
+  value: number;
+  style?: Style;
+  customPrices?: {
+    isActive: boolean;
+    values: {
+      currency: Currency;
+      language: Languages;
+      text: string;
+      value: number;
+    }[];
+  };
+  discount?: {
+    isActive: boolean;
+    percentage: number;
+    expiration?: {
+      isActive: boolean;
+      date: Date;
+    };
+  };
 }
 
 interface FontConfig {
@@ -27,9 +112,7 @@ interface FontConfig {
 type Currency = "TRY" | "USD" | "EUR" | "GBP" | "JPY" | "CNY" | "RUB";
 interface CurrencyConfig {
   isActive: boolean;
-  default: Currency;
   current: Currency;
-  currencies: Currency[];
 }
 
 interface LanguageConfig {
@@ -57,8 +140,13 @@ type Style = {
 };
 
 type TextColor = {
+  isActive: boolean;
   light: string;
   dark: string;
+};
+
+type StyleOptions = {
+  excludeClasses?: Array<keyof StyleAttr>;
 };
 
 type StyleAttr = {
@@ -101,6 +189,18 @@ type StyleAttr = {
     | "leading-normal"
     | "leading-relaxed"
     | "leading-loose";
+  align?:
+    | "Default"
+    | "text-left"
+    | "text-center"
+    | "text-right"
+    | "text-justify";
+  wrap?:
+    | "Default"
+    | "text-wrap"
+    | "text-nowrap"
+    | "text-balance"
+    | "text-pretty";
   opacity?:
     | "Default"
     | "opacity-0"
@@ -116,37 +216,3 @@ type StyleAttr = {
     | "opacity-100";
   hidden?: "Default" | "hidden";
 };
-
-type TranslatedField = {
-  [key in string]: string;
-};
-
-interface MenuCategory {
-  id: number;
-  design: {
-    selected: CategoryDesigns;
-    customizations: any;
-  };
-  image: {
-    isActive: boolean;
-    url: string;
-    description: string;
-  };
-  title: {
-    texts: TranslatedField;
-    style: Style;
-  };
-  description: {
-    texts: TranslatedField;
-    style: Style;
-  };
-  items: CategoryItem[];
-}
-
-interface CategoryItem {
-  id: number;
-  name: string;
-  price: number;
-  description: string;
-  allergens: any[];
-}

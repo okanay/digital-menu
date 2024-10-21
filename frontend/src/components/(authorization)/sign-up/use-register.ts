@@ -1,5 +1,5 @@
 import { useAuth } from "@/hooks/use-auth";
-import { useRouter } from "@/providers/i18n/routing";
+import { useRouter } from "@/i18n/routing";
 import { SignInResponseValidate } from "@/validations/user";
 import { useRef, useState } from "react";
 import { z } from "zod";

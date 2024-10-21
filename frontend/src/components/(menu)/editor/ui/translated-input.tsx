@@ -1,7 +1,8 @@
 import useClickOutside from "@/hooks/use-click-outside";
-import { useState, useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { useMenuEditor } from "../use-menu-editor";
+import { ContentDisplay, ContentEditInput } from "./content-edit-input";
 
 const dictionary: { [key in Languages]: string } = {
   en: "Edit me!",
@@ -12,6 +13,7 @@ const dictionary: { [key in Languages]: string } = {
   it: "Modificami!",
   sa: "عدلني!",
 };
+
 function getEditMe(language: Languages): string {
   return dictionary[language];
 }
@@ -24,17 +26,12 @@ interface Props extends React.ComponentProps<"div"> {
   displayClassName?: string;
 }
 
-export const TranslatedInput: React.FC<Props> = ({
-  path,
-  translations,
-  className,
-  inputClassName,
-  displayClassName,
-  ...props
-}) => {
+// prettier-ignore
+export const TranslatedInput: React.FC<Props> = ({ path, translations, className, inputClassName, displayClassName, ...props}) => {
   const { menu, language } = useMenuEditor();
   const { updateTranslatedField } = language;
   const { current } = menu.language;
+
   const value = translations[current] || getEditMe(current);
   const [text, setText] = useState(value);
   const [isEditing, setIsEditing] = useState(false);
@@ -59,77 +56,29 @@ export const TranslatedInput: React.FC<Props> = ({
       {...props}
       ref={ref}
       className={twMerge(
-        "relative z-[38] rounded border border-corner/0 bg-fill/0 transition-colors duration-300 hover:bg-fill",
-        isEditing && "border-corner/20 bg-fill duration-500 hover:bg-fill",
+        "relative overflow-hidden rounded border border-corner/0 bg-primary-950/0 transition-colors duration-300 hover:text-primary-50 hover:bg-primary-950",
+        isEditing && "border-corner/20 bg-primary-950 duration-500 hover:bg-primary-950 text-primary-50",
         className,
+        text.length > 0 ? "" : "h-[40px]",
       )}
     >
       {isEditing ? (
-        <TranslatedEditor
+        <ContentEditInput
           text={text}
           onChange={handleChange}
           onBlur={handleOnBlur}
           className={inputClassName}
         />
       ) : (
-        <TranslatedDisplay
+        <ContentDisplay
           text={text}
           onClick={() => setIsEditing(true)}
-          className={displayClassName}
+          className={twMerge(
+            text.length > 0 ? "" : "h-full min-w-[40px]",
+            displayClassName
+          )}
         />
       )}
     </div>
   );
 };
-
-// TranslatedEditor.tsx
-interface TranslatedEditorProps {
-  text: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onBlur: () => void;
-  className?: string;
-}
-
-const TranslatedEditor = ({
-  text,
-  onChange,
-  onBlur,
-  className,
-}: TranslatedEditorProps) => (
-  <div className="flex-col] flex">
-    <input
-      type="text"
-      value={text}
-      onChange={onChange}
-      onBlur={onBlur}
-      className={twMerge(
-        "bg-transparent px-4 py-2 focus:outline-none",
-        className,
-      )}
-      autoFocus
-    />
-  </div>
-);
-
-// TranslatedDisplay.tsx
-interface TranslatedDisplayProps {
-  text: string;
-  onClick: () => void;
-  className?: string;
-}
-
-const TranslatedDisplay = ({
-  text,
-  onClick,
-  className,
-}: TranslatedDisplayProps) => (
-  <h2
-    onClick={onClick}
-    className={twMerge(
-      "cursor-pointer break-words rounded border border-corner/0 hover:border-corner/10",
-      className,
-    )}
-  >
-    {text}
-  </h2>
-);

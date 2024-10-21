@@ -1,6 +1,5 @@
 "use client";
 import useClickOutside from "@/hooks/use-click-outside";
-
 import { useLanguage } from "@/hooks/use-language";
 import { locales } from "@/utils/locales";
 import { useCallback, useState } from "react";

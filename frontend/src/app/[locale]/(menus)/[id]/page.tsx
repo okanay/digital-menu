@@ -1,13 +1,16 @@
-import { useTranslations } from "next-intl";
-import { unstable_setRequestLocale } from "next-intl/server";
+import { MenuArts1Display } from "@/components/(menu)/render";
 
 type Props = {
-  params: { locale: string; id: string };
+  params: Promise<{ locale: string; id: string }>;
 };
 
-export default function MenuPage({ params: { locale, id } }: Props) {
-  unstable_setRequestLocale(locale);
-  const t = useTranslations("main");
+export default async function MenuPage(props: Props) {
+  const params = await props.params;
 
-  return <div>page: {id}</div>;
+  const {
+    locale,
+    id
+  } = params;
+
+  return <MenuArts1Display id={id} locale={locale} />;
 }

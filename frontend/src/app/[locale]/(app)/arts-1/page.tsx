@@ -1,14 +1,23 @@
 import { MenuArts1 } from "@/components/(menu)/editor";
-import { TestMenuData } from "@/constants/dummy-data";
+import { EmptyMenuDesignData } from "@/constants/menu-arts-1";
 
 type Props = {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 };
 
-export default function EditorArts1Page({ params: { locale } }: Props) {
+export default async function EditorArts1Page(props: Props) {
+  const params = await props.params;
+
+  const {
+    locale
+  } = params;
+
   return (
     <main className="mx-auto max-w-xl">
-      <MenuArts1 locale={locale} initialData={TestMenuData} />
+      <MenuArts1
+        locale={locale}
+        initialJSON={JSON.stringify(EmptyMenuDesignData)}
+      />
     </main>
   );
 }

@@ -24,12 +24,6 @@ const FeaturesList = [
     promote: false,
     promoteMessage: "",
   },
-  // {
-  //   icon: "/svgs/package-plus.svg",
-  //   name: "Additional Features",
-  //   description:
-  //     "Get in touch with us for more features or customization options for your QR menu",
-  // },
 ];
 
 export default FeaturesList;

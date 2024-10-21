@@ -1,9 +1,15 @@
 import { Main } from "@/components/(main)/main";
 
 type Props = {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 };
 
-export default function HomePage({ params: { locale } }: Props) {
+export default async function HomePage(props: Props) {
+  const params = await props.params;
+
+  const {
+    locale
+  } = params;
+
   return <Main locale={locale} />;
 }

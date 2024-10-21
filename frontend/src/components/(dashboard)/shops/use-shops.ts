@@ -5,11 +5,11 @@ import { immer } from "zustand/middleware/immer";
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL + "/auth/shops";
 
 interface DataState {
-  status: FetchStatus;
+  status: StatusTypes;
   error: string | null;
   shops: Shop[];
   setShops: (shop: Shop[]) => void;
-  setStatus: (status: FetchStatus) => void;
+  setStatus: (status: StatusTypes) => void;
   fetchShops: () => Promise<void>;
   refreshShops: () => Promise<void>;
   createShop: (req: CreateShopReq) => Promise<CreateShopRes>;
@@ -22,7 +22,7 @@ const useStore = create<DataState>()(
     error: null,
 
     status: "initial",
-    setStatus: (status: FetchStatus) =>
+    setStatus: (status: StatusTypes) =>
       set((state) => {
         state.status = status;
         state.error = null;

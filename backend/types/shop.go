@@ -24,12 +24,12 @@ type ShopResponse struct {
 
 type ShopRestaurantReq struct {
 	UserID int    `json:"userId" validate:"required"`
-	Name   string `json:"name" validate:"required,min=3,max=64"`
+	Name   string `json:"name" validate:"required,min=1,max=64"`
 }
 
 type UpdateShopReq struct {
 	UserID   int     `json:"userId" validate:"required"`
 	UniqueID string  `db:"unique_id" json:"uniqueId"`
-	Name     *string `json:"name" validate:"omitempty,min=3,max=64"`
+	Name     *string `json:"name" validate:"omitempty,min=1,max=64"`
 	IsActive *bool   `json:"isActive" validate:"omitempty"`
 }

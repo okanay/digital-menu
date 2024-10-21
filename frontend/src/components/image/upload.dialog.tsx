@@ -1,10 +1,10 @@
 import React from "react";
 import { useFileUpload } from "@/hooks/use-file-upload";
-import { useDialog } from "@/providers/dialogue/use-dialogu";
 import { Image, Upload, XCircle, Crop } from "lucide-react";
 import { ButtonPrimary, ButtonSecondary } from "../ui/buttons";
 import { DialogWrapper } from "./dialog-wrapper";
 import { ImageCropper } from "./image-cropper";
+import { useDialog } from "@/providers/dialogue/use-dialogu";
 
 export const UploadDialog: React.FC = (props) => {
   const { setDialog } = useDialog();
@@ -98,7 +98,7 @@ export const UploadDialog: React.FC = (props) => {
                 onClick={() => fileInputRef.current?.click()}
               >
                 <Image size={20} />
-                Dosya Seç
+                Select Files
               </ButtonPrimary>
               <input
                 hidden
@@ -113,7 +113,7 @@ export const UploadDialog: React.FC = (props) => {
                 disabled={length === 0 || uploading}
               >
                 <Upload size={20} />
-                Yükle
+                Upload
               </ButtonSecondary>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import { Calendar, Menu, ArrowRight } from "lucide-react";
 import { FormatDate } from "@/utils/form-date";
-import { Link } from "@/providers/i18n/routing";
+import { Link } from "@/i18n/routing";
 import { CardConfig } from "./config";
 import { CardStatus } from "./ui/status";
 

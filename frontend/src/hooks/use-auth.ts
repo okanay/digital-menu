@@ -2,7 +2,7 @@ import { AuthContext } from "@/providers/auth";
 import { useContext } from "react";
 
 declare global {
-  type Auth = ReturnType<typeof useAuth>
+  type Auth = ReturnType<typeof useAuth>;
 }
 
 export const useAuthContext = () => {
@@ -16,7 +16,9 @@ export const useAuthContext = () => {
 export const useAuth = () => {
   const auth = useAuthContext();
   if (auth === null) {
-    throw new Error("[ERROR] Auth context is null. Make sure you're using AuthProvider correctly.");
+    throw new Error(
+      "[ERROR] Auth context is null. Make sure you're using AuthProvider correctly.",
+    );
   }
   return auth;
 };

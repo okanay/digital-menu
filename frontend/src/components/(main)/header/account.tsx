@@ -4,10 +4,10 @@ import { LanguageSwitcher } from "@/components/language-switcher";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { ButtonPrimary, ButtonSecondary } from "@/components/ui/buttons";
 import { useAuth } from "@/hooks/use-auth";
-import { Link } from "@/providers/i18n/routing";
+import { Link } from "@/i18n/routing";
 
 export const Account: React.FC = () => {
-  const { session, signOut } = useAuth();
+  const { session } = useAuth();
 
   return (
     <ul className="hidden items-center justify-end gap-4 lg:flex">

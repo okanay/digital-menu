@@ -1,4 +1,4 @@
-import InitialMenuDesignData from "@/constants/dummy-data";
+import { EmptyMenuDesignData } from "@/constants/menu-arts-1";
 import { createNewTranslatableItem } from "@/utils/create-translated-field";
 import { locales } from "@/utils/locales";
 import { useUndoRedo } from "@anandarizki/use-undo-redo";
@@ -6,14 +6,15 @@ import { useEffect } from "react";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
-type Status = "idle" | "loading" | "success" | "error";
-
 interface DataState {
-  status: Status;
-  setStatus: (status: Status) => void;
+  status: {
+    update: StatusTypes;
+    initial: StatusTypes;
+  };
+  setStatus: (update?: StatusTypes, initial?: StatusTypes) => void;
   menu: Menu;
   setMenu: (menu: Menu) => void;
-  save: () => void;
+  setInitialMenu: (initialJSON: string) => void;
   colors: {
     setActive: (isActive: boolean) => void;
     setCustomColors: (colors: { light: string; dark: string }) => void;
@@ -39,207 +40,392 @@ interface DataState {
     orderCategory: (newList: MenuCategory[]) => void;
     deleteCategory: (id: number) => void;
     updateCategory: (category: MenuCategory) => void;
+    item: {
+      addItem: (categoryId: number) => void;
+      orderItems: (categoryId: number, newItems: CategoryItem[]) => void;
+      deleteItem: (categoryId: number, itemId: number) => void;
+      updateItem: (categoryId: number, item: CategoryItem) => void;
+    };
   };
 }
 
-export const useStore = create<DataState>()(
-  immer((set, get) => ({
-    status: "loading",
-    setStatus: (status: "idle" | "loading" | "success" | "error") => {
+type Set = (fn: (state: DataState) => void) => void;
+type Get = () => DataState;
+
+// statusSlice.ts
+const createStatusSlice = (set: Set, get: Get) => ({
+  status: {
+    update: "idle" as StatusTypes,
+    initial: "loading" as StatusTypes,
+  },
+  setStatus: (update?: StatusTypes, initial?: StatusTypes) => {
+    set((state) => {
+      state.status.update = update || state.status.update;
+      state.status.initial = initial || state.status.initial;
+    });
+  },
+});
+
+// menuSlice.ts
+const createMenuSlice = (set: Set) => ({
+  menu: EmptyMenuDesignData,
+  setMenu: (menu: Menu) =>
+    set((state) => {
+      state.menu = menu;
+    }),
+  setInitialMenu: (initialJSON: string) => {
+    set((state) => {
+      state.menu = JSON.parse(initialJSON);
+      state.status = {
+        initial: "success",
+        update: "idle",
+      };
+    });
+  },
+});
+
+// fontSlice.ts
+const createFontSlice = (set: Set) => ({
+  font: {
+    setActive: (isActive: boolean) =>
       set((state) => {
-        state.status = status;
-      });
-    },
-    menu: InitialMenuDesignData,
-    setMenu: (menu: Menu) =>
-      set((state) => {
-        state.menu = menu;
-        state.status = "success";
+        state.menu.font.isActive = isActive;
       }),
-
-    save: () => {
+    setSansFont: (font: Sans) =>
       set((state) => {
-        state.status = "loading";
-      });
+        state.menu.font.fonts.sans.custom = font;
+      }),
+    setSerifFont: (font: Serif) =>
+      set((state) => {
+        state.menu.font.fonts.serif.custom = font;
+      }),
+    setMonoFont: (font: Mono) =>
+      set((state) => {
+        state.menu.font.fonts.mono.custom = font;
+      }),
+  },
+});
 
-      return get().menu;
+// currencySlice.ts
+const createCurrencySlice = (set: Set) => ({
+  currency: {
+    setCurrency: (currency: Currency) =>
+      set((state) => {
+        state.menu.currency.current = currency;
+      }),
+  },
+});
+
+// colorSlice.ts
+const createColorSlice = (set: Set) => ({
+  colors: {
+    setActive: (isActive: boolean) =>
+      set((state) => {
+        state.menu.color.isActive = isActive;
+      }),
+    setCustomColors: (colors: { light: string; dark: string }) =>
+      set((state) => {
+        state.menu.color.colors = colors;
+      }),
+  },
+});
+
+// categorySlice.ts
+const createCategorySlice = (set: Set) => ({
+  category: {
+    orderCategory: (newList: MenuCategory[]) => {
+      set((state) => {
+        state.menu.sections.find(
+          (section) => section.name === "categories",
+        )!.data = newList;
+      });
     },
-    font: {
-      setActive: (isActive: boolean) =>
-        set((state) => {
-          state.menu.font.isActive = isActive;
-        }),
-      setSansFont: (font: Sans) =>
-        set((state) => {
-          state.menu.font.fonts.sans.custom = font;
-        }),
-      setSerifFont: (font: Serif) =>
-        set((state) => {
-          state.menu.font.fonts.serif.custom = font;
-        }),
-      setMonoFont: (font: Mono) =>
-        set((state) => {
-          state.menu.font.fonts.mono.custom = font;
-        }),
-    },
-    currency: {
-      setCurrency: (currency: Currency) =>
-        set((state) => {
-          state.menu.currency.current = currency;
-        }),
-    },
-    colors: {
-      setActive: (isActive: boolean) =>
-        set((state) => {
-          state.menu.color.isActive = isActive;
-        }),
-      setCustomColors: (colors: { light: string; dark: string }) =>
-        set((state) => {
-          state.menu.color.colors = colors;
-        }),
-    },
-    category: {
-      orderCategory: (newList: MenuCategory[]) => {
-        set((state) => {
-          state.menu.categories = newList;
-        });
-      },
-      addCategory: () =>
-        set((state) => {
-          const newCategory = createNewTranslatableItem<MenuCategory>(
-            locales.map((locale) => locale),
-            {
-              id: Date.now(),
-              design: {
-                selected: 0,
-                customizations: undefined,
-              },
-              image: {
-                isActive: true,
-                url: "https://image.menuarts.com/starters-1.jpg",
-                description: "starter image",
-              },
-              title: {
-                texts: { defaultText: "" },
-                style: {
-                  isActive: false,
-                  font: "Default",
-                  attr: {},
-                  textColor: {
-                    light: "#000000",
-                    dark: "#ffffff",
+    addCategory: () => {
+      set((state) => {
+        const categoriesSection = state.menu.sections.find(
+          (section) => section.name === "categories",
+        );
+
+        if (!categoriesSection) return;
+
+        const existingCategory = categoriesSection.data[0];
+
+        const newCategory = createNewTranslatableItem<MenuCategory>(
+          locales.map((locale) => locale),
+          {
+            id: Date.now(),
+            design: existingCategory
+              ? { ...existingCategory.design }
+              : {
+                  selected: 0,
+                  customizations: {
+                    background: {
+                      selected: 0,
+                    },
                   },
                 },
-              },
-              description: {
-                texts: { defaultText: "" },
-                style: {
-                  isActive: false,
-                  font: "Default",
-                  attr: {},
-                  textColor: {
-                    light: "#000000",
-                    dark: "#ffffff",
-                  },
+            image: existingCategory
+              ? { ...existingCategory.image }
+              : {
+                  isActive: true,
+                  url: "https://image.menuarts.com/starters-1.jpg",
+                  description: "starter image",
                 },
-              },
-              items: [],
+            title: {
+              texts: { en: "" },
             },
-          );
-          state.menu.categories.push(newCategory);
-        }),
-      updateCategory: (category: MenuCategory) => {
-        set((state) => {
-          const index = state.menu.categories.findIndex(
+            description: {
+              texts: { en: "" },
+            },
+            items: [],
+          },
+        );
+
+        categoriesSection.data.push(newCategory);
+      });
+    },
+    updateCategory: (category: MenuCategory) => {
+      set((state) => {
+        const categoriesSection = state.menu.sections.find(
+          (section) => section.name === "categories",
+        );
+        if (categoriesSection) {
+          const index = categoriesSection.data.findIndex(
             (c) => c.id === category.id,
           );
-          state.menu.categories[index] = category;
-        });
-      },
-      deleteCategory: (id: number) => {
-        set((state) => {
-          state.menu.categories = state.menu.categories.filter(
+          if (index !== -1) {
+            categoriesSection.data[index] = category;
+          }
+        }
+      });
+    },
+    deleteCategory: (id: number) => {
+      set((state) => {
+        const categoriesSection = state.menu.sections.find(
+          (section) => section.name === "categories",
+        );
+        if (categoriesSection) {
+          categoriesSection.data = categoriesSection.data.filter(
             (category) => category.id !== id,
           );
-        });
-      },
+        }
+      });
     },
-    language: {
-      setLanguage: (language: Languages) =>
-        set((state) => {
-          if (
-            state.menu.language.active.includes(language) &&
-            language !== state.menu.language.current
-          ) {
-            state.menu.language.current = language;
-          }
-        }),
-      addLanguage: (language: Languages) => {
-        set((state) => {
-          state.menu.language.active.push(language);
-          state.menu.language.current = language;
-        });
-      },
-      removeLanguage: (language: Languages) => {
-        set((state) => {
-          if (state.menu.language.active.length === 1) return;
-          state.menu.language.active = state.menu.language.active.filter(
-            (lang) => lang !== language,
+    ...createItemSlice(set),
+  },
+});
+
+// itemSlice.ts
+const createItemSlice = (set: Set) => ({
+  item: {
+    orderItems: (categoryId: number, newItems: CategoryItem[]) => {
+      set((state) => ({
+        menu: {
+          ...state.menu,
+          sections: state.menu.sections.map((section) =>
+            section.name === "categories"
+              ? {
+                  ...section,
+                  data: section.data.map((cat) =>
+                    cat.id === categoryId ? { ...cat, items: newItems } : cat,
+                  ),
+                }
+              : section,
+          ),
+        },
+      }));
+    },
+    addItem: (categoryId: number) => {
+      set((state) => {
+        const categoriesSection = state.menu.sections.find(
+          (section) => section.name === "categories",
+        );
+
+        if (!categoriesSection) return;
+
+        const category = categoriesSection.data.find(
+          (c) => c.id === categoryId,
+        );
+
+        if (!category) return;
+
+        const existingItem = category.items[0];
+
+        const newItem = createNewTranslatableItem<CategoryItem>(
+          locales.map((locale) => locale),
+          {
+            id: Date.now(),
+            design: existingItem
+              ? { ...existingItem.design }
+              : {
+                  selected: 0,
+                  customizations: {
+                    background: {
+                      selected: 0,
+                    },
+                  },
+                },
+            image: existingItem
+              ? { ...existingItem.image }
+              : {
+                  isActive: true,
+                  url: "https://image.menuarts.com/starters-1.jpg",
+                  description: "starter image",
+                },
+            title: {
+              texts: { en: "" },
+            },
+            description: {
+              texts: { en: "" },
+            },
+            price: {
+              text: "10",
+              value: 10,
+            },
+            allergens: [],
+          },
+        );
+
+        category.items.push(newItem);
+      });
+    },
+    deleteItem: (categoryId: number, itemId: number) => {
+      set((state) => {
+        const categoriesSection = state.menu.sections.find(
+          (section) => section.name === "categories",
+        );
+
+        if (categoriesSection) {
+          const category = categoriesSection.data.find(
+            (c) => c.id === categoryId,
           );
-
-          if (state.menu.language.current === language) {
-            state.menu.language.current = state.menu.language.active[0];
+          if (category) {
+            category.items = category.items.filter(
+              (item) => item.id !== itemId,
+            );
           }
-        });
-      },
-      toggleLanguage: (language: Languages) =>
-        set((state) => {
-          if (state.menu.language.active.includes(language)) {
-            get().language.removeLanguage(language);
-          } else {
-            get().language.addLanguage(language);
-          }
-        }),
-      updateTranslatedField: (path: string[], value: string) =>
-        set((state) => {
-          let current: any = state.menu;
-          const activeLanguage = state.menu.language.current;
-
-          // Son elemana kadar ilerle
-          for (let i = 0; i < path.length - 1; i++) {
-            if (Array.isArray(current)) {
-              // Array ise index ile ilerle
-              const index = current.findIndex(
-                (item: any) => item.id.toString() === path[i],
-              );
-              if (index === -1) return;
-              current = current[index];
-            } else {
-              // Object ise key ile ilerle
-              current = current[path[i]];
-            }
-            if (!current) return;
-          }
-
-          // Son elemanı güncelle
-          const lastKey = path[path.length - 1];
-          if (current[lastKey] && typeof current[lastKey] === "object") {
-            current[lastKey] = {
-              ...current[lastKey],
-              [activeLanguage]: value,
-            };
-          }
-        }),
+        }
+      });
     },
+    updateItem: (categoryId: number, item: CategoryItem) => {
+      set((state) => {
+        const categoriesSection = state.menu.sections.find(
+          (section) => section.name === "categories",
+        );
+
+        if (categoriesSection) {
+          const category = categoriesSection.data.find(
+            (c) => c.id === categoryId,
+          );
+          if (category) {
+            const index = category.items.findIndex((i) => i.id === item.id);
+            if (index !== -1) {
+              category.items[index] = item;
+            }
+          }
+        }
+      });
+    },
+  },
+});
+
+// languageSlice.ts
+const createLanguageSlice = (set: Set, get: Get) => ({
+  language: {
+    setLanguage: (language: Languages) =>
+      set((state) => {
+        if (
+          state.menu.language.active.includes(language) &&
+          language !== state.menu.language.current
+        ) {
+          state.menu.language.current = language;
+        }
+      }),
+    addLanguage: (language: Languages) => {
+      set((state) => {
+        state.menu.language.active.push(language);
+        state.menu.language.current = language;
+      });
+    },
+    removeLanguage: (language: Languages) => {
+      set((state) => {
+        if (state.menu.language.active.length === 1) return;
+        state.menu.language.active = state.menu.language.active.filter(
+          (lang) => lang !== language,
+        );
+
+        if (state.menu.language.current === language) {
+          state.menu.language.current = state.menu.language.active[0];
+        }
+      });
+    },
+    toggleLanguage: (language: Languages) =>
+      set((state) => {
+        if (state.menu.language.active.includes(language)) {
+          get().language.removeLanguage(language);
+        } else {
+          get().language.addLanguage(language);
+        }
+      }),
+    updateTranslatedField: (path: string[], value: string) =>
+      set((state) => {
+        let current: any = state.menu.sections;
+        const activeLanguage = state.menu.language.current;
+
+        const sectionName = path[0];
+        const section = current.find(
+          (section: Sections) => section.name === sectionName,
+        );
+        if (!section) return state;
+
+        current = section.data;
+
+        for (let i = 1; i < path.length - 1; i++) {
+          if (Array.isArray(current)) {
+            const index = current.findIndex(
+              (item: any) => item.id.toString() === path[i],
+            );
+            if (index === -1) return state;
+            current = current[index];
+          } else {
+            current = current[path[i]];
+          }
+
+          if (!current) return state;
+        }
+
+        const lastKey = path[path.length - 1];
+        if (current[lastKey] && typeof current[lastKey].texts === "object") {
+          current[lastKey].texts = {
+            ...current[lastKey].texts,
+            [activeLanguage]: value,
+          };
+        }
+
+        return state;
+      }),
+  },
+});
+
+// store.ts
+export const useStore = create<DataState>()(
+  immer((set, get) => ({
+    ...createStatusSlice(set, get),
+    ...createMenuSlice(set),
+    ...createFontSlice(set),
+    ...createCurrencySlice(set),
+    ...createColorSlice(set),
+    ...createCategorySlice(set),
+    ...createLanguageSlice(set, get),
   })),
 );
 
-export const useMenuEditor = (initial?: MenuData) => {
+export const useMenuEditor = (initialJSON?: string) => {
   const status = useStore((state) => state.status);
   const setStatus = useStore((state) => state.setStatus);
   const menu = useStore((state) => state.menu);
   const setMenu = useStore((state) => state.setMenu);
-  const save = useStore((state) => state.save);
+  const setInitialMenu = useStore((state) => state.setInitialMenu);
   const colors = useStore((state) => state.colors);
   const font = useStore((state) => state.font);
   const currency = useStore((state) => state.currency);
@@ -253,18 +439,16 @@ export const useMenuEditor = (initial?: MenuData) => {
     });
 
   useEffect(() => {
-    if (initial) {
-      setStatus("loading");
-      setMenu(JSON.parse(initial.json));
+    if (initialJSON) {
+      setInitialMenu(initialJSON);
     }
-  }, [initial]);
+  }, []);
 
   return {
     status,
     setStatus,
     menu,
     setMenu,
-    save,
     colors,
     font,
     currency,

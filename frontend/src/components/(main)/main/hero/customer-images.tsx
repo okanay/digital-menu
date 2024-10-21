@@ -4,7 +4,6 @@ import min2 from "../../../../../public/images/2-min.png";
 import min3 from "../../../../../public/images/3-min.png";
 import min4 from "../../../../../public/images/4-min.png";
 import min5 from "../../../../../public/images/5-min.png";
-import min6 from "../../../../../public/images/6-min.png";
 import min7 from "../../../../../public/images/7-min.png";
 
 export const CustomerImages: React.FC = () => {

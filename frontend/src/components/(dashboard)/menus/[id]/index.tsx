@@ -1,12 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
-import { useMenu } from "./use-menu";
-import { MenuLoading } from "./loading";
-import { MenuError } from "./error";
 import { MenuEditor } from "./editor";
+import { MenuError } from "./error";
+import { MenuLoading } from "./loading";
 import { MenuNotFound } from "./not-found";
-import { useMenuEditor } from "@/components/(menu)/editor/use-menu-editor";
+import { useMenu } from "./use-menu";
 
 type Props = {
   id: string;
@@ -15,26 +14,25 @@ type Props = {
 
 export default function MenuPage({ id, locale }: Props) {
   const { fetchMenu, menu, status } = useMenu();
-  const { setStatus } = useMenuEditor();
 
   useEffect(() => {
     fetchMenu(id);
-    setStatus("loading");
   }, [id]);
 
   const renderContent = () => {
-    if (status === "loading") {
+    if (status.fetch === "loading") {
       return <MenuLoading />;
     }
-    if (status === "error") {
+    if (status.fetch === "error") {
       return <MenuError />;
     }
-    if (status === "not-found" || !menu) {
+    if (status.fetch === "not-found" || !menu) {
       return <MenuNotFound id={id} />;
     }
-    if (status === "success" && menu) {
-      return <MenuEditor menu={menu} locale={locale} />;
-    }
+
+    return (
+      <MenuEditor menu={menu} locale={locale} updateStatus={status.update} />
+    );
   };
 
   return renderContent();

@@ -2,10 +2,16 @@ import { PasswordResetRequest } from "@/components/(authorization)/password-rese
 import { ProtectedRoute } from "@/providers/auth/protected-route";
 
 type Props = {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 };
 
-export default function ForgotPasswordPage({ params: { locale } }: Props) {
+export default async function ForgotPasswordPage(props: Props) {
+  const params = await props.params;
+
+  const {
+    locale
+  } = params;
+
   return (
     <ProtectedRoute accessLevel="non-auth-paths">
       <PasswordResetRequest locale={locale} />;

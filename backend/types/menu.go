@@ -30,7 +30,7 @@ type MenuResponse struct {
 type CreateMenuReq struct {
 	UserID       int    `json:"userId" validate:"required"`
 	ShopUniqueID string `db:"shop_unique_id" json:"shopUniqueId"`
-	Name         string `json:"name" validate:"required,min=3,max=64"`
+	Name         string `json:"name" validate:"required,min=1,max=64"`
 	Type         int    `json:"type" validate:"required"`
 	Json         string `json:"json" validate:"required"`
 	IsActive     bool   `json:"isActive" validate:"omitempty"`
@@ -40,7 +40,7 @@ type UpdateMenuReq struct {
 	UserID       int     `json:"userId" validate:"required"`
 	ShopUniqueID string  `db:"shop_unique_id" json:"shopUniqueId"`
 	UniqueID     string  `db:"unique_id" json:"uniqueId"`
-	Name         *string `json:"name" validate:"omitempty,min=3,max=64"`
+	Name         *string `json:"name" validate:"omitempty,min=1,max=64"`
 	Type         *int    `json:"type" validate:"omitempty,min=0,max=64"`
 	Json         *string `json:"json" validate:"omitempty"`
 	IsActive     *bool   `json:"isActive" validate:"omitempty"`

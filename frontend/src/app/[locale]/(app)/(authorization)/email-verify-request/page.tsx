@@ -1,9 +1,15 @@
 import { EmailVerifyRequest } from "@/components/(authorization)/email-verify-request";
 
 type Props = {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 };
 
-export default function EmailVerifyPage({ params: { locale } }: Props) {
+export default async function EmailVerifyPage(props: Props) {
+  const params = await props.params;
+
+  const {
+    locale
+  } = params;
+
   return <EmailVerifyRequest locale={locale} />;
 }

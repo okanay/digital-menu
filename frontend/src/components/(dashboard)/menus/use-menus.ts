@@ -5,8 +5,8 @@ import { immer } from "zustand/middleware/immer";
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 interface DataState {
   error: string | null;
-  status: FetchStatus;
-  setStatus: (status: FetchStatus) => void;
+  status: StatusTypes;
+  setStatus: (status: StatusTypes) => void;
   menus: MenuData[];
   getMenus: () => MenuData[];
   setMenus: (menu: MenuData[]) => void;
@@ -21,7 +21,7 @@ const useStore = create<DataState>()(
   immer((set, get) => ({
     error: null,
     status: "initial",
-    setStatus: (status: FetchStatus) =>
+    setStatus: (status: StatusTypes) =>
       set((state) => {
         state.status = status;
         state.error = null;

@@ -6,25 +6,33 @@ const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 interface DataState {
   error: string | null;
-  status: FetchStatus;
-  setStatus: (status: FetchStatus) => void;
+  status: {
+    fetch: StatusTypes;
+    update: StatusTypes;
+  };
+  setStatus: (fetch?: StatusTypes, update?: StatusTypes) => void;
   menu: MenuData | null;
   setMenu: (menu: MenuData) => void;
   fetchMenu: (uniqueId: string) => Promise<void>;
   refreshMenu: (uniqueId: string) => Promise<void>;
-  updateMenu: (req: UpdateMenuReq) => Promise<UpdateMenuRes>;
-  saveJSON: (json: string) => Promise<void>;
+  updateMenu: (req: UpdateMenuReq) => Promise<void>;
 }
 
 const useStore = create<DataState>()(
   immer((set, get) => ({
     error: null,
-    status: "loading",
-    setStatus: (status: FetchStatus) =>
+
+    status: {
+      fetch: "initial",
+      update: "idle",
+    },
+    setStatus: (fetch?: StatusTypes, update?: StatusTypes) => {
       set((state) => {
-        state.status = status;
-        state.error = null;
-      }),
+        state.status.fetch = fetch || state.status.fetch;
+        state.status.update = update || state.status.update;
+      });
+    },
+
     menu: null,
     setMenu: (menu: MenuData) =>
       set((state) => {
@@ -34,6 +42,11 @@ const useStore = create<DataState>()(
 
     fetchMenu: async (uniqueId: string) => {
       try {
+        set((state) => {
+          state.status.fetch = "loading";
+          state.error = null;
+        });
+
         const response = await fetch(`${API_URL}/auth/menu/${uniqueId}`, {
           method: "GET",
           credentials: "include",
@@ -41,35 +54,33 @@ const useStore = create<DataState>()(
 
         if (!response.ok) {
           set((state) => {
-            state.status = "not-found";
+            state.status.fetch = "not-found";
           });
           return;
         }
 
         const data = await response.json();
-
         if (!data?.menu) {
           throw new Error("Invalid response format");
         }
 
         const validMenu = MenuResponseValidate.safeParse(data.menu);
-
         if (!validMenu.success) {
           throw new Error("Invalid response format");
         }
 
         set((state) => {
-          state.status = "success";
           state.menu = validMenu.data;
+          state.status.fetch = "success";
           state.error = null;
         });
       } catch (error) {
         set((state) => {
-          state.status = "error";
+          state.status.fetch = "error";
           state.error =
             error instanceof Error
               ? error.message
-              : "An unknown error occurred";
+              : "Menü yüklenirken beklenmeyen bir hata oluştu";
         });
       }
     },
@@ -77,29 +88,32 @@ const useStore = create<DataState>()(
     refreshMenu: async (uniqueId: string) => {
       try {
         set((state) => {
-          state.status = "loading";
+          state.status.fetch = "loading";
           state.menu = null;
           state.error = null;
         });
-
         await get().fetchMenu(uniqueId);
       } catch (error) {
         set((state) => {
-          state.status = "error";
+          state.status.fetch = "error";
           state.error =
             error instanceof Error
               ? error.message
-              : "An unknown error occurred";
+              : "Menü yenilenirken beklenmeyen bir hata oluştu";
         });
       }
     },
 
     updateMenu: async (req: UpdateMenuReq) => {
       try {
-        const menu = get().menu;
-        if (!menu) throw new Error("Menu data not found");
+        const { status } = get();
+        if (status.update === "updating") return;
 
-        const response = await fetch(`${API_URL}/auth/menu/${menu.uniqueId}`, {
+        set((state) => {
+          state.status.update = "updating";
+        });
+
+        const response = await fetch(`${API_URL}/auth/menu/${req.uniqueId}`, {
           method: "PATCH",
           credentials: "include",
           headers: {
@@ -108,89 +122,32 @@ const useStore = create<DataState>()(
           body: JSON.stringify(req),
         });
 
-        const data = await response.json();
-
         if (!response.ok) {
-          throw new Error(
-            `${data.error ?? `HTTP error! status: ${response.status}`}`,
-          );
+          throw new Error("Invalid response format");
         }
 
+        const data = await response.json();
         if (!data?.menu) {
           throw new Error("Invalid response format");
         }
 
-        const valid = MenuResponseValidate.safeParse(data.menu);
-        if (!valid.success) {
+        const validMenu = MenuResponseValidate.safeParse(data.menu);
+        if (!validMenu.success) {
           throw new Error("Invalid shop data received");
         }
 
         set((state) => {
-          state.menu = valid.data;
-          state.status = "success";
-          state.error = null;
-        });
-
-        return {
-          status: "success",
-          error: null,
-        };
-      } catch (error) {
-        console.error(error);
-        return {
-          status: "error",
-          error:
-            error instanceof Error
-              ? error.message
-              : "An unknown error occurred",
-        };
-      }
-    },
-
-    saveJSON: async (json: string) => {
-      try {
-        const menu = get().menu;
-        if (!menu) throw new Error("Menu data not found");
-
-        const response = await fetch(`${API_URL}/auth/menu/${menu.uniqueId}`, {
-          method: "PATCH",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ json }),
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(
-            `${data.error ?? `HTTP error! status: ${response.status}`}`,
-          );
-        }
-
-        if (!data?.menu) {
-          throw new Error("Invalid response format");
-        }
-
-        const valid = MenuResponseValidate.safeParse(data.menu);
-        if (!valid.success) {
-          throw new Error("Invalid shop data received");
-        }
-
-        set((state) => {
-          state.menu = valid.data;
-          state.status = "success";
+          state.menu = validMenu.data;
+          state.status.update = "success";
           state.error = null;
         });
       } catch (error) {
-        console.error(error);
         set((state) => {
-          state.status = "error";
+          state.status.update = "error";
           state.error =
             error instanceof Error
               ? error.message
-              : "An unknown error occurred";
+              : "Menü güncellenirken beklenmeyen bir hata oluştu";
         });
       }
     },
@@ -205,7 +162,6 @@ export const useMenu = () => {
   const fetchMenu = useStore((state) => state.fetchMenu);
   const refreshMenu = useStore((state) => state.refreshMenu);
   const updateMenu = useStore((state) => state.updateMenu);
-  const saveJSON = useStore((state) => state.saveJSON);
 
   return {
     status,
@@ -215,6 +171,5 @@ export const useMenu = () => {
     fetchMenu,
     refreshMenu,
     updateMenu,
-    saveJSON,
   };
 };

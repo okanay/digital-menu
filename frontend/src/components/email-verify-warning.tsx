@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/hooks/use-auth";
-import { Link, usePathname } from "@/providers/i18n/routing";
+import { Link, usePathname } from "@/i18n/routing";
 
 export const EmailVerifyWarning = () => {
   const auth = useAuth();

@@ -13,7 +13,7 @@ type CreateShopReq = {
 };
 
 type CreateShopRes = {
-  status: FetchStatus;
+  status: StatusTypes;
   error: string | null;
 };
 
@@ -24,6 +24,6 @@ type UpdateShopReq = {
 };
 
 type UpdateShopRes = {
-  status: FetchStatus;
+  status: StatusTypes;
   error: string | null;
 };

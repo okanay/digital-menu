@@ -1,5 +1,5 @@
 import { BrandLogo } from "@/components/ui/brand-logo";
-import { Link } from "@/providers/i18n/routing";
+import { Link } from "@/i18n/routing";
 
 const navItems = [
   {

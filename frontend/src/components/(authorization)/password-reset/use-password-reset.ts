@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/hooks/use-auth";
-import { useRouter } from "@/providers/i18n/routing";
+import { useRouter } from "@/i18n/routing";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
 import { z } from "zod";

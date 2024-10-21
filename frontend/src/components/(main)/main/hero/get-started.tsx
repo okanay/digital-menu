@@ -1,5 +1,5 @@
-import { ButtonPrimary, ButtonSecondary } from "@/components/ui/buttons";
-import { Link } from "@/providers/i18n/routing";
+import { ButtonSecondary } from "@/components/ui/buttons";
+import { Link } from "@/i18n/routing";
 
 export const GetStarted: React.FC = () => {
   return (

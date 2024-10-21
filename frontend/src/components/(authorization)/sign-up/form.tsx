@@ -2,7 +2,7 @@
 
 import { ButtonPrimary } from "@/components/ui/buttons";
 import { IconImage } from "@/components/ui/icon-image";
-import { Link } from "@/providers/i18n/routing";
+import { Link } from "@/i18n/routing";
 import { FormErrorMessage } from "../ui/form-messages";
 import { FormTitle } from "../ui/form-title";
 import { CheckboxInput } from "../ui/input-checkbox";

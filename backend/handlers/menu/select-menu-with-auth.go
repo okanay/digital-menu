@@ -22,7 +22,7 @@ func (h *Handler) SelectMenu(c *gin.Context) {
 	}
 
 	menuResponse := types.MenuResponse{
-		ShopUniqueID: menu.ShopUniqueID,
+		ShopUniqueID: "not-reachable",
 		UniqueID:     menu.UniqueID,
 		Name:         menu.Name,
 		Type:         menu.Type,

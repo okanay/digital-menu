@@ -3,6 +3,7 @@ package userHandler
 import (
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -68,8 +69,14 @@ func (h *Handler) Login(c *gin.Context) {
 		LastLogin: time.Now(),
 	})
 
-	c.SetSameSite(http.SameSiteLaxMode)
-	c.SetCookie(configs.SESSION_COOKIE_NAME, token, cookieDuration, "/", "", true, true)
+	userAgent := c.Request.UserAgent()
+	if strings.Contains(userAgent, "Chrome") {
+		c.SetSameSite(http.SameSiteLaxMode)
+		c.SetCookie(configs.SESSION_COOKIE_NAME, token, cookieDuration, "/", "", true, true)
+	} else if strings.Contains(userAgent, "Safari") {
+		c.SetSameSite(http.SameSiteNoneMode)
+		c.SetCookie(configs.SESSION_COOKIE_NAME, token, cookieDuration, "/", "", false, true)
+	}
 
 	c.JSON(http.StatusOK, gin.H{"user": userRes})
 }

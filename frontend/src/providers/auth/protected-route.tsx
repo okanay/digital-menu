@@ -1,8 +1,8 @@
 "use client";
 
 import { useAuth } from "@/hooks/use-auth";
+import { usePathname, useRouter } from "@/i18n/routing";
 import { useEffect, useState } from "react";
-import { usePathname, useRouter } from "../i18n/routing";
 
 type RouteProps = {
   children: React.ReactNode;
@@ -18,8 +18,8 @@ function isProtectedPath(pathname: string): boolean {
 }
 
 const PROTECTED_PATHS = [
-  "/profile",
-  "/restaurants",
+  "/dashboard",
+  "/shops",
   "/account",
   "/statistics",
   "/menus",
@@ -42,20 +42,16 @@ export const ProtectedRoute: React.FC<RouteProps> = ({
   const router = useRouter();
 
   useEffect(() => {
-    if (
-      isNonAuthenticatedPath(pathname) &&
-      accessLevel === "non-auth-paths" &&
-      auth.user
-    ) {
-      router.push("/");
+    if (accessLevel === "non-auth-paths" && auth.user) {
+      if (isNonAuthenticatedPath(pathname)) {
+        router.push("/");
+      }
     }
 
-    if (
-      isProtectedPath(pathname) &&
-      accessLevel === "protected" &&
-      !auth.user
-    ) {
-      router.push("/sign-in");
+    if (accessLevel === "protected" && auth.session === "unauthorize") {
+      if (isProtectedPath(pathname)) {
+        router.push("/sign-in");
+      }
     }
 
     setLoading(false);

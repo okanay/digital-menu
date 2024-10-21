@@ -1,5 +1,6 @@
 "use client";
-import { usePathname, useRouter } from "@/providers/i18n/routing";
+
+import { usePathname, useRouter } from "@/i18n/routing";
 
 export const useLanguage = () => {
   const pathanme = usePathname();

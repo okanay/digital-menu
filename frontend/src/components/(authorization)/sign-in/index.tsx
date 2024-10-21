@@ -1,6 +1,6 @@
 import { BrandLogo } from "@/components/ui/brand-logo";
 import { FormHR } from "../ui/form-hr";
-import { Link } from "@/providers/i18n/routing";
+import { Link } from "@/i18n/routing";
 import Image from "next/image";
 import ilDark from "../../../../public/illustration/il-1-dark.svg";
 import ilLight from "../../../../public/illustration/il-1-light.svg";

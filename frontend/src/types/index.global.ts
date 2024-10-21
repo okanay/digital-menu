@@ -4,4 +4,11 @@ type Children = {
 
 type ComponentWithChildren<P = {}> = React.FC<P & Children>;
 
-type FetchStatus = "initial" | "loading" | "error" | "success" | "not-found";
+type StatusTypes =
+  | "idle"
+  | "initial"
+  | "loading"
+  | "error"
+  | "success"
+  | "not-found"
+  | "updating";

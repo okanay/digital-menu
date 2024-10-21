@@ -2,6 +2,7 @@
 
 import { ButtonSecondary } from "@/components/ui/buttons";
 import { useMenu } from "../use-menu";
+import { RefreshCw } from "lucide-react";
 
 type Props = {
   children?: React.ReactNode;
@@ -12,11 +13,12 @@ export const RefreshMenuButton = ({ children }: Props) => {
 
   return (
     <ButtonSecondary
-      disabled={status !== "success" || !menu}
-      className="flex items-center gap-2"
+      disabled={status.fetch !== "success" || !menu}
+      className="flex items-center gap-2 text-xs sm:text-base"
       onClick={() => refreshMenu(menu!.uniqueId)}
     >
-      {children || "Refresh"}
+      <RefreshCw className="block size-4 sm:hidden" />
+      <span className="hidden sm:block">{children || "Refresh"}</span>
     </ButtonSecondary>
   );
 };

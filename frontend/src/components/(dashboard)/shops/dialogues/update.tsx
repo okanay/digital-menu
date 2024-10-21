@@ -2,7 +2,6 @@
 
 import React, { useRef, useState } from "react";
 import { useShops } from "../use-shops";
-import { useDialog } from "@/providers/dialogue/use-dialogu";
 import { ErrorMessage } from "@/components/(dashboard)/dialogues/error-message";
 import { Form } from "@/components/(dashboard)/dialogues/form";
 import { Input } from "@/components/(dashboard)/dialogues/input";
@@ -11,9 +10,10 @@ import { LabelWrapper } from "@/components/(dashboard)/dialogues/label-wrapper";
 import { SubmitButton } from "@/components/(dashboard)/dialogues/submit-button";
 import { DialogWrapper } from "@/components/(dashboard)/dialogues/wrapper";
 import { UpdateShopValidate } from "@/validations/shop";
+import { useDialog } from "@/providers/dialogue/use-dialogu";
 
 export const UpdateShopDialog: React.FC = () => {
-  const [status, setStatus] = useState<FetchStatus>("initial");
+  const [status, setStatus] = useState<StatusTypes>("initial");
   const [error, setError] = useState<string | null>(null);
 
   const { updateShop } = useShops();

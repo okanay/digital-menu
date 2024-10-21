@@ -1,9 +1,15 @@
 import MenusPage from "@/components/(dashboard)/menus";
 
 type Props = {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 };
 
-export default function Page({ params: { locale } }: Props) {
+export default async function Page(props: Props) {
+  const params = await props.params;
+
+  const {
+    locale
+  } = params;
+
   return <MenusPage locale={locale} />;
 }

@@ -8,19 +8,19 @@ import { Label } from "@/components/(dashboard)/dialogues/label";
 import { LabelWrapper } from "@/components/(dashboard)/dialogues/label-wrapper";
 import { SubmitButton } from "@/components/(dashboard)/dialogues/submit-button";
 import { DialogWrapper } from "@/components/(dashboard)/dialogues/wrapper";
-import InitialMenuDesignData from "@/constants/dummy-data";
-import { useDialog } from "@/providers/dialogue/use-dialogu";
+import { InitialMenuDesignData } from "@/constants/menu-arts-1";
 import { InputEventWrapper } from "../../dialogues/input-event-wrapper";
 import { Select } from "../../dialogues/select";
 import { useShops } from "../../shops/use-shops";
 import { useMenus } from "../use-menus";
+import { useDialog } from "@/providers/dialogue/use-dialogu";
 
 export const CreateMenuDialog: React.FC = () => {
   const { shops, refreshShops, status: shopsStatus } = useShops();
   const { createMenu } = useMenus();
   const { setDialog } = useDialog();
 
-  const [status, setStatus] = useState<FetchStatus>("initial");
+  const [status, setStatus] = useState<StatusTypes>("initial");
   const [error, setError] = useState<string | null>(null);
 
   const nameRef = useRef<HTMLInputElement>(null);

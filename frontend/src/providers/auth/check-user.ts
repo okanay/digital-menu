@@ -6,7 +6,7 @@ import { headers, cookies } from "next/headers";
 const API_URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/check`;
 
 export async function checkUser(): Promise<User | null> {
-  const headersList = headers();
+  const headersList = await headers();
 
   try {
     const response = await fetch(API_URL, {

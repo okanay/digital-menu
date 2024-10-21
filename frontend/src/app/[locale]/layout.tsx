@@ -1,49 +1,51 @@
-// prettier-ignore
-import { getMessages, getTranslations, unstable_setRequestLocale } from "next-intl/server";
-import { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
-import { ReactNode } from "react";
+import { getMessages } from "next-intl/server";
+import { notFound } from "next/navigation";
+import { routing } from "@/i18n/routing";
 import fontSans from "@/assets/fonts/sans";
 import fontSerif from "@/assets/fonts/serif";
 import fontMono from "@/assets/fonts/mono";
 
-type Props = {
-  children: ReactNode;
-  params: { locale: string };
+export const viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+  ],
 };
 
-type i18nMetadata = Omit<Props, "children">;
+export default async function LocaleLayout(
+  props: {
+    children: React.ReactNode;
+    params: Promise<{ locale: string }>;
+  }
+) {
+  const params = await props.params;
 
-export async function generateMetadata(props: i18nMetadata): Promise<Metadata> {
-  const t = await getTranslations({
-    locale: props.params.locale,
-    namespace: "root.metadata",
-  });
+  const {
+    locale
+  } = params;
 
-  return {
-    title: t("title"),
-  };
-}
+  const {
+    children
+  } = props;
 
-export default async function LocaleLayout(props: Props) {
-  unstable_setRequestLocale(props.params.locale);
+  if (!routing.locales.includes(locale as any)) {
+    notFound();
+  }
+
   const messages = await getMessages();
 
   return (
     <html
-      lang={props.params.locale}
-      suppressHydrationWarning
       className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable}`}
+      suppressHydrationWarning
+      lang={locale}
     >
-      <body className="bg-white font-custom-sans text-font dark:bg-black">
+      <body>
         <NextIntlClientProvider messages={messages}>
-          {props.children}
+          {children}
         </NextIntlClientProvider>
       </body>
     </html>
   );
 }
-
-// export function generateStaticParams() {
-//   return routing.locales.map((locale) => ({ locale }));
-// }

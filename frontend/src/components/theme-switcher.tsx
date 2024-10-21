@@ -40,7 +40,7 @@ export const ThemeSwitcher: React.FC = () => {
         </button>
       </div>
       {open && (
-        <div className="absolute right-0 mt-1.5 w-24 origin-top-right">
+        <div className="absolute right-0 z-[40] mt-1.5 w-24 origin-top-right">
           <div className="flex flex-col items-start rounded border border-corner/10 bg-fill text-sm">
             {themeOptions.map((option) => (
               <button

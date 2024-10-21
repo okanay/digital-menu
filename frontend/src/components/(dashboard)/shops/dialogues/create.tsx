@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import { useDialog } from "@/providers/dialogue/use-dialogu";
 import { useShops } from "../use-shops";
 import { ErrorMessage } from "@/components/(dashboard)/dialogues/error-message";
 import { Form } from "@/components/(dashboard)/dialogues/form";
@@ -11,9 +10,10 @@ import { LabelWrapper } from "@/components/(dashboard)/dialogues/label-wrapper";
 import { SubmitButton } from "@/components/(dashboard)/dialogues/submit-button";
 import { DialogWrapper } from "@/components/(dashboard)/dialogues/wrapper";
 import { CreateShopValidate } from "@/validations/shop";
+import { useDialog } from "@/providers/dialogue/use-dialogu";
 
 export const CreateShopDialog: React.FC = () => {
-  const [status, setStatus] = useState<FetchStatus>("initial");
+  const [status, setStatus] = useState<StatusTypes>("initial");
   const [error, setError] = useState<string | null>(null);
 
   const { createShop } = useShops();

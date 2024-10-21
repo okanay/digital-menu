@@ -1,7 +1,7 @@
 import useClickOutside from "@/hooks/use-click-outside";
 import { twMerge } from "tailwind-merge";
-import { useDialog } from "@/providers/dialogue/use-dialogu";
 import { XIcon } from "lucide-react";
+import { useDialog } from "@/providers/dialogue/use-dialogu";
 
 type DialogProps = {
   children: React.ReactNode;

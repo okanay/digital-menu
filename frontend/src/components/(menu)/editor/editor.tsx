@@ -1,13 +1,5 @@
-"use client";
-
-import { CategoryReOrderGroup } from "./ui/re-order/group";
-import { useMenuEditor } from "./use-menu-editor";
+import { CategoryReOrderGroup } from "./sections/category/group";
 
 export const MenuArtsEditor: React.FC = () => {
-  const { menu, category } = useMenuEditor();
-  const { orderCategory } = category;
-
-  return (
-    <CategoryReOrderGroup values={menu.categories} onReorder={orderCategory} />
-  );
+  return <CategoryReOrderGroup />;
 };

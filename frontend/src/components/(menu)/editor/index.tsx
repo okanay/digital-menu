@@ -1,39 +1,36 @@
 "use client";
 
+import { CustomFontSetter } from "../helper/custom-font-setter";
+import { CustomThemeSetter } from "../helper/custom-theme-setter";
 import { MenuArtsEditor } from "./editor";
-import { EditorLoading } from "./loading";
 import { MenuEditorOptions } from "./options";
 import { useMenuEditor } from "./use-menu-editor";
-import { CustomFontWrapper } from "./wrappers/custom-font-variable";
-import { CustomThemeWrapper } from "./wrappers/custom-theme-setter";
-import { CustomDirectionWrapper } from "./wrappers/custon-direction";
 
 type Props = {
   locale: string;
-  initialData: MenuData;
+  initialJSON: string;
 };
 
-export const MenuArts1: React.FC<Props> = ({ initialData }) => {
-  const { status } = useMenuEditor(initialData);
+export const MenuArts1: React.FC<Props> = ({ initialJSON }) => {
+  console.log("render");
+  const editor = useMenuEditor(initialJSON);
 
-  if (status === "loading") {
-    return <EditorLoading />;
-  }
-
-  if (status === "success") {
-    return (
-      <>
-        <MenuEditorOptions />
-        <article id="menu-editor" className={`mx-auto max-w-xl`}>
-          <CustomThemeWrapper target="menu-editor">
-            <CustomFontWrapper>
-              <CustomDirectionWrapper>
-                <MenuArtsEditor />
-              </CustomDirectionWrapper>
-            </CustomFontWrapper>
-          </CustomThemeWrapper>
-        </article>
-      </>
-    );
-  }
+  return (
+    <>
+      <MenuEditorOptions />
+      <div
+        id="menu-editor"
+        className="relative mx-auto w-full max-w-xl overflow-auto py-8 sm:block sm:overflow-visible sm:py-0"
+        style={{
+          direction: editor.menu.language.current === "sa" ? "rtl" : "ltr",
+        }}
+      >
+        <CustomFontSetter menu={editor.menu}>
+          <CustomThemeSetter target="menu-editor" menu={editor.menu}>
+            <MenuArtsEditor />
+          </CustomThemeSetter>
+        </CustomFontSetter>
+      </div>
+    </>
+  );
 };

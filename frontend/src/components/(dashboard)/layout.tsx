@@ -11,7 +11,7 @@ import {
   Menu,
   X,
 } from "lucide-react";
-import { usePathname, Link } from "@/providers/i18n/routing";
+import { usePathname, Link } from "@/i18n/routing";
 import { useState } from "react";
 import { BrandLogo } from "../ui/brand-logo";
 import { useAuth } from "@/hooks/use-auth";

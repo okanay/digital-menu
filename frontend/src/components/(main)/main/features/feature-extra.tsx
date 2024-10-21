@@ -1,4 +1,4 @@
-import { ButtonPrimary, ButtonSecondary } from "@/components/ui/buttons";
+import { ButtonPrimary } from "@/components/ui/buttons";
 import { twMerge } from "tailwind-merge";
 
 import featureExtra from "../../../../../public/images/feature-extra-min.png";

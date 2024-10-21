@@ -7,6 +7,7 @@ interface MenuData {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
+  isTestData?: boolean;
 }
 
 type CreateMenuReq = {
@@ -17,7 +18,7 @@ type CreateMenuReq = {
 };
 
 type CreateMenuRes = {
-  status: FetchStatus;
+  status: StatusTypes;
   error: string | null;
 };
 
@@ -30,6 +31,6 @@ type UpdateMenuReq = {
 };
 
 type UpdateMenuRes = {
-  status: FetchStatus;
+  status: StatusTypes;
   error: string | null;
 };

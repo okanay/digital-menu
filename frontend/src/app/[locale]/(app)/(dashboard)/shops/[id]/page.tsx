@@ -1,9 +1,16 @@
 import ShopPage from "@/components/(dashboard)/shops/[id]";
 
 type Props = {
-  params: { locale: string; id: string };
+  params: Promise<{ locale: string; id: string }>;
 };
 
-export default function Page({ params: { locale, id } }: Props) {
+export default async function Page(props: Props) {
+  const params = await props.params;
+
+  const {
+    locale,
+    id
+  } = params;
+
   return <ShopPage locale={locale} id={id} />;
 }

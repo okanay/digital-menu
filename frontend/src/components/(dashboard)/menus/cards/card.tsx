@@ -1,8 +1,8 @@
 import { ChefHat, CalendarArrowUp, Edit2, Eye } from "lucide-react";
 import { FormatDate } from "@/utils/form-date";
-import { Link } from "@/providers/i18n/routing";
 import { MenuConfig } from "./config";
 import { MenuStatus } from "./ui/status";
+import { Link } from "@/i18n/routing";
 
 interface Props {
   menu: MenuData;
@@ -39,6 +39,8 @@ export const MenuCard: React.FC<Props> = ({ menu }) => {
         <div className="mt-6 flex items-center justify-start gap-4 border-t border-corner/10 pt-4">
           <Link
             href={`/menus/${menu.uniqueId}`}
+            prefetch={false}
+            target="_blank"
             className="inline-flex items-center gap-2 text-sm font-medium text-primary-500 transition-all duration-300 hover:text-primary-600 active:scale-95"
           >
             <Edit2 className="size-4" />
@@ -46,6 +48,8 @@ export const MenuCard: React.FC<Props> = ({ menu }) => {
           </Link>
           <Link
             href={`/menus/?id=${menu.uniqueId}`}
+            prefetch={false}
+            target="_blank"
             className="inline-flex items-center gap-2 text-sm font-medium text-font-primary transition-all duration-300 hover:text-primary-500 active:scale-95"
           >
             <Eye className="size-4" />
