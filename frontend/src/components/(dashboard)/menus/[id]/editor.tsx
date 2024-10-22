@@ -1,4 +1,4 @@
-import { MenuArts1 } from "@/components/(menu)/editor";
+import { MenuArts1 } from "@/components/menu-arts-1/editor";
 import { MenuPageHeader } from "./header";
 import { MenuUpdating } from "./updating";
 

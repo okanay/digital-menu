@@ -1,6 +1,7 @@
 import { ThemeProvider } from "next-themes";
 import { AuthWrapper } from "./auth/provider";
 import { DialogueProvider } from "./dialogue";
+import { LazyMotion, domAnimation } from "framer-motion";
 
 export const MainProviders: ComponentWithChildren = async (props) => {
   return (
@@ -11,7 +12,9 @@ export const MainProviders: ComponentWithChildren = async (props) => {
         enableSystem
         disableTransitionOnChange
       >
-        <DialogueProvider>{props.children}</DialogueProvider>
+        <LazyMotion features={domAnimation}>
+          <DialogueProvider>{props.children}</DialogueProvider>
+        </LazyMotion>
       </ThemeProvider>
     </AuthWrapper>
   );
@@ -25,7 +28,7 @@ export const MenusProviders: ComponentWithChildren = (props) => {
       enableSystem
       disableTransitionOnChange
     >
-      {props.children}
+      <LazyMotion features={domAnimation}>{props.children}</LazyMotion>
     </ThemeProvider>
   );
 };

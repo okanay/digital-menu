@@ -8,9 +8,8 @@ interface Props extends React.ComponentProps<"button"> {
 }
 
 // prettier-ignore
-export const SubmitButton = React.forwardRef<HTMLButtonElement, Props>(({ className, children, loading, variant = "primary", disabled, ...props }, ref) => {
-    const baseStyles =
-      "inline-flex items-center justify-center font-medium transition-all duration-200 rounded disabled:cursor-not-allowed";
+export const SubmitButton = ({ className, children, loading, variant = "primary", disabled, ref, ...props } : Props ) => {
+    const baseStyles ="inline-flex items-center justify-center font-medium transition-all duration-200 rounded disabled:cursor-not-allowed";
 
     const variants = {
       primary: "bg-primary-500/80 text-white hover:opacity-75 active:scale-95 ",
@@ -23,7 +22,7 @@ export const SubmitButton = React.forwardRef<HTMLButtonElement, Props>(({ classN
         className={twMerge(
           baseStyles,
           variants[variant],
-          "mt-4 h-[44px] w-full focus:outline-none focus:ring-2 focus:ring-primary-500/20 dark:focus:ring-primary-400/20 disabled:cursor-not-allowed",
+          "mt-4 h-[44px] w-full focus:outline-none focus:ring-2 focus:ring-primary-500/20 disabled:cursor-not-allowed dark:focus:ring-primary-400/20",
           loading && "relative text-transparent",
           className,
         )}
@@ -37,5 +36,4 @@ export const SubmitButton = React.forwardRef<HTMLButtonElement, Props>(({ classN
         )}
       </button>
     );
-  },
-);
+  }

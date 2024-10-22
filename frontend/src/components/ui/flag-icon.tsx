@@ -7,19 +7,19 @@ interface FlagIcon {
 export const FlagButton = ({ lang }: FlagIcon) => {
   switch (lang) {
     case "tr":
-      return <TR className="size-8" />;
+      return <TR className="size-6" />;
     case "en":
-      return <GB className="size-8" />;
+      return <GB className="size-6" />;
     case "fr":
-      return <FR className="size-8" />;
+      return <FR className="size-6" />;
     case "de":
-      return <DE className="size-8" />;
+      return <DE className="size-6" />;
     case "sa":
-      return <SA className="size-8" />;
+      return <SA className="size-6" />;
     case "es":
-      return <ES className="size-8" />;
+      return <ES className="size-6" />;
     case "it":
-      return <IT className="size-8" />;
+      return <IT className="size-6" />;
     default:
       return <></>;
   }

@@ -1,4 +1,4 @@
-export const locales = ["de", "en", "es", "fr", "it", "sa", "tr"] as const;
+export const locales = ["de", "en", "tr", "es", "fr", "it", "sa"] as const;
 
 declare global {
   type Languages = (typeof locales)[number];

@@ -1,7 +1,7 @@
 "use client";
 
 import { LogoutRequest } from "@/utils/logout-request";
-import { createContext, PropsWithChildren, useEffect, useState } from "react";
+import { createContext, PropsWithChildren, useState } from "react";
 
 export type SessionType = "authorize" | "unauthorize" | "loading";
 

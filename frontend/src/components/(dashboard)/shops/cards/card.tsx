@@ -38,7 +38,10 @@ export const ShopCard: React.FC<Props> = ({ shop }) => {
         </div>
         <div className="mt-6 flex items-center justify-start gap-4 border-t border-corner/10 pt-4">
           <Link
-            href={`/menus/?id=${shop.uniqueId}`}
+            href={{
+              pathname: "/menus",
+              query: { id: shop.uniqueId },
+            }}
             className="inline-flex items-center gap-2 text-sm font-medium text-primary-500 transition-all duration-300 hover:text-primary-600 active:scale-95"
           >
             Show Menus

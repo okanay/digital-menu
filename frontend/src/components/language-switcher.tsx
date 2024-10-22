@@ -32,11 +32,11 @@ export const LanguageSwitcher: React.FC = () => {
 
       {open && (
         <div className="absolute right-0 mt-1.5 w-28 origin-top-right">
-          <div className="flex flex-col items-start rounded border border-corner/10 bg-fill text-sm">
+          <div className="flex flex-col items-start rounded border border-corner/10 bg-fill text-xs">
             {locales.map((option) => (
               <button
                 key={option + "switcher"}
-                className="group flex w-full items-center gap-2 bg-fill-primary/0 px-2 py-1.5 transition-colors duration-300 hover:bg-fill-primary/30"
+                className="group flex w-full items-center justify-between gap-2 bg-fill-primary/0 px-2.5 py-1.5 text-center transition-colors duration-300 hover:bg-fill-primary/30"
                 onClick={() => {
                   setOpen(false);
                   setLocal(option as Languages);

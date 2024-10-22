@@ -1,0 +1,11 @@
+{
+  "root": {
+    "metadata": {
+      "title": "Menu Arts - Create your own menu!",
+      "description": "Create and share your own menu with Menu Arts!"
+    }
+  },
+  "main": {
+    "title": "Hello world!"
+  }
+}

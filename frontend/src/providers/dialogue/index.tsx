@@ -8,10 +8,10 @@ import { useDialog } from "./use-dialogu";
 import { CreateShopDialog } from "@/components/(dashboard)/shops/dialogues/create";
 import { UpdateShopDialog } from "@/components/(dashboard)/shops/dialogues/update";
 import { CreateMenuDialog } from "@/components/(dashboard)/menus/dialogues/create";
-import { CustomStyleDialog } from "@/components/(menu)/editor/options/custom-style/dialog";
 import { twMerge } from "tailwind-merge";
-import { AllergensDialog } from "@/components/(menu)/editor/sections/category-item/options/allergens-options";
-import { DiscountDialog } from "@/components/(menu)/editor/sections/category-item/options/discount-options";
+import { CustomStyleDialog } from "@/components/menu-arts-1/editor/options/custom-style/dialog";
+import { AllergensDialog } from "@/components/menu-arts-1/editor/sections/category-item/options/allergens-options";
+import { DiscountDialog } from "@/components/menu-arts-1/editor/sections/category-item/options/discount-options";
 
 type Props = {
   children: React.ReactNode;

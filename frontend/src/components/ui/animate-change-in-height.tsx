@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 
 interface AnimateChangeInHeightProps {
@@ -29,12 +29,12 @@ export const AnimateChangeInHeight: React.FC<AnimateChangeInHeightProps> = ({
   }, []);
 
   return (
-    <motion.div
+    <m.div
       style={{ height }}
       animate={{ height }}
       transition={{ duration: 0.2 }}
     >
       <div ref={containerRef}>{children}</div>
-    </motion.div>
+    </m.div>
   );
 };

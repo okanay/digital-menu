@@ -1,10 +1,11 @@
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from "next-intl/server";
+import { getMessages, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import fontSans from "@/assets/fonts/sans";
 import fontSerif from "@/assets/fonts/serif";
 import fontMono from "@/assets/fonts/mono";
+import { Metadata } from "next";
 
 export const viewport = {
   themeColor: [
@@ -13,21 +14,24 @@ export const viewport = {
   ],
 };
 
-export default async function LocaleLayout(
-  props: {
-    children: React.ReactNode;
-    params: Promise<{ locale: string }>;
-  }
-) {
+type Params = Promise<{ locale: string }>;
+
+// prettier-ignore
+export async function generateMetadata({params}: { params: Params }): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({locale, namespace: 'root.metadata'});
+
+  return {
+    title: t('title'),
+    description: t('description'),
+  };
+}
+
+// prettier-ignore
+export default async function LocaleLayout(props: { children: React.ReactNode; params: Promise<{ locale: string }>}) {
   const params = await props.params;
-
-  const {
-    locale
-  } = params;
-
-  const {
-    children
-  } = props;
+  const { locale } = params;
+  const { children } = props;
 
   if (!routing.locales.includes(locale as any)) {
     notFound();

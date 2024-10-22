@@ -1,7 +1,7 @@
 "use server";
 
 import { SignInResponseValidate } from "@/validations/user";
-import { headers, cookies } from "next/headers";
+import { headers } from "next/headers";
 
 const API_URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/check`;
 
